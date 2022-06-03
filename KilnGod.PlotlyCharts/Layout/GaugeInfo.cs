@@ -14,7 +14,6 @@ using KilnGod.PlotlyCharts.Enumerations;
 using KilnGod.PlotlyCharts.Wrappers;
 using System.Dynamic;
 using KilnGod.PlotlyCharts.Enumerations.LayoutEnums;
-using KilnGod.PlotlyCharts.Traces;
 
 namespace KilnGod.PlotlyCharts.Layout
 {
@@ -70,8 +69,8 @@ namespace KilnGod.PlotlyCharts.Layout
             set { (ValueItems as dynamic).shape = value?.GetDescription(); }
         }
 
-        ItemList<StepItem>? _StepsItems = null;
-        public ItemList<StepItem>? Steps
+        ItemList<GaugeStepItem>? _StepsItems = null;
+        public ItemList<GaugeStepItem>? Steps
         {
             get
             {

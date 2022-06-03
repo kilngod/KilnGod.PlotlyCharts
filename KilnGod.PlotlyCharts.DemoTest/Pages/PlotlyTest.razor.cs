@@ -26,7 +26,7 @@ using KilnGod.PlotlyCharts.DemoTest.Models;
 
 namespace KilnGod.PlotlyCharts.DemoTest.Pages
 {
-	public partial class PlotlyTest
+    public partial class PlotlyTest
 	{
 
 #nullable disable
@@ -986,10 +986,10 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 		public async void GuageChart()
 		{
 
-			ItemList<StepItem> steps = new ItemList<StepItem>()
+			ItemList<GaugeStepItem> steps = new ItemList<GaugeStepItem>()
 			{
-				new StepItem() { Range=new double[] { 0, 250 }, Color="cyan" },
-				new StepItem() { Range=new double[] { 250, 400 }, Color="royalblue" }
+				new GaugeStepItem() { Range=new double[] { 0, 250 }, Color="cyan" },
+				new GaugeStepItem() { Range=new double[] { 250, 400 }, Color="royalblue" }
 			};
 
 
@@ -1040,9 +1040,9 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 		public async void BulletChart()
 		{
 
-			ItemList<StepItem> steps = new ItemList<StepItem>()
+			ItemList<GaugeStepItem> steps = new ItemList<GaugeStepItem>()
 			{
-				new StepItem() { Range=new int[] { 0, 150 }, Color="cyan" }
+				new GaugeStepItem() { Range=new int[] { 0, 150 }, Color="cyan" }
 
 			};
 

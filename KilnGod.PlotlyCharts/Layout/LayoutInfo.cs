@@ -223,18 +223,23 @@ namespace KilnGod.PlotlyCharts.Layout
 			set { (ValueItems as dynamic).hovermode = value?.GetDescription(); }
 		}
 
-		ItemList<ImagesItem>? _ImagesItemss = null;
-		public ItemList<ImagesItem> ImagesItemss
+		ItemList<ImagesItem>? _ImagesItems = null;
+		public ItemList<ImagesItem>? Images
 		{
 			get
 			{
-				if (_ImagesItemss == null)
+				return _ImagesItems;
+			}
+			set
+			{
+				_ImagesItems = value;
+				if (value != null)
 				{
-					_ImagesItemss = new ItemList<ImagesItem>();
+					(ValueItems as dynamic).images = value.Values;
 				}
-				return _ImagesItemss;
 			}
 		}
+
 
 		LegendInfo? _Legend = null;
 		public LegendInfo? Legend
@@ -350,15 +355,19 @@ namespace KilnGod.PlotlyCharts.Layout
 		}
 
 		ItemList<ShapeItem>? _ShapeItems = null;
-		public ItemList<ShapeItem> ShapesItemss
+		public ItemList<ShapeItem>? Shapes
 		{
 			get
 			{
-				if (_ShapeItems == null)
-				{
-					_ShapeItems = new ItemList<ShapeItem>();
-				}
 				return _ShapeItems;
+			}
+			set
+			{
+				_ShapeItems = value;
+				if (value != null)
+				{
+					(ValueItems as dynamic).shapes = value.Values;
+				}
 			}
 		}
 
@@ -368,18 +377,25 @@ namespace KilnGod.PlotlyCharts.Layout
 			set { (ValueItems as dynamic).showlegend = value; }
 		}
 
-		ItemList<SlidersItem>? _SlidersItemss = null;
-		public ItemList<SlidersItem> SlidersItemss
+
+		ItemList<SlidersItem>? _SlidersItems = null;
+		public ItemList<SlidersItem>? Sliders
 		{
 			get
 			{
-				if (_SlidersItemss == null)
+				return _SlidersItems;
+			}
+			set
+			{
+				_SlidersItems = value;
+				if (value != null)
 				{
-					_SlidersItemss = new ItemList<SlidersItem>();
+					(ValueItems as dynamic).sliders = value.Values;
 				}
-				return _SlidersItemss;
 			}
 		}
+
+		
 
 		SmithInfo? _Smith = null;
 		public SmithInfo? Smith

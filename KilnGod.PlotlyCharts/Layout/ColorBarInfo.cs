@@ -172,16 +172,20 @@ namespace KilnGod.PlotlyCharts.Layout
 			set { (ValueItems as dynamic).tickformat = value; }
 		}
 
-		ItemList<TickFormatStopItem>? _TickFormatStopsItemss = null;
-		public ItemList<TickFormatStopItem> TickFormatStopsItemss
+		ItemList<TickFormatStopItem>? _TickFormatStopsItems = null;
+		public ItemList<TickFormatStopItem>? TickFormatStopsItems
 		{
 			get
 			{
-				if (_TickFormatStopsItemss == null)
+				return _TickFormatStopsItems;
+			}
+			set
+			{
+				_TickFormatStopsItems = value;
+				if (value != null)
 				{
-					_TickFormatStopsItemss = new ItemList<TickFormatStopItem>();
+					(ValueItems as dynamic).tickformatstops = value.Values;
 				}
-				return _TickFormatStopsItemss;
 			}
 		}
 

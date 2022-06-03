@@ -110,16 +110,20 @@ namespace KilnGod.PlotlyCharts.Layout
 			}
 		}
 
-		ItemList<OtherStepsItem>? _StepsItemss = null;
-		public ItemList<OtherStepsItem> StepsItemss
+		ItemList<SliderStepItem>? _StepsItems = null;
+		public ItemList<SliderStepItem>? Steps
 		{
 			get
 			{
-				if (_StepsItemss == null)
+				return _StepsItems;
+			}
+			set
+			{
+				_StepsItems = value;
+				if (value != null)
 				{
-					_StepsItemss = new ItemList<OtherStepsItem>();
+					(ValueItems as dynamic).steps = value.Values;
 				}
-				return _StepsItemss;
 			}
 		}
 

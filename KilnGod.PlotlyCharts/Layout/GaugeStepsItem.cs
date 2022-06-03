@@ -13,15 +13,14 @@ using KilnGod.PlotlyCharts.Enumerations.TracesEnums;
 using KilnGod.PlotlyCharts.Enumerations;
 using KilnGod.PlotlyCharts.Wrappers;
 using System.Dynamic;
-using KilnGod.PlotlyCharts.Layout;
 
-namespace KilnGod.PlotlyCharts.Traces
+namespace KilnGod.PlotlyCharts.Layout
 {
 
-    public class StepItem : ValuesObject
+    public class GaugeStepItem : ValuesObject
     {
 
-        public StepItem() : base() { }
+        public GaugeStepItem() : base() { }
 
         public object? Color
         {

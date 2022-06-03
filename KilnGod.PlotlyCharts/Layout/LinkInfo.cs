@@ -10,7 +10,6 @@
 //***********************************************************************************
 
 using KilnGod.PlotlyCharts.Enumerations;
-using KilnGod.PlotlyCharts.Traces;
 using KilnGod.PlotlyCharts.Enumerations.LayoutEnums;
 using KilnGod.PlotlyCharts.Enumerations.TracesEnums;
 using KilnGod.PlotlyCharts.Wrappers;
@@ -18,7 +17,7 @@ using KilnGod.PlotlyCharts.Wrappers;
 
 namespace KilnGod.PlotlyCharts.Layout
 {
-	public class LinkInfo : ValuesObject
+    public class LinkInfo : ValuesObject
 	{
 
 		public LinkInfo() : base() { }

@@ -13,10 +13,10 @@ using KilnGod.PlotlyCharts.Enumerations.LayoutEnums;
 using KilnGod.PlotlyCharts.Enumerations;
 using KilnGod.PlotlyCharts.Wrappers;
 using System.Dynamic;
-using KilnGod.PlotlyCharts.Layout;
 using KilnGod.PlotlyCharts.Enumerations.TracesEnums;
+using KilnGod.PlotlyCharts.Traces;
 
-namespace KilnGod.PlotlyCharts.Traces
+namespace KilnGod.PlotlyCharts.Layout
 {
 
     public class AttributesInfo : ValuesObject
@@ -36,7 +36,7 @@ namespace KilnGod.PlotlyCharts.Traces
             get { return (ValueItems as dynamic)["base"]; }
             set { (ValueItems as dynamic)["base"] = value; }
         }
-        
+
 
         public bool? CliponAxis
         {
@@ -292,20 +292,22 @@ namespace KilnGod.PlotlyCharts.Traces
             set { (ValueItems as dynamic).texttemplate = value; }
         }
 
-        ItemList<ValuesObject>? _TransformsItemss = null;
-        public ItemList<ValuesObject> TransformsItemss
+
+      
+        ItemList<ValuesObject>? _TransformsItems = null;
+        public ItemList<ValuesObject> TransformsItems
         {
             get
             {
-                if (_TransformsItemss == null)
+                if (_TransformsItems == null)
                 {
-                    _TransformsItemss = new ItemList<ValuesObject>();
+                    _TransformsItems = new ItemList<ValuesObject>();
                 }
-                return _TransformsItemss;
+                return _TransformsItems;
             }
         }
 
-       
+
 
 
         public string? Uid

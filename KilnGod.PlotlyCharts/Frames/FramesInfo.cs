@@ -20,18 +20,25 @@ namespace KilnGod.PlotlyCharts.Frames
 
 		public FramesInfo() : base() { }
 
+
 		ItemList<FramesEntryItem>? _FramesEntryItems = null;
-		public ItemList<FramesEntryItem> FramesEntryItems
+		public ItemList<FramesEntryItem>? Frames
 		{
 			get
 			{
-				if (_FramesEntryItems == null)
-				{
-					_FramesEntryItems = new ItemList<FramesEntryItem>();
-				}
 				return _FramesEntryItems;
 			}
+			set
+			{
+				_FramesEntryItems = value;
+				if (value != null)
+				{
+					(ValueItems as dynamic).frames = value.Values;
+				}
+			}
 		}
+
+		
 
 	}
 

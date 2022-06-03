@@ -46,18 +46,23 @@ namespace KilnGod.PlotlyCharts.Layout
 			set { (ValueItems as dynamic).borderwidth = value; }
 		}
 
-		ItemList<ButtonsItem>? _ButtonsItemss = null;
-		public ItemList<ButtonsItem> ButtonsItemss
+		ItemList<ButtonsItem>? _ButtonsItems = null;
+		public ItemList<ButtonsItem>? Buttons
 		{
 			get
 			{
-				if (_ButtonsItemss == null)
+				return _ButtonsItems;
+			}
+			set
+			{
+				_ButtonsItems = value;
+				if (value != null)
 				{
-					_ButtonsItemss = new ItemList<ButtonsItem>();
+					(ValueItems as dynamic).buttons = value.Values;
 				}
-				return _ButtonsItemss;
 			}
 		}
+
 
 		FontInfo? _Font = null;
 		public FontInfo? Font

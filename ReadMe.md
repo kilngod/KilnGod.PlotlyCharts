@@ -41,7 +41,7 @@ Plotly internally uses json "sudo" code for ploting, I tried to keep the strongl
 
 	await Chart1.newPlot(dataTraces, commonLayout, commonConfig);
 
-// Original Java Script
+// Original JavaScript
 
 	var data = [{		
 		x: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],

@@ -23,10 +23,37 @@ I can see a lot of ways to improve this library. Currently I invest time on the 
 not decided how much time I want to invest in "plotly" support.
 
 ## Architecture
-One of my main complaints is I could not directly inherit from an ExpandoObject, this would have greatly simplified this code base.
+One of my main complaints is I could not directly inherit from an ExpandoObject, this would have simplified this code base.
 It might be I'll create my own ExpandoObject but for now I've not yet decided to put in that many hours. As goal one is a proof of
 concept that we can create prettly graphs with this Blazor "plotly.js" wrapper.
 
+Plotly internally uses json "sudo" code for ploting, I tried to keep the strongly typed c# plotting code with similar simplicity. 
+```
+// C# Code
+
+	TraceList dataTraces = new TraceList(new HeatmapTrace()
+	{
+		X = new string[] { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday" },
+		Y = new string[] { "Morning", "Afternoon", "Evening" },
+		Z = new object[] { new object?[] { 1, null, 30, 50, 1 }, new object[] { 20, 1, 60, 80, 30 }, new object[] { 30, 60, 1, -10, 20 } },
+		HoverOnGaps = false
+	});
+
+	await Chart1.newPlot(dataTraces, commonLayout, commonConfig);
+
+// Original Java Script
+
+	var data = [{		
+		x: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+		y: ['Morning', 'Afternoon', 'Evening'],
+		z: [[1, null, 30, 50, 1], [20, 1, 60, 80, 30], [30, 60, 1, -10, 20]],
+		type: 'heatmap',
+		hoverongaps: false
+		}];
+
+	Plotly.newPlot('myDiv', data);
+
+```
 
 
 

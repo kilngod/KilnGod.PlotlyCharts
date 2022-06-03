@@ -1307,17 +1307,14 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 		}
 		public async void HeatmapChart()
 		{
-			HeatmapTrace heatmap = new HeatmapTrace();
+			TraceList dataTraces = new TraceList(new HeatmapTrace()
+			{
+				X = new string[] { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday" },
+				Y = new string[] { "Morning", "Afternoon", "Evening" },
+				Z = new object[] { new object?[] { 1, null, 30, 50, 1 }, new object[] { 20, 1, 60, 80, 30 }, new object[] { 30, 60, 1, -10, 20 } },
 
-
-			heatmap.X = new string[] { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday" };
-			heatmap.Y = new string[] { "Morning", "Afternoon", "Evening" };
-			heatmap.Z = new object[] { new object?[] { 1, null, 30, 50, 1 }, new object[] { 20, 1, 60, 80, 30 }, new object[] { 30, 60, 1, -10, 20 } };
-
-			heatmap.HoverOnGaps = false;
-
-			TraceList dataTraces = new TraceList(heatmap);
-
+				HoverOnGaps = false
+			});
 
 
 			await Chart1.newPlot(dataTraces, commonLayout, commonConfig);

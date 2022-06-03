@@ -1,4 +1,4 @@
-# KilnGod.Plotly  Library  
+# KilnGod.Plotly Blazor Library  
 
 ### by KilnGod (James Carpenter, yes I love ceramics)
 

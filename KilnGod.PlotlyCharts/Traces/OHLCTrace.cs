@@ -9,6 +9,7 @@
 // Source License. See LICENSE.txt for details.
 //***********************************************************************************
 
+using KilnGod.PlotlyCharts.Wrappers;
 using System;
 using System.Collections.Generic;
 using System.Linq;

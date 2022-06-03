@@ -498,6 +498,64 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 			}
 		}
 
+		public async void IcicleChart()
+        {
+			if (Webfile != null)
+			{
+				string? fileText = await Webfile.DownloadText("https://raw.githubusercontent.com/plotly/datasets/96c0bd/sunburst-coffee-flavors-complete.csv");
+
+
+				if (fileText != null)
+				{
+					List<CoffeeData> coffeeList = new List<CoffeeData>();
+
+					string[] rows = fileText.Split("\n".ToCharArray());
+
+					for (int i = 0; i < rows.Length; i++)
+					{
+						if (rows[i] == String.Empty || i == 0)
+						{
+							continue;
+						}
+						string[] values = rows[i].Split(",");
+
+						CoffeeData coffee = new CoffeeData()
+						{
+							Ids = values[0],
+							Labels = values[1],
+							Parents = values[2]
+						};
+						coffeeList.Add(coffee);
+					}
+
+					IcicleTrace trace = new IcicleTrace()
+					{
+						Ids = coffeeList.Select(coffee => coffee.Ids).ToArray(),
+						Labels = coffeeList.Select(coffee => coffee.Labels).ToArray(),
+						Parents = coffeeList.Select(coffee => coffee.Parents).ToArray(),
+						Tiling = new TilingInfo() { Orientation = OrientationOptions.Horizontal}
+					};
+
+					TraceList dataTraces = new TraceList(trace);
+
+					LayoutInfo layout = new LayoutInfo()
+					{
+						Margin = new MarginInfo()
+						{
+							Left = 25,
+							Right = 25,
+							Bottom = 25,
+							Top = 50
+
+						},
+						Height = plotHeight,
+						Width = plotWidth
+					};
+
+					await Chart1.newPlot(dataTraces, layout, commonConfig);
+				}
+			}
+		}
 		public async void SankeyChart()
         {
 			TraceList dataTraces = new TraceList(
@@ -1320,6 +1378,100 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 			await Chart1.newPlot(dataTraces, commonLayout, commonConfig);
 		}
 
+
+		public async void ParallelCoordinateChart()
+		{
+
+			ItemList<DimensionItem> dimensions = new ItemList<DimensionItem>();
+
+
+			dimensions.Add(new DimensionItem() { Label = "A", Values = new double[] { 1, 4 }, Range = new object[] { 1, 5 }, ConstraintRange = new object[] { 1, 2 } });
+			dimensions.Add(new DimensionItem() { Label = "B", Values = new double[] { 3, 1.5 }, Range = new object[] { 1, 5 }, TickVals = new object[] { 1.5, 3, 4.5 } });
+			dimensions.Add(new DimensionItem() { Label = "C", Values = new double[] { 2, 4 }, Range = new object[] { 1, 5 }, TickVals = new object[] { 1, 2, 4, 5 }, TickText = new string[] { "text 1", "text 2", "text 4", "text 5" } });
+			dimensions.Add(new DimensionItem() { Label = "D", Values = new double[] { 4, 2 }, Range = new object[] { 1, 5 } });
+
+			ParallelCoordinateTrace trace = new ParallelCoordinateTrace()
+			{
+				Line = new LineInfo() { Color = "blue" },
+				Dimensions = dimensions
+			};
+
+
+			TraceList dataTraces = new TraceList(trace);
+
+
+
+			await Chart1.newPlot(dataTraces, commonLayout, commonConfig);
+
+		}
+
+		public async void PolarChart()
+		{
+			PolarTrace polar1 = new PolarTrace()
+			{
+				Mode = ModeOptions.Lines,
+				R = new double[] { 0, 1.5, 1.5, 0, 2.5, 2.5, 0 },
+				Theta = new double[] { 0, 10, 25, 0, 205, 215, 0 },
+				Line = new LineInfo() { Color = "black" },
+				Fill = FillOptions.Toself,
+				FillColor = "#709BFF"
+			};
+
+			PolarTrace polar2 = new PolarTrace()
+			{
+				Mode = ModeOptions.Lines,
+				R = new double[] { 0, 3.5, 3.5, 0 },
+				Theta = new double[] { 0, 55, 75, 0 },
+				Line = new LineInfo() { Color = "black" },
+				Fill = FillOptions.Toself,
+				FillColor = "#E4FF87"
+			};
+			PolarTrace polar3 = new PolarTrace()
+			{
+				Mode = ModeOptions.Lines,
+				R = new double[] { 0, 4.5, 4.5, 0, 4.5, 4.5, 0 },
+				Theta = new double[] { 0, 100, 120, 0, 305, 320, 0 },
+				Line = new LineInfo() { Color = "black" },
+				Fill = FillOptions.Toself,
+				FillColor = "#FFAA70"
+			};
+			PolarTrace polar4 = new PolarTrace()
+			{
+				Mode = ModeOptions.Lines,
+				R = new double[] { 0, 4, 4, 0 },
+				Theta = new double[] { 0, 4.5, 4.5, 0, 4.5, 4.5, 0 },
+				Line = new LineInfo() { Color = "black" },
+				Fill = FillOptions.Toself,
+				FillColor = "#FFDF70"
+			};
+			PolarTrace polar5 = new PolarTrace()
+			{
+				Mode = ModeOptions.Lines,
+				R = new double[] { 0, 3, 3, 0 },
+				Theta = new double[] { 0, 262.5, 277.5, 0 },
+				Line = new LineInfo() { Color = "black" },
+				Fill = FillOptions.Toself,
+				FillColor = "#B6FFB4"
+			};
+
+			TraceList dataTraces = new TraceList(new Trace[] { polar1, polar2, polar3, polar4, polar5 });
+
+
+
+			LayoutInfo layout = new LayoutInfo()
+			{
+				Title = new TitleInfo() { Text = "Polar Chart" },
+				Polar = new PolarInfo() { RadialAxis = new RadialAxisInfo() { Visible = true, Range = new double[] { 0, 5 } } },
+				ShowLegend = false,
+				Height = plotHeight,
+				Width = plotWidth
+			};
+
+			await Chart1.newPlot(dataTraces, layout, commonConfig);
+		}
+
+
+
 		public async void ScatterCarpetChart()
 		{
 			CarpetTrace trace1 = new CarpetTrace()
@@ -1345,6 +1497,19 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 			await Chart1.newPlot(dataTraces, commonLayout, commonConfig);
 
 
+		}
+
+		public async void ScatterSmithChart()
+        {
+			ScatterSmithTrace trace = new ScatterSmithTrace()
+			{
+				Real = new double[] { 0.5, 1, 2, 3 },
+				Imaginary = new double[] { 0.5, 1, 2, 3 }
+			};
+
+			TraceList dataTraces = new TraceList(trace);
+
+			await Chart1.newPlot(dataTraces, commonLayout, commonConfig);
 		}
 
 		public async void TernaryChart()
@@ -1420,97 +1585,6 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 			TraceList dataTraces = new TraceList(trace);
 
 			await Chart1.newPlot(dataTraces, layout, commonConfig);
-		}
-		public async void PolarChart()
-		{
-			PolarTrace polar1 = new PolarTrace()
-			{
-				Mode = ModeOptions.Lines,
-				R = new double[] { 0, 1.5, 1.5, 0, 2.5, 2.5, 0 },
-				Theta = new double[] { 0, 10, 25, 0, 205, 215, 0 },
-				Line = new LineInfo() { Color = "black" },
-				Fill = FillOptions.Toself,
-				FillColor = "#709BFF"
-			};
-
-			PolarTrace polar2 = new PolarTrace()
-			{
-				Mode = ModeOptions.Lines,
-				R = new double[] { 0, 3.5, 3.5, 0 },
-				Theta = new double[] { 0, 55, 75, 0 },
-				Line = new LineInfo() { Color = "black" },
-				Fill = FillOptions.Toself,
-				FillColor = "#E4FF87"
-			};
-			PolarTrace polar3 = new PolarTrace()
-			{
-				Mode = ModeOptions.Lines,
-				R = new double[] { 0, 4.5, 4.5, 0, 4.5, 4.5, 0 },
-				Theta = new double[] { 0, 100, 120, 0, 305, 320, 0 },
-				Line = new LineInfo() { Color = "black" },
-				Fill = FillOptions.Toself,
-				FillColor = "#FFAA70"
-			};
-			PolarTrace polar4 = new PolarTrace()
-			{
-				Mode = ModeOptions.Lines,
-				R = new double[] { 0, 4, 4, 0 },
-				Theta = new double[] { 0, 4.5, 4.5, 0, 4.5, 4.5, 0 },
-				Line = new LineInfo() { Color = "black" },
-				Fill = FillOptions.Toself,
-				FillColor = "#FFDF70"
-			};
-			PolarTrace polar5 = new PolarTrace()
-			{
-				Mode = ModeOptions.Lines,
-				R = new double[] { 0, 3, 3, 0 },
-				Theta = new double[] { 0, 262.5, 277.5, 0 },
-				Line = new LineInfo() { Color = "black" },
-				Fill = FillOptions.Toself,
-				FillColor = "#B6FFB4"
-			};
-
-			TraceList dataTraces = new TraceList(new Trace[] { polar1, polar2, polar3, polar4, polar5 });
-
-
-
-			LayoutInfo layout = new LayoutInfo()
-			{
-				Title = new TitleInfo() { Text = "Polar Chart" },
-				Polar = new PolarInfo() { RadialAxis = new RadialAxisInfo() { Visible = true, Range = new double[] { 0, 5 } } },
-				ShowLegend = false,
-				Height = plotHeight,
-				Width = plotWidth
-			};
-
-			await Chart1.newPlot(dataTraces, layout, commonConfig);
-		}
-
-		// this is broken
-		public async void ParallelCoordinateChart()
-		{
-
-			ItemList<DimensionItem> dimensions = new ItemList<DimensionItem>();
-
-
-			dimensions.Add(new DimensionItem() { Label = "A", Values = new double[] { 1, 4 }, Range = new object[] { 1, 5 }, ConstraintRange = new object[] { 1, 2 } });
-			dimensions.Add(new DimensionItem() { Label = "B", Values = new double[] { 3, 1.5 }, Range = new object[] { 1, 5 }, TickVals = new object[] { 1.5, 3, 4.5 } });
-			dimensions.Add(new DimensionItem() { Label = "C", Values = new double[] { 2, 4 }, Range = new object[] { 1, 5 }, TickVals = new object[] { 1, 2, 4, 5 }, TickText = new string[] { "text 1", "text 2", "text 4", "text 5" } });
-			dimensions.Add(new DimensionItem() { Label = "D", Values = new double[] { 4, 2 }, Range = new object[] { 1, 5 } });
-
-			ParallelCoordinateTrace trace = new ParallelCoordinateTrace()
-			{
-				Line = new LineInfo() { Color = "blue" },
-				Dimensions = dimensions
-			};
-
-
-			TraceList dataTraces = new TraceList(trace);
-
-
-
-			await Chart1.newPlot(dataTraces, commonLayout, commonConfig);
-
 		}
 
 		static double NextDouble(double min, double max)
@@ -2124,6 +2198,104 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 			}
 		}
 
+
+		public async void ParallelCategoriesChart()
+		{
+			if (Webfile != null)
+			{
+				string? fileText = await Webfile.DownloadText("https://raw.githubusercontent.com/plotly/datasets/master/titanic.csv");
+
+
+				if (fileText != null)
+				{
+					List<TitanicPassenger> passengerList = new List<TitanicPassenger>();
+
+					string[] rows = fileText.Split("\n".ToCharArray());
+
+					for (int i = 0; i < rows.Length; i++)
+					{
+						if (rows[i] == String.Empty || i == 0)
+						{
+							continue;
+						}
+						string[] values = rows[i].Split(",");
+
+						TitanicPassenger passenger = new TitanicPassenger()
+						{
+							PassengerId = Convert.ToInt32(values[0]),
+							Survived = Convert.ToInt32(values[1]),
+							Pclass = Convert.ToInt32(values[2]),
+							Name = (values[4] + " " + values[3]).Replace("\"", ""),
+							Sex = values[5],
+							Age = values[6],
+							SibSp = Convert.ToInt32(values[7]),
+							Parch = values[8],
+							Ticket = values[9],
+							Fare = Convert.ToDouble(values[10]),
+							Cabin = values[11],
+							Embarked = values[12]
+
+						};
+						passengerList.Add(passenger);
+					}
+
+					DimensionItem classDim = new DimensionItem()
+					{
+						Label = "Class",
+						CategoryOrder = CategoryOrderOptions.CategoryAscending,
+						Values = passengerList.Select(passenger => passenger.Pclass).ToArray(),
+					};
+
+					DimensionItem genderDim = new DimensionItem()
+					{
+						Label = "Gender",
+						CategoryOrder = CategoryOrderOptions.CategoryAscending,
+						Values = passengerList.Select(passenger => passenger.Sex).ToArray(),
+					};
+
+					DimensionItem survivalDim = new DimensionItem()
+					{
+						Label = "Outcome",
+						CategoryArray = new int[] { 0, 1 },
+						Values = passengerList.Select(passenger => passenger.Survived).ToArray(),
+						TickText = new string[] { "perished", "survived" }
+					};
+
+					ItemList<DimensionItem> dimensions = new ItemList<DimensionItem>();
+					dimensions.Add(classDim);
+					dimensions.Add(genderDim);
+					dimensions.Add(survivalDim);
+
+					ParallelCategoriesTrace trace = new ParallelCategoriesTrace()
+					{
+						Arrangement = ArrangementOptions.Freeform,
+						Dimensions = dimensions,
+						LabelFont = new FontInfo() { Size = 14 },
+						Line = new LineInfo()
+						{
+							Color = survivalDim.Values,
+							ColorScale = new object[] { new object[] { 0, "lightsteelblue" }, new object[] { 1, "mediumseagreen" } }
+						},
+						HoverOn = HoverOnOptions.Color
+
+					};
+
+					TraceList dataTraces = new TraceList(trace);
+
+					LayoutInfo layout = new LayoutInfo()
+					{
+						Title = new TitleInfo() { Text = "Titanic Passenger Outcome" },
+						AutoSize = false,
+						Width = plotWidth,
+						Height = plotHeight,
+
+					};
+
+					await Chart1.newPlot(dataTraces, layout, commonConfig);
+				}
+
+			}
+		}
 		public async void ViolinChart()
 		{
 			if (Webfile != null)
@@ -2361,103 +2533,6 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 
 
 
-		public async void ParallelCategoriesChart()
-		{
-			if (Webfile != null)
-			{
-				string? fileText = await Webfile.DownloadText("https://raw.githubusercontent.com/plotly/datasets/master/titanic.csv");
-
-
-				if (fileText != null)
-				{
-					List<TitanicPassenger> passengerList = new List<TitanicPassenger>();
-
-					string[] rows = fileText.Split("\n".ToCharArray());
-
-					for (int i = 0; i < rows.Length; i++)
-					{
-						if (rows[i] == String.Empty || i == 0)
-						{
-							continue;
-						}
-						string[] values = rows[i].Split(",");
-
-						TitanicPassenger passenger = new TitanicPassenger()
-						{
-							PassengerId = Convert.ToInt32(values[0]),
-							Survived = Convert.ToInt32(values[1]),
-							Pclass = Convert.ToInt32(values[2]),
-							Name = (values[4] + " " + values[3]).Replace("\"", ""),
-							Sex = values[5],
-							Age = values[6],
-							SibSp = Convert.ToInt32(values[7]),
-							Parch = values[8],
-							Ticket = values[9],
-							Fare = Convert.ToDouble(values[10]),
-							Cabin = values[11],
-							Embarked = values[12]
-
-						};
-						passengerList.Add(passenger);
-					}
-
-					DimensionItem classDim = new DimensionItem()
-					{
-						Label = "Class",
-						CategoryOrder = CategoryOrderOptions.CategoryAscending,
-						Values = passengerList.Select(passenger => passenger.Pclass).ToArray(),
-					};
-
-					DimensionItem genderDim = new DimensionItem()
-					{
-						Label = "Gender",
-						CategoryOrder = CategoryOrderOptions.CategoryAscending,
-						Values = passengerList.Select(passenger => passenger.Sex).ToArray(),
-					};
-
-					DimensionItem survivalDim = new DimensionItem()
-					{
-						Label = "Outcome",
-						CategoryArray = new int[] { 0, 1 },
-						Values = passengerList.Select(passenger => passenger.Survived).ToArray(),
-						TickText = new string[] { "perished", "survived" }
-					};
-
-					ItemList<DimensionItem> dimensions = new ItemList<DimensionItem>();
-					dimensions.Add(classDim);
-					dimensions.Add(genderDim);
-					dimensions.Add(survivalDim);
-
-					ParallelCategoriesTrace trace = new ParallelCategoriesTrace()
-					{
-						Arrangement = ArrangementOptions.Freeform,
-						Dimensions = dimensions,
-						LabelFont = new FontInfo() { Size = 14 },
-						Line = new LineInfo()
-						{
-							Color = survivalDim.Values,
-							ColorScale = new object[] { new object[] { 0, "lightsteelblue" }, new object[] { 1, "mediumseagreen" } }
-						},
-						HoverOn = HoverOnOptions.Color
-
-					};
-
-					TraceList dataTraces = new TraceList(trace);
-
-					LayoutInfo layout = new LayoutInfo()
-					{
-						Title = new TitleInfo() { Text = "Titanic Passenger Outcome" },
-						AutoSize = false,
-						Width = plotWidth,
-						Height = plotHeight,
-
-					};
-
-					await Chart1.newPlot(dataTraces, layout, commonConfig);
-				}
-
-			}
-		}
 	}
 }
 

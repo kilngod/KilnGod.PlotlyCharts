@@ -3,7 +3,7 @@
 //
 // Copyright (c) 2022 James Carpenter (KilnGod)
 //
-// File: BarTrace.cs
+// File: HistogramTrace.cs
 //
 // This file is part of KilnGod.PlotlyCharts and is distributed under the MIT Open
 // Source License. See LICENSE.txt for details.
@@ -11,16 +11,16 @@
 
 using KilnGod.PlotlyCharts.Enumerations.TracesEnums;
 using KilnGod.PlotlyCharts.Enumerations;
-using System.Dynamic;
 using KilnGod.PlotlyCharts.Wrappers;
+using System.Dynamic;
+using KilnGod.PlotlyCharts.Layout;
 
 namespace KilnGod.PlotlyCharts.Traces
 {
-    public class BarTrace : Trace
+    internal class Histogram2D : Trace
     {
-        public BarTrace() : base(TraceTypeOptions.Simple_Bar)
+        public Histogram2D() : base(TraceTypeOptions.Distribution_Histogram2D)
         {
-
         }
 
         public object? X
@@ -35,7 +35,6 @@ namespace KilnGod.PlotlyCharts.Traces
             get { return (ValueItems as dynamic).y; }
             set { (ValueItems as dynamic).y = value; }
         }
-
 
     }
 }

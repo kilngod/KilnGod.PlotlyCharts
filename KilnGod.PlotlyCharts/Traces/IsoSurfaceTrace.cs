@@ -13,6 +13,7 @@ using KilnGod.PlotlyCharts.Enumerations.TracesEnums;
 using KilnGod.PlotlyCharts.Enumerations;
 using System.Dynamic;
 using KilnGod.PlotlyCharts.Layout;
+using KilnGod.PlotlyCharts.Wrappers;
 
 namespace KilnGod.PlotlyCharts.Traces
 {

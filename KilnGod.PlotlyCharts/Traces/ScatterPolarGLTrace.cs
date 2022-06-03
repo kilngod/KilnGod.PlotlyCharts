@@ -3,39 +3,33 @@
 //
 // Copyright (c) 2022 James Carpenter (KilnGod)
 //
-// File: BarTrace.cs
+// File: ScatterTrace.cs
 //
 // This file is part of KilnGod.PlotlyCharts and is distributed under the MIT Open
 // Source License. See LICENSE.txt for details.
 //***********************************************************************************
 
-using KilnGod.PlotlyCharts.Enumerations.TracesEnums;
 using KilnGod.PlotlyCharts.Enumerations;
-using System.Dynamic;
 using KilnGod.PlotlyCharts.Wrappers;
 
 namespace KilnGod.PlotlyCharts.Traces
 {
-    public class BarTrace : Trace
+    internal class ScatterPolarGLTrace : Trace
     {
-        public BarTrace() : base(TraceTypeOptions.Simple_Bar)
+        public ScatterPolarGLTrace() : base(TraceTypeOptions.Specialized_ScatterPolarGl)
         {
 
         }
-
-        public object? X
+        public object? R
         {
-            get { return (ValueItems as dynamic).x; }
-            set { (ValueItems as dynamic).x = value; }
+            get { return (ValueItems as dynamic).r; }
+            set { (ValueItems as dynamic).r = value; }
         }
 
-
-        public object? Y
+        public object? Theta
         {
-            get { return (ValueItems as dynamic).y; }
-            set { (ValueItems as dynamic).y = value; }
+            get { return (ValueItems as dynamic).theta; }
+            set { (ValueItems as dynamic).theta = value; }
         }
-
-
     }
 }

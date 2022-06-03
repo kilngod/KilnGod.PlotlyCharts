@@ -10,6 +10,7 @@
 //***********************************************************************************
 
 using KilnGod.PlotlyCharts.Enumerations;
+using KilnGod.PlotlyCharts.Wrappers;
 
 namespace KilnGod.PlotlyCharts.Traces
 {

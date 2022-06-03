@@ -11,11 +11,10 @@
 
 using KilnGod.PlotlyCharts.Enumerations.TracesEnums;
 using KilnGod.PlotlyCharts.Enumerations;
-using KilnGod.PlotlyCharts.Wrappers;
 using KilnGod.PlotlyCharts.Layout;
 using System.ComponentModel;
 
-namespace KilnGod.PlotlyCharts.Traces
+namespace KilnGod.PlotlyCharts.Wrappers
 {
 
 
@@ -83,7 +82,7 @@ namespace KilnGod.PlotlyCharts.Traces
             set { (ValueItems as dynamic).hoverongaps = value; }
         }
 
-   
+
 
         LayoutAttributesInfo? _LayoutAttributes = null;
         public LayoutAttributesInfo? LayoutAttributes
@@ -102,9 +101,9 @@ namespace KilnGod.PlotlyCharts.Traces
             set { (ValueItems as dynamic).meta = value; }
         }
 
-      
 
-     
+
+
         public string? Name
         {
             get { return (ValueItems as dynamic).name; }
@@ -112,7 +111,7 @@ namespace KilnGod.PlotlyCharts.Traces
         }
 
 
-     
+
         public string? LegendGroup
         {
             get { return (ValueItems as dynamic).legendgroup; }
@@ -126,12 +125,12 @@ namespace KilnGod.PlotlyCharts.Traces
         }
 
 
-   
 
 
-     
 
-       
+
+
+
         LineInfo? _line = null;
         public LineInfo? Line
         {
@@ -142,8 +141,8 @@ namespace KilnGod.PlotlyCharts.Traces
                 (ValueItems as dynamic).line = _line?.ValueItems;
 
             }
-        
-        
+
+
         }
 
         MarkerInfo? _marker = null;
@@ -166,8 +165,8 @@ namespace KilnGod.PlotlyCharts.Traces
 
         public ModeOptions? Mode
         {
-            get 
-            { 
+            get
+            {
                 var result = (ValueItems as dynamic).mode;
                 return EnumerationStatic.GetValueFromDescription(result) as ModeOptions?;
 
@@ -257,7 +256,7 @@ namespace KilnGod.PlotlyCharts.Traces
             private set { (ValueItems as dynamic).type = value; }
         }
 
-  
+
         public bool? Visible
         {
             get { return (ValueItems as dynamic).visible; }
@@ -265,11 +264,11 @@ namespace KilnGod.PlotlyCharts.Traces
         }
 
 
-   
-     
 
-      
-       
+
+
+
+
         public string? UIRevision
         {
             get { return (ValueItems as dynamic).uirevision; }

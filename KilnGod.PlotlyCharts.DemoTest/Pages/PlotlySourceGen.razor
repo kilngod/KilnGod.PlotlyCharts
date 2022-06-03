@@ -1,0 +1,11 @@
+﻿@page "/PlotlySourceGen"
+
+<h3>PlotlySourceGen</h3>
+
+
+  <button class="btn btn-primary m-1" @onclick="GenerateSource">Generate Source</button>
+  <br />
+
+  <textarea id="textArea1" name="textArea1" rows="30" @ref="_textArea1" cols="100" style="overflow-y:'scroll'; height:600px">
+@AreaText
+</textarea>

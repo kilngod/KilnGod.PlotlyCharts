@@ -1,0 +1,25 @@
+﻿<!--
+//***********************************************************************************
+// KilnGod.PlotlyCharts
+//
+// Copyright (c) 2022 James Carpenter (KilnGod)
+//
+// File: App.razor
+//
+// This file is part of KilnGod.PlotlyCharts and is distributed under the MIT Open
+// Source License. See LICENSE.txt for details.
+//***********************************************************************************
+
+
+--><Router AppAssembly="@typeof(App).Assembly" AdditionalAssemblies="new[] {typeof(KilnGod.PlotlyCharts.DemoTest.Pages.PlotlyTest).Assembly, typeof(KilnGod.PlotlyCharts.PlotlyChart).Assembly}">
+    <Found Context="routeData">
+        <RouteView RouteData="@routeData" DefaultLayout="@typeof(KilnGod.PlotlyCharts.DemoTest.Shared.MainLayout)" />
+        <FocusOnNavigate RouteData="@routeData" Selector="h1" />
+    </Found>
+    <NotFound>
+        <PageTitle>Not found</PageTitle>
+        <LayoutView Layout="@typeof(KilnGod.PlotlyCharts.DemoTest.Shared.MainLayout)">
+            <p role="alert">Sorry, there's nothing at this address.</p>
+        </LayoutView>
+    </NotFound>
+</Router>

@@ -1,0 +1,49 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32407.343
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KilnGod.PlotlyCharts", "KilnGod.PlotlyCharts\KilnGod.PlotlyCharts.csproj", "{7FA9B2EA-B7DC-4BF3-8627-A908E199F81F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KilnGod.PlotlyCharts.ServerApp", "KilnGod.PlotlyCharts.ServerApp\KilnGod.PlotlyCharts.ServerApp.csproj", "{0E08D313-5E0E-45EB-958F-CBAA8654D2E9}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KilnGod.PlotlyCharts.ClientApp", "KilnGod.PlotlyCharts.ClientApp\KilnGod.PlotlyCharts.ClientApp.csproj", "{60E80B4D-1CD2-494F-B377-AB4246063926}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KilnGod.PlotlyCharts.DemoTest", "KilnGod.PlotlyCharts.DemoTest\KilnGod.PlotlyCharts.DemoTest.csproj", "{6490DDB6-0150-49AB-B2A4-560209345FAA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{71A01E14-8872-408A-A71A-AD1FC25F16E0}"
+	ProjectSection(SolutionItems) = preProject
+		KilnGod.PlotlyCharts\License.txt = KilnGod.PlotlyCharts\License.txt
+		ReadMe.md = ReadMe.md
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7FA9B2EA-B7DC-4BF3-8627-A908E199F81F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7FA9B2EA-B7DC-4BF3-8627-A908E199F81F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7FA9B2EA-B7DC-4BF3-8627-A908E199F81F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7FA9B2EA-B7DC-4BF3-8627-A908E199F81F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0E08D313-5E0E-45EB-958F-CBAA8654D2E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E08D313-5E0E-45EB-958F-CBAA8654D2E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E08D313-5E0E-45EB-958F-CBAA8654D2E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E08D313-5E0E-45EB-958F-CBAA8654D2E9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{60E80B4D-1CD2-494F-B377-AB4246063926}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{60E80B4D-1CD2-494F-B377-AB4246063926}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{60E80B4D-1CD2-494F-B377-AB4246063926}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{60E80B4D-1CD2-494F-B377-AB4246063926}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6490DDB6-0150-49AB-B2A4-560209345FAA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6490DDB6-0150-49AB-B2A4-560209345FAA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6490DDB6-0150-49AB-B2A4-560209345FAA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6490DDB6-0150-49AB-B2A4-560209345FAA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4D598009-C43B-43F0-A917-2873880E0457}
+	EndGlobalSection
+EndGlobal

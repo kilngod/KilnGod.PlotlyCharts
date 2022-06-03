@@ -1,0 +1,123 @@
+﻿@page "/PlotlyTest"
+
+<h2>Plotly Chart Review</h2>
+<table>
+    <tr><td width="800px"><PlotlyChart @ref="Chart1"></PlotlyChart></td><td>&nbsp;</td><td>
+
+
+
+    <br /><strong>Simple</strong><br />
+    <button class="btn btn-primary m-1" @onclick="ScatterChart">Scatter</button>
+
+     <button class="btn btn-primary m-1" @onclick="LogScatterChart">Log Scatter</button>
+
+    <button class="btn btn-primary m-1" @onclick="BarChart">Bar</button>
+
+    <button class="btn btn-primary m-1" @onclick="PieChart">Pie</button>
+
+    <button class="btn btn-primary m-1" @onclick="BubbleChart">Bubble</button>
+
+    
+    <button class="btn btn-primary m-1" @onclick="TimeSeriesChart">Time Series</button>
+
+     <br /><strong>Special</strong><br />
+    <button class="btn btn-primary m-1" @onclick="SankeyChart">Sankey</button>
+    
+     <button class="btn btn-primary m-1" @onclick="ScatterPolarChart">Scatter Polar</button>
+
+     <button class="btn btn-primary m-1" @onclick="ScatterPolarChart">Scatter Polar</button>
+
+      <button class="btn btn-primary m-1" @onclick="ScatterTernaryChart">Scatter Ternary</button>
+
+    <button class="btn btn-primary m-1" @onclick="SunburstChart">Sunburst</button>
+    
+
+      <button class="btn btn-primary m-1" @onclick="TableChart">Table</button>
+
+    <button class="btn btn-primary m-1" @onclick="TreeMapChart">Tree Map</button>
+
+    <br /><strong>Finance</strong><br />
+    <button class="btn btn-primary m-1" @onclick="CandlestickChart">Candlestick</button>
+ 
+    <button class="btn btn-primary m-1" @onclick="OHLCChart">OHLC</button>
+
+    <button class="btn btn-primary m-1" @onclick="WaterfallChart">Waterfall</button>
+
+     <button class="btn btn-primary m-1" @onclick="FunnelChart">Funnel</button>
+
+      <button class="btn btn-primary m-1" @onclick="StackedFunnelChart">Stacked Funnel</button>
+
+      <button class="btn btn-primary m-1" @onclick="FunnelAreaChart">Funnel Area</button>
+
+      <button class="btn btn-danger m-1" @onclick="GuageChart">Guage</button>
+
+        <button class="btn btn-danger m-1" @onclick="BulletChart">Bullet</button>
+
+   
+     <br /><strong>Maps</strong><br />
+     <button class="btn btn-primary m-1" @onclick="ScatterGeoChart">Geo</button>
+
+     <button class="btn btn-primary m-1" @onclick="DensityMapboxChart">Density Mapbox</button>
+
+     <button class="btn btn-primary m-1" @onclick="LineGeoChart">Line Geo</button>
+
+     <button class="btn btn-primary m-1" @onclick="ScatterMapboxChart">Scatter Mapbox</button>
+
+    <br /><strong>Statistical</strong><br />
+     <button class="btn btn-primary m-1" @onclick="BoxChart">Box</button>
+
+     <button class="btn btn-primary m-1" @onclick="Histogram">Histogram</button>
+
+    <button class="btn btn-primary m-1" @onclick="HistogramContour2D">2D Histogram Contour</button>
+
+    <button class="btn btn-primary m-1" @onclick="SplomChart">Splom</button>
+
+    
+    <button class="btn btn-primary m-1" @onclick="ViolinChart">Violin</button>
+
+
+    <button class="btn btn-primary m-1" @onclick="ParallelCategoriesChart">Parallel Categories</button>
+    
+
+  
+    <br /><strong>Scientific</strong><br />
+    <button class="btn btn-primary m-1" @onclick="ContourChart">Contour</button>
+
+        <button class="btn btn-danger m-1" @onclick="ContourCarpetChart">Contour Carpet</button>
+
+    <button class="btn btn-primary m-1" @onclick="HeatmapChart">Heatmap</button>
+
+     <button class="btn btn-primary m-1" @onclick="TernaryChart">Ternary</button>
+
+      <button class="btn btn-primary m-1" @onclick="ScatterCarpetChart">Scatter Carpet</button>
+
+    <button class="btn btn-primary m-1" @onclick="PolarChart">Polar</button>
+
+    <button class="btn btn-primary m-1" @onclick="ParallelCoordinateChart">Parallel Coordinate</button>
+
+    <br /><strong>3D</strong><br />
+ 
+
+    <button class="btn btn-primary m-1" @onclick="Surface3DChart">Surface</button>
+
+    <button class="btn btn-primary m-1" @onclick="Line3DChart">Line 3D - Random Walk</button>
+
+    <button class="btn btn-primary m-1" @onclick="Scatter3DChart">Scatter 3D</button>
+
+    <button class="btn btn-primary m-1" @onclick="IsoSurface3DChart">ISO Surface 3D</button>
+      <!--
+    <Tooltip Text="Set color using injected script">
+        <button class="btn btn-primary m-1" @onclick="TestLocalScript">Run Script</button>
+    </Tooltip>
+
+     <Tooltip Text="Test Image Methods">
+        <button class="btn btn-primary m-1" @onclick="TestImageMethods">Image Methods</button>
+    </Tooltip>
+
+    <Tooltip Text="Test Get Methods">
+        <button class="btn btn-primary m-1" @onclick="TestGetMethods">Get Methods</button>
+    </Tooltip>
+    -->
+
+ 
+    </td></tr></table>

@@ -1,0 +1,102 @@
+﻿//***********************************************************************************
+// KilnGod.PlotlyCharts 
+//
+// Copyright (c) 2022 James Carpenter (KilnGod)
+//
+// File: GaugeInfo.cs
+//
+// This file is part of KilnGod.PlotlyCharts and is distributed under the MIT Open
+// Source License. See LICENSE.txt for details.
+//***********************************************************************************
+
+using KilnGod.PlotlyCharts.Enumerations.TracesEnums;
+using KilnGod.PlotlyCharts.Enumerations;
+using KilnGod.PlotlyCharts.Wrappers;
+using System.Dynamic;
+using KilnGod.PlotlyCharts.Enumerations.LayoutEnums;
+using KilnGod.PlotlyCharts.Traces;
+
+namespace KilnGod.PlotlyCharts.Layout
+{
+
+    public class GaugeInfo : ValuesObject
+    {
+
+        public GaugeInfo() : base() { }
+
+        AxisInfo? _Axis = null;
+        public AxisInfo? Axis
+        {
+            get { return _Axis; }
+            set
+            {
+                _Axis = value;
+                (ValueItems as dynamic).axis = _Axis?.ValueItems;
+            }
+        }
+
+        BarInfo? _Bar = null;
+        public BarInfo? Bar
+        {
+            get { return _Bar; }
+            set
+            {
+                _Bar = value;
+                (ValueItems as dynamic).bar = _Bar?.ValueItems;
+            }
+        }
+
+        public object? BgColor
+        {
+            get { return (ValueItems as dynamic).bgcolor; }
+            set { (ValueItems as dynamic).bgcolor = value; }
+        }
+
+        public object? BorderColor
+        {
+            get { return (ValueItems as dynamic).bordercolor; }
+            set { (ValueItems as dynamic).bordercolor = value; }
+        }
+
+        public float? BorderWidth
+        {
+            get { return (ValueItems as dynamic).borderwidth; }
+            set { (ValueItems as dynamic).borderwidth = value; }
+        }
+
+        public GaugeShapeOptions? Shape
+        {
+            get { return EnumerationStatic.GetValueFromDescription<GaugeShapeOptions>((ValueItems as dynamic).shape); }
+            set { (ValueItems as dynamic).shape = value?.GetDescription(); }
+        }
+
+        ItemList<StepItem>? _StepsItems = null;
+        public ItemList<StepItem>? Steps
+        {
+            get
+            {
+                return _StepsItems;
+            }
+            set
+            {
+                _StepsItems = value;
+                if (value != null)
+                {
+                    (ValueItems as dynamic).steps = value.Values;
+                }
+            }
+        }
+
+        ThresholdInfo? _Threshold = null;
+        public ThresholdInfo? Threshold
+        {
+            get { return _Threshold; }
+            set
+            {
+                _Threshold = value;
+                (ValueItems as dynamic).threshold = _Threshold?.ValueItems;
+            }
+        }
+
+    }
+}

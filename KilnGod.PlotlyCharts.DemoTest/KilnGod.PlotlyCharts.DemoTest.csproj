@@ -1,0 +1,39 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="JsonSchema\AnimationSchema.cs" />
+    <Compile Remove="JsonSchema\ConfigSchema.cs" />
+    <Compile Remove="JsonSchema\DefsSchema.cs" />
+    <Compile Remove="JsonSchema\FrameSchema.cs" />
+    <Compile Remove="JsonSchema\TransformsSchema.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="wwwroot\plot-schema.json" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <SupportedPlatform Include="browser" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\KilnGod.PlotlyCharts\KilnGod.PlotlyCharts.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Tests\" />
+    <Folder Include="wwwroot\" />
+  </ItemGroup>
+
+</Project>

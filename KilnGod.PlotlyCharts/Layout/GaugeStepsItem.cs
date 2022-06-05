@@ -39,25 +39,13 @@ namespace KilnGod.PlotlyCharts.Layout
             }
         }
 
-        public string? Name
-        {
-            get { return (ValueItems as dynamic).name; }
-            set { (ValueItems as dynamic).name = value; }
-        }
-
         public object? Range
         {
             get { return (ValueItems as dynamic).range; }
             set { (ValueItems as dynamic).range = value; }
         }
 
-        public string? TemplateItemName
-        {
-            get { return (ValueItems as dynamic).templateitemname; }
-            set { (ValueItems as dynamic).templateitemname = value; }
-        }
-
-        public float? Thickness
+            public double? Thickness
         {
             get { return (ValueItems as dynamic).thickness; }
             set { (ValueItems as dynamic).thickness = value; }

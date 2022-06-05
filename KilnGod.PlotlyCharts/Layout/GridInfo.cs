@@ -67,7 +67,7 @@ namespace KilnGod.PlotlyCharts.Layout
 			set { (ValueItems as dynamic).xaxes = value; }
 		}
 
-		public float? Xgap
+		public double? Xgap
 		{
 			get { return (ValueItems as dynamic).xgap; }
 			set { (ValueItems as dynamic).xgap = value; }
@@ -85,7 +85,7 @@ namespace KilnGod.PlotlyCharts.Layout
 			set { (ValueItems as dynamic).yaxes = value; }
 		}
 
-		public float? Ygap
+		public double? Ygap
 		{
 			get { return (ValueItems as dynamic).ygap; }
 			set { (ValueItems as dynamic).ygap = value; }

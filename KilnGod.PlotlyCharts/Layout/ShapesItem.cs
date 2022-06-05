@@ -64,7 +64,7 @@ namespace KilnGod.PlotlyCharts.Layout
 			set { (ValueItems as dynamic).name = value; }
 		}
 
-		public float? Opacity
+		public double? Opacity
 		{
 			get { return (ValueItems as dynamic).opacity; }
 			set { (ValueItems as dynamic).opacity = value; }
@@ -112,9 +112,9 @@ namespace KilnGod.PlotlyCharts.Layout
 			set { (ValueItems as dynamic).xanchor = value; }
 		}
 
-		public XRefOptions? XRef
+		public RefOptions? XRef
 		{
-			get { return EnumerationStatic.GetValueFromDescription<XRefOptions>((ValueItems as dynamic).xref); }
+			get { return EnumerationStatic.GetValueFromDescription<RefOptions>((ValueItems as dynamic).xref); }
 			set { (ValueItems as dynamic).xref = value?.GetDescription(); }
 		}
 
@@ -142,9 +142,9 @@ namespace KilnGod.PlotlyCharts.Layout
 			set { (ValueItems as dynamic).yanchor = value; }
 		}
 
-		public YRefOptions? YRef
+		public RefOptions? YRef
 		{
-			get { return EnumerationStatic.GetValueFromDescription<YRefOptions>((ValueItems as dynamic).yref); }
+			get { return EnumerationStatic.GetValueFromDescription<RefOptions>((ValueItems as dynamic).yref); }
 			set { (ValueItems as dynamic).yref = value?.GetDescription(); }
 		}
 

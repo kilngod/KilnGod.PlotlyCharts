@@ -93,7 +93,7 @@ namespace KilnGod.PlotlyCharts.Layout
 			set { (ValueItems as dynamic).gridcolor = value; }
 		}
 
-		public float? Gridwidth
+		public double? Gridwidth
 		{
 			get { return (ValueItems as dynamic).gridwidth; }
 			set { (ValueItems as dynamic).gridwidth = value; }
@@ -111,13 +111,13 @@ namespace KilnGod.PlotlyCharts.Layout
 			set { (ValueItems as dynamic).linecolor = value; }
 		}
 
-		public float? Linewidth
+		public double? Linewidth
 		{
 			get { return (ValueItems as dynamic).linewidth; }
 			set { (ValueItems as dynamic).linewidth = value; }
 		}
 
-		public float? MinExponent
+		public double? MinExponent
 		{
 			get { return (ValueItems as dynamic).minexponent; }
 			set { (ValueItems as dynamic).minexponent = value; }
@@ -148,19 +148,19 @@ namespace KilnGod.PlotlyCharts.Layout
 			set { (ValueItems as dynamic).rangemode = value?.GetDescription(); }
 		}
 
-		public bool? Separatethousands
+		public bool? SeparateThousands
 		{
 			get { return (ValueItems as dynamic).separatethousands; }
 			set { (ValueItems as dynamic).separatethousands = value; }
 		}
 
-		public bool? ShowaxesLabels
+		public bool? ShowAxesLabels
 		{
 			get { return (ValueItems as dynamic).showaxeslabels; }
 			set { (ValueItems as dynamic).showaxeslabels = value; }
 		}
 
-		public bool? Showbackground
+		public bool? ShowBackground
 		{
 			get { return (ValueItems as dynamic).showbackground; }
 			set { (ValueItems as dynamic).showbackground = value; }
@@ -184,7 +184,7 @@ namespace KilnGod.PlotlyCharts.Layout
 			set { (ValueItems as dynamic).showline = value; }
 		}
 
-		public bool? Showspikes
+		public bool? ShowSpikes
 		{
 			get { return (ValueItems as dynamic).showspikes; }
 			set { (ValueItems as dynamic).showspikes = value; }
@@ -225,7 +225,7 @@ namespace KilnGod.PlotlyCharts.Layout
 			set { (ValueItems as dynamic).spikesides = value; }
 		}
 
-		public float? Spikethickness
+		public double? SpikeThickness
 		{
 			get { return (ValueItems as dynamic).spikethickness; }
 			set { (ValueItems as dynamic).spikethickness = value; }
@@ -237,7 +237,7 @@ namespace KilnGod.PlotlyCharts.Layout
 			set { (ValueItems as dynamic).tick0 = value; }
 		}
 
-		public float? TickAngle
+		public double? TickAngle
 		{
 			get { return (ValueItems as dynamic).tickangle; }
 			set { (ValueItems as dynamic).tickangle = value; }
@@ -283,7 +283,7 @@ namespace KilnGod.PlotlyCharts.Layout
 			}
 		}
 
-		public float? Ticklen
+		public double? Ticklen
 		{
 			get { return (ValueItems as dynamic).ticklen; }
 			set { (ValueItems as dynamic).ticklen = value; }
@@ -325,7 +325,7 @@ namespace KilnGod.PlotlyCharts.Layout
 			set { (ValueItems as dynamic).tickvals = value; }
 		}
 
-		public float? Tickwidth
+		public double? TickWidth
 		{
 			get { return (ValueItems as dynamic).tickwidth; }
 			set { (ValueItems as dynamic).tickwidth = value; }
@@ -362,7 +362,7 @@ namespace KilnGod.PlotlyCharts.Layout
 			set { (ValueItems as dynamic).zerolinecolor = value; }
 		}
 
-		public float? ZeroLinewidth
+		public double? ZeroLinewidth
 		{
 			get { return (ValueItems as dynamic).zerolinewidth; }
 			set { (ValueItems as dynamic).zerolinewidth = value; }

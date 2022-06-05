@@ -43,7 +43,7 @@ namespace KilnGod.PlotlyCharts.Layout
 			set { (ValueItems as dynamic).coastlinecolor = value; }
 		}
 
-		public float? CoastLinewidth
+		public double? CoastLinewidth
 		{
 			get { return (ValueItems as dynamic).coastlinewidth; }
 			set { (ValueItems as dynamic).coastlinewidth = value; }
@@ -55,22 +55,12 @@ namespace KilnGod.PlotlyCharts.Layout
 			set { (ValueItems as dynamic).countrycolor = value; }
 		}
 
-		public float? Countrywidth
+		public double? Countrywidth
 		{
 			get { return (ValueItems as dynamic).countrywidth; }
 			set { (ValueItems as dynamic).countrywidth = value; }
 		}
 
-		DomainInfo? _Domain = null;
-		public DomainInfo? Domain
-		{
-			get { return _Domain; }
-			set
-			{
-				_Domain = value;
-				(ValueItems as dynamic).domain = _Domain?.ValueItems;
-			}
-		}
 
 		public FitBoundsOptions? FitBounds
 		{
@@ -84,7 +74,7 @@ namespace KilnGod.PlotlyCharts.Layout
 			set { (ValueItems as dynamic).framecolor = value; }
 		}
 
-		public float? Framewidth
+		public double? Framewidth
 		{
 			get { return (ValueItems as dynamic).framewidth; }
 			set { (ValueItems as dynamic).framewidth = value; }
@@ -153,7 +143,7 @@ namespace KilnGod.PlotlyCharts.Layout
 			set { (ValueItems as dynamic).rivercolor = value; }
 		}
 
-		public float? Riverwidth
+		public double? Riverwidth
 		{
 			get { return (ValueItems as dynamic).riverwidth; }
 			set { (ValueItems as dynamic).riverwidth = value; }
@@ -165,7 +155,7 @@ namespace KilnGod.PlotlyCharts.Layout
 			set { (ValueItems as dynamic).scope = value?.GetDescription(); }
 		}
 
-		public bool? ShowcoastLines
+		public bool? ShowCoastLines
 		{
 			get { return (ValueItems as dynamic).showcoastlines; }
 			set { (ValueItems as dynamic).showcoastlines = value; }
@@ -177,7 +167,7 @@ namespace KilnGod.PlotlyCharts.Layout
 			set { (ValueItems as dynamic).showcountries = value; }
 		}
 
-		public bool? Showframe
+		public bool? ShowFrame
 		{
 			get { return (ValueItems as dynamic).showframe; }
 			set { (ValueItems as dynamic).showframe = value; }
@@ -219,7 +209,7 @@ namespace KilnGod.PlotlyCharts.Layout
 			set { (ValueItems as dynamic).subunitcolor = value; }
 		}
 
-		public float? SubUnitwidth
+		public double? SubUnitwidth
 		{
 			get { return (ValueItems as dynamic).subunitwidth; }
 			set { (ValueItems as dynamic).subunitwidth = value; }

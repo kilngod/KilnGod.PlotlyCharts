@@ -58,7 +58,7 @@ namespace KilnGod.PlotlyCharts.Layout
             set { (ValueItems as dynamic).symmetric = value; }
         }
 
-        public float? Thickness
+        public double? Thickness
         {
             get { return (ValueItems as dynamic).thickness; }
             set { (ValueItems as dynamic).thickness = value; }
@@ -76,13 +76,13 @@ namespace KilnGod.PlotlyCharts.Layout
             set { (ValueItems as dynamic).tracerefminus = value; }
         }
 
-        public float? Value
+        public double? Value
         {
             get { return (ValueItems as dynamic).value; }
             set { (ValueItems as dynamic).value = value; }
         }
 
-        public float? Valueminus
+        public double? Valueminus
         {
             get { return (ValueItems as dynamic).valueminus; }
             set { (ValueItems as dynamic).valueminus = value; }
@@ -94,7 +94,7 @@ namespace KilnGod.PlotlyCharts.Layout
             set { (ValueItems as dynamic).visible = value; }
         }
 
-        public float? Width
+        public double? Width
         {
             get { return (ValueItems as dynamic).width; }
             set { (ValueItems as dynamic).width = value; }

@@ -76,7 +76,7 @@ namespace KilnGod.PlotlyCharts.Layout
 			set { (ValueItems as dynamic).color = value; }
 		}
 
-		public float? DTick
+		public double? DTick
 		{
 			get { return (ValueItems as dynamic).dtick; }
 			set { (ValueItems as dynamic).dtick = value; }
@@ -94,7 +94,7 @@ namespace KilnGod.PlotlyCharts.Layout
 			set { (ValueItems as dynamic).endlinecolor = value; }
 		}
 
-		public float? EndLinewidth
+		public double? EndLinewidth
 		{
 			get { return (ValueItems as dynamic).endlinewidth; }
 			set { (ValueItems as dynamic).endlinewidth = value; }
@@ -118,7 +118,7 @@ namespace KilnGod.PlotlyCharts.Layout
 			set { (ValueItems as dynamic).gridcolor = value; }
 		}
 
-		public float? Gridwidth
+		public double? Gridwidth
 		{
 			get { return (ValueItems as dynamic).gridwidth; }
 			set { (ValueItems as dynamic).gridwidth = value; }
@@ -148,13 +148,13 @@ namespace KilnGod.PlotlyCharts.Layout
 			set { (ValueItems as dynamic).linecolor = value; }
 		}
 
-		public float? Linewidth
+		public double? Linewidth
 		{
 			get { return (ValueItems as dynamic).linewidth; }
 			set { (ValueItems as dynamic).linewidth = value; }
 		}
 
-		public float? MinExponent
+		public double? MinExponent
 		{
 			get { return (ValueItems as dynamic).minexponent; }
 			set { (ValueItems as dynamic).minexponent = value; }
@@ -172,7 +172,7 @@ namespace KilnGod.PlotlyCharts.Layout
 			set { (ValueItems as dynamic).minorgridcount = value; }
 		}
 
-		public float? MinorGridWidth
+		public double? MinorGridWidth
 		{
 			get { return (ValueItems as dynamic).minorgridwidth; }
 			set { (ValueItems as dynamic).minorgridwidth = value; }
@@ -238,7 +238,7 @@ namespace KilnGod.PlotlyCharts.Layout
 			set { (ValueItems as dynamic).showticksuffix = value?.GetDescription(); }
 		}
 
-		public float? Smoothing
+		public double? Smoothing
 		{
 			get { return (ValueItems as dynamic).smoothing; }
 			set { (ValueItems as dynamic).smoothing = value; }
@@ -256,19 +256,19 @@ namespace KilnGod.PlotlyCharts.Layout
 			set { (ValueItems as dynamic).startlinecolor = value; }
 		}
 
-		public float? StartLinewidth
+		public double? StartLinewidth
 		{
 			get { return (ValueItems as dynamic).startlinewidth; }
 			set { (ValueItems as dynamic).startlinewidth = value; }
 		}
 
-		public float? Tick0
+		public double? Tick0
 		{
 			get { return (ValueItems as dynamic).tick0; }
 			set { (ValueItems as dynamic).tick0 = value; }
 		}
 
-		public float? TickAngle
+		public double? TickAngle
 		{
 			get { return (ValueItems as dynamic).tickangle; }
 			set { (ValueItems as dynamic).tickangle = value; }

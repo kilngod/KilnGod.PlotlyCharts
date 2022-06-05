@@ -79,13 +79,13 @@ namespace KilnGod.PlotlyCharts.Layout
 			}
 		}
 
-		public float? Maxzoom
+		public double? Maxzoom
 		{
 			get { return (ValueItems as dynamic).maxzoom; }
 			set { (ValueItems as dynamic).maxzoom = value; }
 		}
 
-		public float? Minzoom
+		public double? Minzoom
 		{
 			get { return (ValueItems as dynamic).minzoom; }
 			set { (ValueItems as dynamic).minzoom = value; }

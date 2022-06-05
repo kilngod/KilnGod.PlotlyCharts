@@ -22,13 +22,13 @@ namespace KilnGod.PlotlyCharts.Layout
 
         public ColorScalesItem() : base() { }
 
-        public float? Cmax
+        public double? Cmax
         {
             get { return (ValueItems as dynamic).cmax; }
             set { (ValueItems as dynamic).cmax = value; }
         }
 
-        public float? Cmin
+        public double? Cmin
         {
             get { return (ValueItems as dynamic).cmin; }
             set { (ValueItems as dynamic).cmin = value; }

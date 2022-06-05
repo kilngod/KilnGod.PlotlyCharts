@@ -23,19 +23,19 @@ namespace KilnGod.PlotlyCharts.Layout
 
 		public AspectRatioInfo() : base() { }
 
-		public float? X
+		public double? X
 		{
 			get { return (ValueItems as dynamic).x; }
 			set { (ValueItems as dynamic).x = value; }
 		}
 
-		public float? Y
+		public double? Y
 		{
 			get { return (ValueItems as dynamic).y; }
 			set { (ValueItems as dynamic).y = value; }
 		}
 
-		public float? Z
+		public double? Z
 		{
 			get { return (ValueItems as dynamic).z; }
 			set { (ValueItems as dynamic).z = value; }

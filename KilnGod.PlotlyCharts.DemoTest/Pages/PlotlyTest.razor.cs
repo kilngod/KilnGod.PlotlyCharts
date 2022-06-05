@@ -20,9 +20,7 @@ using KilnGod.PlotlyCharts.Enumerations.TracesEnums;
 using KilnGod.PlotlyCharts.Enumerations.LayoutEnums;
 using KilnGod.PlotlyCharts.Wrappers;
 using KilnGod.PlotlyCharts.DemoTest.Models;
-
-
-
+using KilnGod.PlotlyCharts.Enumerations.TransformsEnums;
 
 namespace KilnGod.PlotlyCharts.DemoTest.Pages
 {
@@ -1046,22 +1044,20 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 
 			ItemList<GaugeStepItem> steps = new ItemList<GaugeStepItem>()
 			{
-				new GaugeStepItem() { Range=new double[] { 0, 250 }, Color="cyan" },
-				new GaugeStepItem() { Range=new double[] { 250, 400 }, Color="royalblue" }
+				new GaugeStepItem() { Range=new object[] { 0, 250 }, Color="cyan" },
+				new GaugeStepItem() { Range=new object[] { 250, 400 }, Color="royalblue" }
 			};
 
 
 			IndicatorTrace guage = new IndicatorTrace()
 			{
-
-
-				Value = 450,
+				Value = 420,
 				Mode = ModeOptions.Number_Gauge_Delta,
 				Title = new TitleInfo() { Text = "Speed", Font = new FontInfo() { Size = 24 } },
 				Delta = new DeltaInfo() { Reference = 400, Increasing = new AreaChangeInfo() { Color = "RebeccaPurple" } },
 				Gauge = new GaugeInfo()
 				{
-					Axis = new AxisInfo { Range = new double[] { 0, 500 } },
+					Axis = new GaugeAxisInfo { Range = new object?[] { null, 500 }, TickWidth=1, TickColor = "darkblue" },
 					Bar = new BarInfo { Color = "darkblue" },
 					BgColor = "white",
 					BorderWidth = 2,
@@ -1073,11 +1069,10 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 						Thickness = 0.75,
 						Value = 490
 					}
-
-
 				}
 
 			};
+		
 
 			TraceList dataTraces = new TraceList(guage);
 			LayoutInfo layout = new LayoutInfo()
@@ -1100,9 +1095,11 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 
 			ItemList<GaugeStepItem> steps = new ItemList<GaugeStepItem>()
 			{
-				new GaugeStepItem() { Range=new int[] { 0, 150 }, Color="cyan" }
+				new GaugeStepItem() { Range=new object[] { 0, 150 }, Color="cyan" }
 
 			};
+
+			
 
 			IndicatorTrace bullet = new IndicatorTrace()
 			{
@@ -1113,8 +1110,8 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 				Title = new TitleInfo() { Text = "<b>Profit</b><br><span style='color: gray; font-size:0.8em'>U.S. $</span>", Font = new FontInfo() { Size = 14 } },
 				Gauge = new GaugeInfo()
 				{
-					Axis = new AxisInfo { Range = new double[] { 0, 300 } },
-					Bar = new BarInfo { Color = "darkblue" },
+					Axis = new GaugeAxisInfo { Range = new object?[] { null, 300 } },
+				//	Bar = new BarInfo { Color = "darkblue" },
 					BgColor = "white",
 					Steps = steps,
 					Shape = GaugeShapeOptions.Bullet,
@@ -1123,12 +1120,12 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 						Line = new LineInfo() { Color = "red", Width = 2, Gradient = new GradientInfo() { YAnchor = GradientTypeOptions.Vertical } },
 						Thickness = 0.75,
 						Value = 280
-					}
-
-
+					},
 				}
 
 			};
+			
+
 
 			TraceList dataTraces = new TraceList(bullet);
 			LayoutInfo layout = new LayoutInfo()
@@ -1140,6 +1137,267 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 			await Chart1.newPlot(dataTraces, layout, commonConfig);
 		}
 
+		public async void ChoroplethChart()
+		{
+
+			if (Webfile != null)
+			{
+				string? fileText = await Webfile.DownloadText("https://raw.githubusercontent.com/bcdunbar/datasets/master/worldhappiness.csv");
+
+				if (fileText != null)
+				{
+					List<WorldHappiness> happinessRanked = new List<WorldHappiness>();
+
+					string[] rows = fileText.Split("\n".ToCharArray());
+					int iCount = 0;
+					string[] values;
+
+					try
+					{
+						for (int i = 0; i < rows.Length; i++)
+						{
+							if (rows[i] == String.Empty || i == 0)
+							{
+								// skip the header
+								continue;
+							}
+
+							
+							iCount = i;
+							values = rows[i].Replace("\r", "").Replace("\"Hong Kong S.A.R., China\",", "Hong Kong,Eastern Asia").Split(",");
+						
+							WorldHappiness score = new WorldHappiness()
+							{
+								Year = values[0],
+								Country = values[1],
+								Region = values[2],
+								HappinessRank = Convert.ToInt32(values[3]),
+								HappinessScore = Convert.ToDouble(values[4]),
+								StandardError = values[5],
+								Economy_GDP_per_Capita = Convert.ToDouble(values[6]),
+								Family = Convert.ToDouble(values[7]),
+								Health_Life_Expectancy = Convert.ToDouble(values[8]),
+								Freedom = Convert.ToDouble(values[9]),
+								Trust_Government_Corruption = Convert.ToDouble(values[10]),
+								Generosity = Convert.ToDouble(values[11]),
+								Dystopia_Residual = Convert.ToDouble(values[12])
+
+							};
+
+							happinessRanked.Add(score);
+						}
+					}catch(Exception ex)
+                    {
+						int crap = iCount;
+                    }
+
+					ChoroplethTrace trace = new ChoroplethTrace()
+					{
+						LocationMode = LocationModeOptions.CountryNames,
+						Locations = happinessRanked.Select(item => item.Country).ToArray(),
+						Z = happinessRanked.Select(item => item.HappinessScore).ToArray(),
+						AutoColorScale = false,
+						ReverseScale = true,
+						ColorScale = "Portland",
+						Transforms = new ItemList<TransformsItem>() { 
+							new TransformsItem() 
+							{
+								TransformsType = TransformTypeOptions.Aggregate,
+								Groups = happinessRanked.Select(item => item.Country).ToArray(),
+								Aggregations = new ItemList<Transforms.AggregationItem>
+                                {
+									new Transforms.AggregationItem()
+                                    {
+										Target = "z",
+										Func =  Enumerations.TransformsEnums.FuncOptions.Avg,
+										Enabled= true
+                                    }
+                                }
+							} 
+						}
+					};
+
+					TraceList dataTraces = new TraceList(trace);
+
+					LayoutInfo layout = new LayoutInfo()
+					{
+						Title = new TitleInfo() { Text= "<b>World Happiness</b><br>2015 - 2017" },
+						Geo = new GeoInfo()
+						{
+							ShowFrame = false,
+							ShowCoastLines = false,
+							Projection = new ProjectionInfo { ProjectionType = ProjectionTypeOptions.Orthographic }
+						},
+						UpdateMenus = new ItemList<UpdateMenusItem>() { 
+							new UpdateMenusItem() 
+							{
+								X= 0.85, 
+								Y=1.15,
+								XRef = RefOptions.Paper,
+								YRef = RefOptions.Paper,
+								YAnchor = YAnchorOptions.Top,
+								Active = 0,
+								ShowActive=true,
+								Buttons = new ItemList<ButtonsItem>()
+                                {
+									new ButtonsItem()
+									{
+								 		Method = MethodOptions.Restyle,
+										Args = new object[]{"transforms[0].aggregations[0].func", "avg"},
+										Label = "Avg"
+									},
+									new ButtonsItem()
+									{
+								 		Method = MethodOptions.Restyle,
+										Args = new object[]{"transforms[0].aggregations[0].func", "sum"},
+										Label = "Sum"
+									},
+									new ButtonsItem()
+									{
+								 		Method = MethodOptions.Restyle,
+										Args = new object[]{"transforms[0].aggregations[0].func", "min"},
+										Label = "Min"
+									},
+									new ButtonsItem()
+									{
+								 		Method = MethodOptions.Restyle,
+										Args = new object[]{"transforms[0].aggregations[0].func", "max"},
+										Label = "Max"
+									},
+									new ButtonsItem()
+									{
+								 		Method = MethodOptions.Restyle,
+										Args = new object[]{"transforms[0].aggregations[0].func", "mode"},
+										Label = "Mode"
+									},
+									new ButtonsItem()
+									{
+								 		Method = MethodOptions.Restyle,
+										Args = new object[]{"transforms[0].aggregations[0].func", "median"},
+										Label = "Median"
+									},
+									new ButtonsItem()
+									{
+								 		Method = MethodOptions.Restyle,
+										Args = new object[]{"transforms[0].aggregations[0].func", "first"},
+										Label = "First"
+									},
+									new ButtonsItem()
+									{
+								 		Method = MethodOptions.Restyle,
+										Args = new object[]{"transforms[0].aggregations[0].func", "last"},
+										Label = "Last"
+									}
+								}
+							} 
+						}, 
+						Width = plotWidth,
+						Height = plotHeight,
+						Mapbox = new MapboxInfo() { Style = StyleOptions.StamenTerrain }
+					};
+
+					await Chart1.newPlot(dataTraces, layout, commonConfig);
+				}
+			}
+		}
+		public async void DensityMapboxChart()
+		{
+			DensityMapboxTrace trace = new DensityMapboxTrace()
+			{
+				Lon = new double[] { 10, 20, 30 },
+				Lat = new double[] { 15, 25, 35 },
+				Z = new double[] { 1, 3, 2 },
+			};
+			TraceList dataTraces = new TraceList(trace);
+
+			LayoutInfo layout = new LayoutInfo()
+			{
+				Width = plotWidth,
+				Height = plotHeight,
+				Mapbox = new MapboxInfo() { Style = StyleOptions.StamenTerrain }
+			};
+
+			await Chart1.newPlot(dataTraces, layout, commonConfig);
+		}
+
+		public async void LineGeoChart()
+		{
+
+			if (Webfile != null)
+			{
+				string? fileText = await Webfile.DownloadText("https://raw.githubusercontent.com/plotly/datasets/c34aaa0b1b3cddad335173cb7bc0181897201ee6/2011_february_aa_flight_paths.csv");
+
+				if (fileText != null)
+				{
+					List<FlightPath> flightPaths = new List<FlightPath>();
+
+					string[] rows = fileText.Split("\n".ToCharArray());
+					int maxCount = 0;
+					for (int i = 0; i < rows.Length; i++)
+					{
+						if (rows[i] == String.Empty || i == 0)
+						{
+							continue;
+						}
+						string[] values = rows[i].Split(",");
+
+						FlightPath path = new FlightPath()
+						{
+							StartLat = Convert.ToDouble(values[0]),
+							StartLon = Convert.ToDouble(values[1]),
+							EndLat = Convert.ToDouble(values[2]),
+							EndLon = Convert.ToDouble(values[3]),
+							Airline = values[4],
+							Airport1 = values[5],
+							Airport2 = values[6],
+							Count = Convert.ToInt32(values[7])
+
+						};
+						maxCount = maxCount < path.Count ? path.Count : maxCount;
+						flightPaths.Add(path);
+					}
+
+					TraceList dataTraces = new TraceList();
+
+					foreach (FlightPath path in flightPaths)
+					{
+						dataTraces.AddTrace(
+							new ScatterGeoTrace()
+							{
+								LocationMode = LocationModeOptions.USAStates,
+								Mode = ModeOptions.Lines,
+								Longitude = new object[] { path.StartLon, path.EndLon },
+								Latitue = new object[] { path.StartLat, path.EndLat },
+								Line = new LineInfo() { Width = 1, Color = "red" },
+								Opacity = path.Count * 1.0 / maxCount
+							}
+							);
+					}
+
+					LayoutInfo layout = new LayoutInfo()
+					{
+						Title = new TitleInfo() { Text = "Feb. 2011 American Airline flight paths" },
+						ShowLegend = false,
+						Geo = new GeoInfo()
+						{
+							Scope = ScopeOptions.NorthAmerica,
+							Projection = new ProjectionInfo()
+							{
+								ProjectionType = ProjectionTypeOptions.AzimuthalEqualArea
+
+							},
+							Showland = true,
+							LakeColor = "rgb(243,243,243)",
+							CountryColor = "rgb(204,204,204)"
+						},
+						Height = plotHeight,
+						Width = plotWidth
+					};
+
+					await Chart1.newPlot(dataTraces, layout, commonConfig);
+				}
+			}
+		}
 		public async void ScatterGeoChart()
 		{
 			ScatterGeoTrace geo = new ScatterGeoTrace()
@@ -1170,105 +1428,9 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 			await Chart1.newPlot(dataTraces, layout, commonConfig);
 		}
 
-		public async void LineGeoChart()
-        {
+		
 
-			if (Webfile != null)
-			{
-				string? fileText = await Webfile.DownloadText("https://raw.githubusercontent.com/plotly/datasets/c34aaa0b1b3cddad335173cb7bc0181897201ee6/2011_february_aa_flight_paths.csv");
-
-				if (fileText != null)
-				{
-					List<FlightPath> flightPaths = new List<FlightPath>();
-
-					string[] rows = fileText.Split("\n".ToCharArray());
-					int maxCount = 0;
-					for (int i = 0; i < rows.Length; i++)
-					{
-						if (rows[i] == String.Empty || i == 0)
-						{
-							continue;
-						}
-						string[] values = rows[i].Split(",");
-						
-						FlightPath path = new FlightPath()
-						{
-							StartLat = Convert.ToDouble(values[0]),
-							StartLon = Convert.ToDouble(values[1]),
-							EndLat = Convert.ToDouble(values[2]),
-							EndLon = Convert.ToDouble(values[3]),
-							Airline = values[4],
-							Airport1 = values[5],
-							Airport2 = values[6],
-							Count = Convert.ToInt32(values[7])
-							
-						};
-						maxCount = maxCount < path.Count ? path.Count : maxCount;
-						flightPaths.Add(path);
-					}
-
-					TraceList dataTraces = new TraceList();
-
-					foreach (FlightPath path in flightPaths)
-                    {
-						dataTraces.AddTrace(
-							new ScatterGeoTrace()
-							{
-								LocationMode = LocationModeOptions.USAStates,
-								Mode = ModeOptions.Lines,
-								Longitude = new object[] { path.StartLon, path.EndLon },
-								Latitue = new object[] { path.StartLat, path.EndLat },
-								Line = new LineInfo() { Width = 1, Color = "red" },
-								Opacity = path.Count *1.0 / maxCount
-							}
-							);
-                    }
-
-					LayoutInfo layout = new LayoutInfo()
-					{
-						Title = new TitleInfo() { Text = "Feb. 2011 American Airline flight paths" },
-						ShowLegend = false,
-						Geo = new GeoInfo()
-						{
-							Scope = ScopeOptions.NorthAmerica,
-							Projection = new ProjectionInfo()
-							{
-								ProjectionType = ProjectionTypeOptions.AzimuthalEqualArea
-
-							},
-							Showland = true,
-							LakeColor = "rgb(243,243,243)",
-							CountryColor = "rgb(204,204,204)"
-						},
-						Height = plotHeight,
-						Width = plotWidth
-					};
-
-					await Chart1.newPlot(dataTraces, layout, commonConfig);
-				}
-			}
-		}
-
-		public async void DensityMapboxChart()
-		{
-			DensityMapboxTrace trace = new DensityMapboxTrace()
-			{
-				Lon = new double[] { 10, 20, 30 },
-				Lat = new double[] { 15, 25, 35 },
-				Z = new double[] { 1, 3, 2 },
-			};
-			TraceList dataTraces = new TraceList(trace);
-
-			LayoutInfo layout = new LayoutInfo()
-			{
-				Width = plotWidth,
-				Height = plotHeight,
-				Mapbox = new MapboxInfo() { Style = StyleOptions.StamenTerrain }				
-			};
-
-			await Chart1.newPlot(dataTraces, layout);
-		}
-
+	
 		public async void ScatterMapboxChart()
 		{
 			ScatterMapbox trace = new ScatterMapbox()
@@ -1333,7 +1495,7 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 
 			};
 
-			ContourCarpetTrace trace2 = new ContourCarpetTrace()
+			CarpetTrace trace2 = new CarpetTrace()
 			{
 				A = new double[] { 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3 },
 				B = new double[] { 4, 4, 4, 4, 5, 5, 5, 5, 6, 6, 6, 6 },

@@ -34,19 +34,19 @@ namespace KilnGod.PlotlyCharts.Layout
             set { (ValueItems as dynamic).cauto = value; }
         }
 
-        public float? Cmax
+        public double? Cmax
         {
             get { return (ValueItems as dynamic).cmax; }
             set { (ValueItems as dynamic).cmax = value; }
         }
 
-        public float? Cmid
+        public double? Cmid
         {
             get { return (ValueItems as dynamic).cmid; }
             set { (ValueItems as dynamic).cmid = value; }
         }
 
-        public float? Cmin
+        public double? Cmin
         {
             get { return (ValueItems as dynamic).cmin; }
             set { (ValueItems as dynamic).cmin = value; }

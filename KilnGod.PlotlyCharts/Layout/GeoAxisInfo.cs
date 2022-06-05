@@ -22,7 +22,7 @@ namespace KilnGod.PlotlyCharts.Layout
 
 		public GeoAxisInfo() : base() { }
 
-		public float? DTick
+		public double? DTick
 		{
 			get { return (ValueItems as dynamic).dtick; }
 			set { (ValueItems as dynamic).dtick = value; }
@@ -34,7 +34,7 @@ namespace KilnGod.PlotlyCharts.Layout
 			set { (ValueItems as dynamic).gridcolor = value; }
 		}
 
-		public float? Gridwidth
+		public double? Gridwidth
 		{
 			get { return (ValueItems as dynamic).gridwidth; }
 			set { (ValueItems as dynamic).gridwidth = value; }
@@ -52,7 +52,7 @@ namespace KilnGod.PlotlyCharts.Layout
 			set { (ValueItems as dynamic).showgrid = value; }
 		}
 
-		public float? Tick0
+		public double? Tick0
 		{
 			get { return (ValueItems as dynamic).tick0; }
 			set { (ValueItems as dynamic).tick0 = value; }

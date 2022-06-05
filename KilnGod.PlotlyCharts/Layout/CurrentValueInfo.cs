@@ -32,7 +32,7 @@ namespace KilnGod.PlotlyCharts.Layout
 			}
 		}
 
-		public float? Offset
+		public double? Offset
 		{
 			get { return (ValueItems as dynamic).offset; }
 			set { (ValueItems as dynamic).offset = value; }

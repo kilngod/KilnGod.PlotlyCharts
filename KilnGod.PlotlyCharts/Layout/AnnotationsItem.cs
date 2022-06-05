@@ -44,13 +44,13 @@ namespace KilnGod.PlotlyCharts.Layout
 			set { (ValueItems as dynamic).arrowside = value?.GetDescription(); }
 		}
 
-		public float? Arrowsize
+		public double? Arrowsize
 		{
 			get { return (ValueItems as dynamic).arrowsize; }
 			set { (ValueItems as dynamic).arrowsize = value; }
 		}
 
-		public float? Arrowwidth
+		public double? Arrowwidth
 		{
 			get { return (ValueItems as dynamic).arrowwidth; }
 			set { (ValueItems as dynamic).arrowwidth = value; }
@@ -92,13 +92,13 @@ namespace KilnGod.PlotlyCharts.Layout
 			set { (ValueItems as dynamic).bordercolor = value; }
 		}
 
-		public float? BOrderpad
+		public double? BOrderpad
 		{
 			get { return (ValueItems as dynamic).borderpad; }
 			set { (ValueItems as dynamic).borderpad = value; }
 		}
 
-		public float? Borderwidth
+		public double? Borderwidth
 		{
 			get { return (ValueItems as dynamic).borderwidth; }
 			set { (ValueItems as dynamic).borderwidth = value; }
@@ -127,7 +127,7 @@ namespace KilnGod.PlotlyCharts.Layout
 			}
 		}
 
-		public float? Height
+		public double? Height
 		{
 			get { return (ValueItems as dynamic).height; }
 			set { (ValueItems as dynamic).height = value; }
@@ -168,7 +168,7 @@ namespace KilnGod.PlotlyCharts.Layout
 			set { (ValueItems as dynamic).showarrow = value; }
 		}
 
-		public float? Standoff
+		public double? Standoff
 		{
 			get { return (ValueItems as dynamic).standoff; }
 			set { (ValueItems as dynamic).standoff = value; }
@@ -180,13 +180,13 @@ namespace KilnGod.PlotlyCharts.Layout
 			set { (ValueItems as dynamic).startarrowhead = value; }
 		}
 
-		public float? Startarrowsize
+		public double? Startarrowsize
 		{
 			get { return (ValueItems as dynamic).startarrowsize; }
 			set { (ValueItems as dynamic).startarrowsize = value; }
 		}
 
-		public float? Startstandoff
+		public double? Startstandoff
 		{
 			get { return (ValueItems as dynamic).startstandoff; }
 			set { (ValueItems as dynamic).startstandoff = value; }
@@ -204,7 +204,7 @@ namespace KilnGod.PlotlyCharts.Layout
 			set { (ValueItems as dynamic).text = value; }
 		}
 
-		public float? TextAngle
+		public double? TextAngle
 		{
 			get { return (ValueItems as dynamic).textangle; }
 			set { (ValueItems as dynamic).textangle = value; }
@@ -222,7 +222,7 @@ namespace KilnGod.PlotlyCharts.Layout
 			set { (ValueItems as dynamic).visible = value; }
 		}
 
-		public float? Width
+		public double? Width
 		{
 			get { return (ValueItems as dynamic).width; }
 			set { (ValueItems as dynamic).width = value; }
@@ -246,13 +246,13 @@ namespace KilnGod.PlotlyCharts.Layout
 			set { (ValueItems as dynamic).xclick = value; }
 		}
 
-		public XRefOptions? XRef
+		public RefOptions? XRef
 		{
-			get { return EnumerationStatic.GetValueFromDescription<XRefOptions>((ValueItems as dynamic).xref); }
+			get { return EnumerationStatic.GetValueFromDescription<RefOptions>((ValueItems as dynamic).xref); }
 			set { (ValueItems as dynamic).xref = value?.GetDescription(); }
 		}
 
-		public float? Xshift
+		public double? Xshift
 		{
 			get { return (ValueItems as dynamic).xshift; }
 			set { (ValueItems as dynamic).xshift = value; }
@@ -276,13 +276,13 @@ namespace KilnGod.PlotlyCharts.Layout
 			set { (ValueItems as dynamic).yclick = value; }
 		}
 
-		public YRefOptions? YRef
+		public RefOptions? YRef
 		{
-			get { return EnumerationStatic.GetValueFromDescription<YRefOptions>((ValueItems as dynamic).yref); }
+			get { return EnumerationStatic.GetValueFromDescription<RefOptions>((ValueItems as dynamic).yref); }
 			set { (ValueItems as dynamic).yref = value?.GetDescription(); }
 		}
 
-		public float? Yshift
+		public double? Yshift
 		{
 			get { return (ValueItems as dynamic).yshift; }
 			set { (ValueItems as dynamic).yshift = value; }

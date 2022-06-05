@@ -21,7 +21,7 @@ namespace KilnGod.PlotlyCharts.Layout
 
 		public CircleInfo() : base() { }
 
-		public float? Radius
+		public double? Radius
 		{
 			get { return (ValueItems as dynamic).radius; }
 			set { (ValueItems as dynamic).radius = value; }

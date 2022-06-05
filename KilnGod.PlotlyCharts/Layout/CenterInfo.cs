@@ -21,13 +21,13 @@ namespace KilnGod.PlotlyCharts.Layout
 
 		public CenterInfo() : base() { }
 
-		public float? Lat
+		public double? Lat
 		{
 			get { return (ValueItems as dynamic).lat; }
 			set { (ValueItems as dynamic).lat = value; }
 		}
 
-		public float? Lon
+		public double? Lon
 		{
 			get { return (ValueItems as dynamic).lon; }
 			set { (ValueItems as dynamic).lon = value; }

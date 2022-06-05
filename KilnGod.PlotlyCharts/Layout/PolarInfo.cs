@@ -70,7 +70,7 @@ namespace KilnGod.PlotlyCharts.Layout
 			set { (ValueItems as dynamic).gridshape = value?.GetDescription(); }
 		}
 
-		public float? Hole
+		public double? Hole
 		{
 			get { return (ValueItems as dynamic).hole; }
 			set { (ValueItems as dynamic).hole = value; }

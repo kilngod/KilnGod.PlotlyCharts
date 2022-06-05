@@ -21,7 +21,7 @@ namespace KilnGod.PlotlyCharts.Layout
 
         public StreamInfo() : base() { }
 
-        public float? MaxPoints
+        public double? MaxPoints
         {
             get { return (ValueItems as dynamic).maxpoints; }
             set { (ValueItems as dynamic).maxpoints = value; }

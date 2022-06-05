@@ -22,19 +22,19 @@ namespace KilnGod.PlotlyCharts.Layout
 
 		public RotationInfo() : base() { }
 
-		public float? Lat
+		public double? Lat
 		{
 			get { return (ValueItems as dynamic).lat; }
 			set { (ValueItems as dynamic).lat = value; }
 		}
 
-		public float? Lon
+		public double? Lon
 		{
 			get { return (ValueItems as dynamic).lon; }
 			set { (ValueItems as dynamic).lon = value; }
 		}
 
-		public float? Roll
+		public double? Roll
 		{
 			get { return (ValueItems as dynamic).roll; }
 			set { (ValueItems as dynamic).roll = value; }

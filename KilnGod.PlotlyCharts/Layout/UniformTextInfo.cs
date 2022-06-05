@@ -20,7 +20,7 @@ namespace KilnGod.PlotlyCharts.Layout
 
 		public UniformTextInfo() : base() { }
 
-		public float? Minsize
+		public double? Minsize
 		{
 			get { return (ValueItems as dynamic).minsize; }
 			set { (ValueItems as dynamic).minsize = value; }

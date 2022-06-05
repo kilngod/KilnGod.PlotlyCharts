@@ -38,7 +38,7 @@ namespace KilnGod.PlotlyCharts.Layout
 			set { (ValueItems as dynamic).bordercolor = value; }
 		}
 
-		public float? Borderwidth
+		public double? Borderwidth
 		{
 			get { return (ValueItems as dynamic).borderwidth; }
 			set { (ValueItems as dynamic).borderwidth = value; }
@@ -96,7 +96,7 @@ namespace KilnGod.PlotlyCharts.Layout
 			}
 		}
 
-		public bool? Showactive
+		public bool? ShowActive
 		{
 			get { return (ValueItems as dynamic).showactive; }
 			set { (ValueItems as dynamic).showactive = value; }
@@ -120,10 +120,16 @@ namespace KilnGod.PlotlyCharts.Layout
 			set { (ValueItems as dynamic).visible = value; }
 		}
 
-		public float? X
+		public double? X
 		{
 			get { return (ValueItems as dynamic).x; }
 			set { (ValueItems as dynamic).x = value; }
+		}
+
+		public RefOptions? XRef
+		{
+			get { return EnumerationStatic.GetValueFromDescription<RefOptions>((ValueItems as dynamic).xref); }
+			set { (ValueItems as dynamic).xref = value?.GetDescription(); }
 		}
 
 		public XAnchorOptions? XAnchor
@@ -132,10 +138,16 @@ namespace KilnGod.PlotlyCharts.Layout
 			set { (ValueItems as dynamic).xanchor = value?.GetDescription(); }
 		}
 
-		public float? Y
+		public double? Y
 		{
 			get { return (ValueItems as dynamic).y; }
 			set { (ValueItems as dynamic).y = value; }
+		}
+
+		public RefOptions? YRef
+		{
+			get { return EnumerationStatic.GetValueFromDescription<RefOptions>((ValueItems as dynamic).yref); }
+			set { (ValueItems as dynamic).yref = value?.GetDescription(); }
 		}
 
 		public YAnchorOptions? YAnchor

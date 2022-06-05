@@ -35,7 +35,7 @@ namespace KilnGod.PlotlyCharts.Layout
             set { (ValueItems as dynamic).contourstype = value?.GetDescription(); }
         }
 
-        public float? End
+        public double? End
         {
             get { return (ValueItems as dynamic).end; }
             set { (ValueItems as dynamic).end = value; }
@@ -76,13 +76,13 @@ namespace KilnGod.PlotlyCharts.Layout
             set { (ValueItems as dynamic).showlines = value; }
         }
 
-        public float? Size
+        public double? Size
         {
             get { return (ValueItems as dynamic).size; }
             set { (ValueItems as dynamic).size = value; }
         }
 
-        public float? Start
+        public double? Start
         {
             get { return (ValueItems as dynamic).start; }
             set { (ValueItems as dynamic).start = value; }

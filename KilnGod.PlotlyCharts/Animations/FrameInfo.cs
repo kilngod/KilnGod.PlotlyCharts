@@ -21,7 +21,7 @@ namespace KilnGod.PlotlyCharts.Animations
 
 		public FrameInfo() : base() { }
 
-		public float? Duration
+		public double? Duration
 		{
 			get { return (ValueItems as dynamic).duration; }
 			set { (ValueItems as dynamic).duration = value; }

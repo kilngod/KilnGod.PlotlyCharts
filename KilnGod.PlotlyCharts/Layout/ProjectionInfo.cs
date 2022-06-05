@@ -20,7 +20,7 @@ namespace KilnGod.PlotlyCharts.Layout
 
 		public ProjectionInfo() : base() { }
 
-		public float? Distance
+		public double? Distance
 		{
 			get { return (ValueItems as dynamic).distance; }
 			set { (ValueItems as dynamic).distance = value; }
@@ -34,8 +34,8 @@ namespace KilnGod.PlotlyCharts.Layout
 
 		public ProjectionTypeOptions? ProjectionType
 		{
-			get { return EnumerationStatic.GetValueFromDescription<ProjectionTypeOptions>((ValueItems as dynamic).projectiontype); }
-			set { (ValueItems as dynamic).projectiontype = value?.GetDescription(); }
+			get { return EnumerationStatic.GetValueFromDescription<ProjectionTypeOptions>((ValueItems as dynamic).type); }
+			set { (ValueItems as dynamic).type = value?.GetDescription(); }
 		}
 
 		RotationInfo? _Rotation = null;
@@ -49,13 +49,13 @@ namespace KilnGod.PlotlyCharts.Layout
 			}
 		}
 
-		public float? Scale
+		public double? Scale
 		{
 			get { return (ValueItems as dynamic).scale; }
 			set { (ValueItems as dynamic).scale = value; }
 		}
 
-		public float? Tilt
+		public double? Tilt
 		{
 			get { return (ValueItems as dynamic).tilt; }
 			set { (ValueItems as dynamic).tilt = value; }

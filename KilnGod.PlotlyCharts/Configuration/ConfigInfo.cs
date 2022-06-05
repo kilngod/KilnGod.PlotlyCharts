@@ -46,7 +46,7 @@ namespace KilnGod.PlotlyCharts.Configuration
 			set { (ValueItems as dynamic).doubleclick = value?.GetDescription(); }
 		}
 
-		public float? DoubleClickDelay
+		public double? DoubleClickDelay
 		{
 			get { return (ValueItems as dynamic).doubleclickdelay; }
 			set { (ValueItems as dynamic).doubleclickdelay = value; }
@@ -75,7 +75,7 @@ namespace KilnGod.PlotlyCharts.Configuration
 			set { (ValueItems as dynamic).fillframe = value; }
 		}
 
-		public float? FrameMargins
+		public double? FrameMargins
 		{
 			get { return (ValueItems as dynamic).framemargins; }
 			set { (ValueItems as dynamic).framemargins = value; }
@@ -141,7 +141,7 @@ namespace KilnGod.PlotlyCharts.Configuration
 			set { (ValueItems as dynamic).notifyonlogging = value; }
 		}
 
-		public float? PlotGlPixelRatio
+		public double? PlotGlPixelRatio
 		{
 			get { return (ValueItems as dynamic).plotglpixelratio; }
 			set { (ValueItems as dynamic).plotglpixelratio = value; }

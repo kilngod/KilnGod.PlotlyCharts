@@ -34,6 +34,12 @@ namespace KilnGod.PlotlyCharts.Traces
             get { return (ValueItems as dynamic).b; }
             set { (ValueItems as dynamic).b = value; }
         }
+        public object? X
+        {
+            get { return (ValueItems as dynamic).x; }
+            set { (ValueItems as dynamic).x = value; }
+        }
+
 
         public object? Y
         {

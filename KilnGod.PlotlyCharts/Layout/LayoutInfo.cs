@@ -59,13 +59,13 @@ namespace KilnGod.PlotlyCharts.Layout
 			set { (ValueItems as dynamic).autotypenumbers = value?.GetDescription(); }
 		}
 
-		public float? BarGap
+		public double? BarGap
 		{
 			get { return (ValueItems as dynamic).bargap; }
 			set { (ValueItems as dynamic).bargap = value; }
 		}
 
-		public float? BarGroupGap
+		public double? BarGroupGap
 		{
 			get { return (ValueItems as dynamic).bargroupgap; }
 			set { (ValueItems as dynamic).bargroupgap = value; }
@@ -188,7 +188,7 @@ namespace KilnGod.PlotlyCharts.Layout
 			}
 		}
 
-		public float? Height
+		public double? Height
 		{
 			get { return (ValueItems as dynamic).height; }
 			set { (ValueItems as dynamic).height = value; }
@@ -470,16 +470,20 @@ namespace KilnGod.PlotlyCharts.Layout
 			}
 		}
 
-		ItemList<UpdateMenusItem>? _UpdateMenusItemss = null;
-		public ItemList<UpdateMenusItem> UpdateMenusItemss
+		ItemList<UpdateMenusItem>? _UpdateMenusItems = null;
+		public ItemList<UpdateMenusItem>? UpdateMenus
 		{
 			get
 			{
-				if (_UpdateMenusItemss == null)
+				return _UpdateMenusItems;
+			}
+			set
+			{
+				_UpdateMenusItems = value;
+				if (value != null)
 				{
-					_UpdateMenusItemss = new ItemList<UpdateMenusItem>();
+					(ValueItems as dynamic).updatemenus = value.Values;
 				}
-				return _UpdateMenusItemss;
 			}
 		}
 
@@ -501,7 +505,7 @@ namespace KilnGod.PlotlyCharts.Layout
 			set { (ValueItems as dynamic).violinmode = value?.GetDescription(); }
 		}
 
-		public float? Width
+		public double? Width
 		{
 			get { return (ValueItems as dynamic).width; }
 			set { (ValueItems as dynamic).width = value; }

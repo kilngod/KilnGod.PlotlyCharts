@@ -40,7 +40,7 @@ namespace KilnGod.PlotlyCharts.Layout
 			set { (ValueItems as dynamic).bordercolor = value; }
 		}
 
-		public float? Borderwidth
+		public double? Borderwidth
 		{
 			get { return (ValueItems as dynamic).borderwidth; }
 			set { (ValueItems as dynamic).borderwidth = value; }
@@ -81,7 +81,7 @@ namespace KilnGod.PlotlyCharts.Layout
 			set { (ValueItems as dynamic).visible = value; }
 		}
 
-		public float? X
+		public double? X
 		{
 			get { return (ValueItems as dynamic).x; }
 			set { (ValueItems as dynamic).x = value; }
@@ -93,7 +93,7 @@ namespace KilnGod.PlotlyCharts.Layout
 			set { (ValueItems as dynamic).xanchor = value?.GetDescription(); }
 		}
 
-		public float? Y
+		public double? Y
 		{
 			get { return (ValueItems as dynamic).y; }
 			set { (ValueItems as dynamic).y = value; }

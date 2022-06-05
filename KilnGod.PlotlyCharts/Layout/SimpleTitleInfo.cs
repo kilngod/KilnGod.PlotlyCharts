@@ -3,7 +3,7 @@
 //
 // Copyright (c) 2022 James Carpenter (KilnGod)
 //
-// File: PadInfo.cs
+// File: LegendInfo.cs
 //
 // This file is part of KilnGod.PlotlyCharts and is distributed under the MIT Open
 // Source License. See LICENSE.txt for details.
@@ -15,36 +15,33 @@ using KilnGod.PlotlyCharts.Wrappers;
 
 namespace KilnGod.PlotlyCharts.Layout
 {
+    public class SimpleTitleInfo : ValuesObject
+    {
 
-	public class PadInfo : ValuesObject
-	{
+        public SimpleTitleInfo() : base() { }
 
-		public PadInfo() : base() { }
 
-		public double? B
+		FontInfo? _Font = null;
+		public FontInfo? Font
 		{
-			get { return (ValueItems as dynamic).b; }
-			set { (ValueItems as dynamic).b = value; }
+			get { return _Font; }
+			set
+			{
+				_Font = value;
+				(ValueItems as dynamic).font = _Font?.ValueItems;
+			}
+		}
+				
+		public string? Text
+		{
+			get { return (ValueItems as dynamic).text; }
+			set { (ValueItems as dynamic).text = value; }
 		}
 
-		public double? L
+		public double? Size
 		{
-			get { return (ValueItems as dynamic).l; }
-			set { (ValueItems as dynamic).l = value; }
+			get { return (ValueItems as dynamic).size; }
+			set { (ValueItems as dynamic).size = value; }
 		}
-
-		public double? R
-		{
-			get { return (ValueItems as dynamic).r; }
-			set { (ValueItems as dynamic).r = value; }
-		}
-
-		public double? T
-		{
-			get { return (ValueItems as dynamic).t; }
-			set { (ValueItems as dynamic).t = value; }
-		}
-
 	}
-
 }

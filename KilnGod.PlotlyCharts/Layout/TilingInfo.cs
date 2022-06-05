@@ -35,7 +35,7 @@ namespace KilnGod.PlotlyCharts.Layout
             set { (ValueItems as dynamic).orientation = value?.GetDescription(); }
         }
 
-        public float? Pad
+        public double? Pad
         {
             get { return (ValueItems as dynamic).pad; }
             set { (ValueItems as dynamic).pad = value; }

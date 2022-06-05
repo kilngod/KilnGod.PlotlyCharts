@@ -111,6 +111,20 @@ namespace KilnGod.PlotlyCharts.Enumerations.TransformsEnums
 	*** Description: Sets the sort transform order.
 	******************************/
 
+	public enum TransformTypeOptions
+	{
+		[Description("aggregate")]
+		Aggregate
+	
+	}
+
+
+	/******************************
+	*** Enum Name: order
+
+	*** Description: Sets the sort transform order.
+	******************************/
+
 	public enum OrderOptions
 	{
 		[Description("ascending")]

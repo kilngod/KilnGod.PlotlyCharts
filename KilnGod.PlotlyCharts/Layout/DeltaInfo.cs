@@ -60,7 +60,7 @@ namespace KilnGod.PlotlyCharts.Layout
 			set { (ValueItems as dynamic).position = value?.GetDescription(); }
 		}
 
-		public float? Reference
+		public double? Reference
 		{
 			get { return (ValueItems as dynamic).reference; }
 			set { (ValueItems as dynamic).reference = value; }

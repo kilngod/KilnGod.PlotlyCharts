@@ -32,7 +32,7 @@ namespace KilnGod.PlotlyCharts.Layout
 			set { (ValueItems as dynamic).bordercolor = value; }
 		}
 
-		public float? Borderwidth
+		public double? Borderwidth
 		{
 			get { return (ValueItems as dynamic).borderwidth; }
 			set { (ValueItems as dynamic).borderwidth = value; }
@@ -84,7 +84,7 @@ namespace KilnGod.PlotlyCharts.Layout
 			set { (ValueItems as dynamic).itemsizing = value?.GetDescription(); }
 		}
 
-		public float? Itemwidth
+		public double? Itemwidth
 		{
 			get { return (ValueItems as dynamic).itemwidth; }
 			set { (ValueItems as dynamic).itemwidth = value; }
@@ -107,7 +107,7 @@ namespace KilnGod.PlotlyCharts.Layout
 			}
 		}
 
-		public float? Tracegroupgap
+		public double? Tracegroupgap
 		{
 			get { return (ValueItems as dynamic).tracegroupgap; }
 			set { (ValueItems as dynamic).tracegroupgap = value; }
@@ -131,7 +131,7 @@ namespace KilnGod.PlotlyCharts.Layout
 			set { (ValueItems as dynamic).valign = value?.GetDescription(); }
 		}
 
-		public float? X
+		public double? X
 		{
 			get { return (ValueItems as dynamic).x; }
 			set { (ValueItems as dynamic).x = value; }
@@ -143,7 +143,7 @@ namespace KilnGod.PlotlyCharts.Layout
 			set { (ValueItems as dynamic).xanchor = value?.GetDescription(); }
 		}
 
-		public float? Y
+		public double? Y
 		{
 			get { return (ValueItems as dynamic).y; }
 			set { (ValueItems as dynamic).y = value; }

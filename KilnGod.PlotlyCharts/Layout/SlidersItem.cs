@@ -23,7 +23,7 @@ namespace KilnGod.PlotlyCharts.Layout
 
 		public SlidersItem() : base() { }
 
-		public float? Active
+		public double? Active
 		{
 			get { return (ValueItems as dynamic).active; }
 			set { (ValueItems as dynamic).active = value; }
@@ -47,7 +47,7 @@ namespace KilnGod.PlotlyCharts.Layout
 			set { (ValueItems as dynamic).bordercolor = value; }
 		}
 
-		public float? Borderwidth
+		public double? Borderwidth
 		{
 			get { return (ValueItems as dynamic).borderwidth; }
 			set { (ValueItems as dynamic).borderwidth = value; }
@@ -75,7 +75,7 @@ namespace KilnGod.PlotlyCharts.Layout
 			}
 		}
 
-		public float? Len
+		public double? Len
 		{
 			get { return (ValueItems as dynamic).len; }
 			set { (ValueItems as dynamic).len = value; }
@@ -87,7 +87,7 @@ namespace KilnGod.PlotlyCharts.Layout
 			set { (ValueItems as dynamic).lenmode = value?.GetDescription(); }
 		}
 
-		public float? MinorTicklen
+		public double? MinorTicklen
 		{
 			get { return (ValueItems as dynamic).minorticklen; }
 			set { (ValueItems as dynamic).minorticklen = value; }
@@ -139,13 +139,13 @@ namespace KilnGod.PlotlyCharts.Layout
 			set { (ValueItems as dynamic).tickcolor = value; }
 		}
 
-		public float? Ticklen
+		public double? Ticklen
 		{
 			get { return (ValueItems as dynamic).ticklen; }
 			set { (ValueItems as dynamic).ticklen = value; }
 		}
 
-		public float? Tickwidth
+		public double? Tickwidth
 		{
 			get { return (ValueItems as dynamic).tickwidth; }
 			set { (ValueItems as dynamic).tickwidth = value; }
@@ -168,7 +168,7 @@ namespace KilnGod.PlotlyCharts.Layout
 			set { (ValueItems as dynamic).visible = value; }
 		}
 
-		public float? X
+		public double? X
 		{
 			get { return (ValueItems as dynamic).x; }
 			set { (ValueItems as dynamic).x = value; }
@@ -180,7 +180,7 @@ namespace KilnGod.PlotlyCharts.Layout
 			set { (ValueItems as dynamic).xanchor = value?.GetDescription(); }
 		}
 
-		public float? Y
+		public double? Y
 		{
 			get { return (ValueItems as dynamic).y; }
 			set { (ValueItems as dynamic).y = value; }

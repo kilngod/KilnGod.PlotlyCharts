@@ -21,13 +21,13 @@ namespace KilnGod.PlotlyCharts.Layout
 
         public LayoutAttributesInfo() : base() { }
 
-        public float? Bargap
+        public double? Bargap
         {
             get { return (ValueItems as dynamic).bargap; }
             set { (ValueItems as dynamic).bargap = value; }
         }
 
-        public float? Bargroupgap
+        public double? Bargroupgap
         {
             get { return (ValueItems as dynamic).bargroupgap; }
             set { (ValueItems as dynamic).bargroupgap = value; }

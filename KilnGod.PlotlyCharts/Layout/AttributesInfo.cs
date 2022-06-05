@@ -56,13 +56,13 @@ namespace KilnGod.PlotlyCharts.Layout
             set { (ValueItems as dynamic).customdata = value; }
         }
 
-        public float? Dx
+        public double? Dx
         {
             get { return (ValueItems as dynamic).dx; }
             set { (ValueItems as dynamic).dx = value; }
         }
 
-        public float? Dy
+        public double? Dy
         {
             get { return (ValueItems as dynamic).dy; }
             set { (ValueItems as dynamic).dy = value; }
@@ -148,8 +148,8 @@ namespace KilnGod.PlotlyCharts.Layout
             set { (ValueItems as dynamic).legendgroup = value; }
         }
 
-        LegendGroupTitleInfo? _LegendgroupTitle = null;
-        public LegendGroupTitleInfo? LegendgroupTitle
+        SimpleTitleInfo? _LegendgroupTitle = null;
+        public SimpleTitleInfo? LegendgroupTitle
         {
             get { return _LegendgroupTitle; }
             set
@@ -159,7 +159,7 @@ namespace KilnGod.PlotlyCharts.Layout
             }
         }
 
-        public float? Legendrank
+        public double? Legendrank
         {
             get { return (ValueItems as dynamic).legendrank; }
             set { (ValueItems as dynamic).legendrank = value; }
@@ -188,7 +188,7 @@ namespace KilnGod.PlotlyCharts.Layout
             set { (ValueItems as dynamic).name = value; }
         }
 
-        public float? Offset
+        public double? Offset
         {
             get { return (ValueItems as dynamic).offset; }
             set { (ValueItems as dynamic).offset = value; }
@@ -200,7 +200,7 @@ namespace KilnGod.PlotlyCharts.Layout
             set { (ValueItems as dynamic).offsetgroup = value; }
         }
 
-        public float? Opacity
+        public double? Opacity
         {
             get { return (ValueItems as dynamic).opacity; }
             set { (ValueItems as dynamic).opacity = value; }
@@ -263,7 +263,7 @@ namespace KilnGod.PlotlyCharts.Layout
             set { (ValueItems as dynamic).text = value; }
         }
 
-        public float? TextAngle
+        public double? TextAngle
         {
             get { return (ValueItems as dynamic).textangle; }
             set { (ValueItems as dynamic).textangle = value; }
@@ -339,7 +339,7 @@ namespace KilnGod.PlotlyCharts.Layout
             set { (ValueItems as dynamic).visible = value?.GetDescription(); }
         }
 
-        public float? Width
+        public double? Width
         {
             get { return (ValueItems as dynamic).width; }
             set { (ValueItems as dynamic).width = value; }

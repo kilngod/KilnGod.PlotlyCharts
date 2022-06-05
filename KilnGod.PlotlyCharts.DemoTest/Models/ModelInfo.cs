@@ -148,4 +148,25 @@ namespace KilnGod.PlotlyCharts.DemoTest.Models
         public Mix[] Mixes { get; set; }
     }
 
+
+    public struct WorldHappiness
+    {
+
+        public string Year { get; set; }
+        public string Country { get; set; }
+        public string Region { get; set; }
+        public int HappinessRank { get; set; }
+        public double HappinessScore { get; set; }
+        public string StandardError { get; set; }
+        public double Economy_GDP_per_Capita { get; set; }
+        public double Family { get; set; }
+        public double Health_Life_Expectancy { get; set; }
+        public double Freedom { get; set; }
+        public double Trust_Government_Corruption { get; set; }
+        public double Generosity { get; set; }
+        public double Dystopia_Residual { get; set; }
+
+    }
+
+
 }

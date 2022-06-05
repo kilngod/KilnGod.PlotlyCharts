@@ -56,7 +56,7 @@ namespace KilnGod.PlotlyCharts.Layout
             set { (ValueItems as dynamic).format = value; }
         }
 
-        public float? Height
+        public double? Height
         {
             get { return (ValueItems as dynamic).height; }
             set { (ValueItems as dynamic).height = value; }

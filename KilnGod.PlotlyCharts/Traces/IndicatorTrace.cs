@@ -36,16 +36,6 @@ namespace KilnGod.PlotlyCharts.Traces
         }
 
 
-        DomainInfo? _Domain = null;
-        public DomainInfo? Domain
-        {
-            get { return _Domain; }
-            set
-            {
-                _Domain = value;
-                (ValueItems as dynamic).domain = _Domain?.ValueItems;
-            }
-        }
 
         GaugeInfo? _Gauge = null;
         public GaugeInfo? Gauge
@@ -58,10 +48,20 @@ namespace KilnGod.PlotlyCharts.Traces
             }
         }
 
+        public object? Ids
+        {
+            get { return (ValueItems as dynamic).ids; }
+            set { (ValueItems as dynamic).ids = value; }
+        }
+
+       
+
         public object? Value
         {
             get { return (ValueItems as dynamic).value; }
             set { (ValueItems as dynamic).value = value; }
         }
+
+       
     }
 }

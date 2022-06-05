@@ -34,7 +34,7 @@ namespace KilnGod.PlotlyCharts.Layout
 			set { (ValueItems as dynamic).gridcolor = value; }
 		}
 
-		public float? Gridwidth
+		public double? Gridwidth
 		{
 			get { return (ValueItems as dynamic).gridwidth; }
 			set { (ValueItems as dynamic).gridwidth = value; }
@@ -58,7 +58,7 @@ namespace KilnGod.PlotlyCharts.Layout
 			set { (ValueItems as dynamic).linecolor = value; }
 		}
 
-		public float? Linewidth
+		public double? Linewidth
 		{
 			get { return (ValueItems as dynamic).linewidth; }
 			set { (ValueItems as dynamic).linewidth = value; }
@@ -100,7 +100,7 @@ namespace KilnGod.PlotlyCharts.Layout
 			set { (ValueItems as dynamic).side = value?.GetDescription(); }
 		}
 
-		public float? TickAngle
+		public double? TickAngle
 		{
 			get { return (ValueItems as dynamic).tickangle; }
 			set { (ValueItems as dynamic).tickangle = value; }
@@ -129,7 +129,7 @@ namespace KilnGod.PlotlyCharts.Layout
 			set { (ValueItems as dynamic).tickformat = value; }
 		}
 
-		public float? Ticklen
+		public double? Ticklen
 		{
 			get { return (ValueItems as dynamic).ticklen; }
 			set { (ValueItems as dynamic).ticklen = value; }
@@ -159,7 +159,7 @@ namespace KilnGod.PlotlyCharts.Layout
 			set { (ValueItems as dynamic).tickvals = value; }
 		}
 
-		public float? Tickwidth
+		public double? Tickwidth
 		{
 			get { return (ValueItems as dynamic).tickwidth; }
 			set { (ValueItems as dynamic).tickwidth = value; }

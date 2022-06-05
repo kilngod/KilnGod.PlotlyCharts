@@ -30,7 +30,7 @@ namespace KilnGod.PlotlyCharts.Layout
 			set { (ValueItems as dynamic).bounds = value; }
 		}
 
-		public float? DValue
+		public double? DValue
 		{
 			get { return (ValueItems as dynamic).dvalue; }
 			set { (ValueItems as dynamic).dvalue = value; }

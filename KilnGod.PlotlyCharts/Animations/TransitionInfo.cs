@@ -22,7 +22,7 @@ namespace KilnGod.PlotlyCharts.Animations
 
 		public TransitionInfo() : base() { }
 
-		public float? Duration
+		public double? Duration
 		{
 			get { return (ValueItems as dynamic).duration; }
 			set { (ValueItems as dynamic).duration = value; }

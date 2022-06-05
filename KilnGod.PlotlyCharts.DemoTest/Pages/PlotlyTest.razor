@@ -56,11 +56,14 @@
 
    
      <br /><strong>Maps</strong><br />
-     <button class="btn btn-primary m-1" @onclick="ScatterGeoChart">Geo</button>
-
-     <button class="btn btn-primary m-1" @onclick="DensityMapboxChart">Density Mapbox</button>
+     <button class="btn btn-primary m-1" @onclick="ChoroplethChart">Choropleth</button>
+      <button class="btn btn-primary m-1" @onclick="DensityMapboxChart">Density Mapbox</button>
 
      <button class="btn btn-primary m-1" @onclick="LineGeoChart">Line Geo</button>
+
+     <button class="btn btn-primary m-1" @onclick="ScatterGeoChart">Geo</button>
+
+    
 
      <button class="btn btn-primary m-1" @onclick="ScatterMapboxChart">Scatter Mapbox</button>
 
@@ -86,7 +89,7 @@
     <br /><strong>Scientific</strong><br />
     <button class="btn btn-primary m-1" @onclick="ContourChart">Contour</button>
 
-        <button class="btn btn-danger m-1" @onclick="ContourCarpetChart">Contour Carpet</button>
+        <button class="btn btn-primary m-1" @onclick="ContourCarpetChart">Contour Carpet</button>
 
     <button class="btn btn-primary m-1" @onclick="HeatmapChart">Heatmap</button>
     

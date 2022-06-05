@@ -40,13 +40,13 @@ namespace KilnGod.PlotlyCharts.Layout
 			set { (ValueItems as dynamic).opacity = value; }
 		}
 
-		public float? Sizex
+		public double? Sizex
 		{
 			get { return (ValueItems as dynamic).sizex; }
 			set { (ValueItems as dynamic).sizex = value; }
 		}
 
-		public float? Sizey
+		public double? Sizey
 		{
 			get { return (ValueItems as dynamic).sizey; }
 			set { (ValueItems as dynamic).sizey = value; }
@@ -88,9 +88,9 @@ namespace KilnGod.PlotlyCharts.Layout
 			set { (ValueItems as dynamic).xanchor = value?.GetDescription(); }
 		}
 
-		public XRefOptions? XRef
+		public RefOptions? XRef
 		{
-			get { return EnumerationStatic.GetValueFromDescription<XRefOptions>((ValueItems as dynamic).xref); }
+			get { return EnumerationStatic.GetValueFromDescription<RefOptions>((ValueItems as dynamic).xref); }
 			set { (ValueItems as dynamic).xref = value?.GetDescription(); }
 		}
 
@@ -106,9 +106,9 @@ namespace KilnGod.PlotlyCharts.Layout
 			set { (ValueItems as dynamic).yanchor = value?.GetDescription(); }
 		}
 
-		public YRefOptions? YRef
+		public RefOptions? YRef
 		{
-			get { return EnumerationStatic.GetValueFromDescription<YRefOptions>((ValueItems as dynamic).yref); }
+			get { return EnumerationStatic.GetValueFromDescription<RefOptions>((ValueItems as dynamic).yref); }
 			set { (ValueItems as dynamic).yref = value?.GetDescription(); }
 		}
 

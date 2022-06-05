@@ -28,7 +28,7 @@ namespace KilnGod.PlotlyCharts.Layout
 			set { (ValueItems as dynamic).icon = value; }
 		}
 
-		public float? Iconsize
+		public double? Iconsize
 		{
 			get { return (ValueItems as dynamic).iconsize; }
 			set { (ValueItems as dynamic).iconsize = value; }

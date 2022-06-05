@@ -59,6 +59,18 @@ namespace KilnGod.PlotlyCharts.Wrappers
                 (ValueItems as dynamic).connector = _Connector?.ValueItems;
             }
         }
+
+
+        DomainInfo? _Domain = null;
+        public DomainInfo? Domain
+        {
+            get { return _Domain; }
+            set
+            {
+                _Domain = value;
+                (ValueItems as dynamic).domain = _Domain?.ValueItems;
+            }
+        }
         public FillOptions? Fill
         {
             get
@@ -236,16 +248,14 @@ namespace KilnGod.PlotlyCharts.Wrappers
             }
         }
 
-        TitleInfo? _legengGroupTitle = null;
-
-        public TitleInfo? LegengGroupTitle
+        SimpleTitleInfo? _LegendGroupTitle = null;
+        public SimpleTitleInfo? LegendGroupTitle
         {
-            get { return _legengGroupTitle; }
+            get { return _LegendGroupTitle; }
             set
             {
-                _legengGroupTitle = value;
-                (ValueItems as dynamic).title = _legengGroupTitle?.ValueItems;
-
+                _LegendGroupTitle = value;
+                (ValueItems as dynamic).legendgrouptitle = _LegendGroupTitle?.ValueItems;
             }
         }
 
@@ -262,12 +272,6 @@ namespace KilnGod.PlotlyCharts.Wrappers
             get { return (ValueItems as dynamic).visible; }
             set { (ValueItems as dynamic).visible = value; }
         }
-
-
-
-
-
-
 
         public string? UIRevision
         {

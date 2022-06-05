@@ -23,8 +23,8 @@ namespace KilnGod.PlotlyCharts.Layout
 
         public GaugeInfo() : base() { }
 
-        AxisInfo? _Axis = null;
-        public AxisInfo? Axis
+        GaugeAxisInfo? _Axis = null;
+        public GaugeAxisInfo? Axis
         {
             get { return _Axis; }
             set
@@ -57,7 +57,7 @@ namespace KilnGod.PlotlyCharts.Layout
             set { (ValueItems as dynamic).bordercolor = value; }
         }
 
-        public float? BorderWidth
+        public double? BorderWidth
         {
             get { return (ValueItems as dynamic).borderwidth; }
             set { (ValueItems as dynamic).borderwidth = value; }
@@ -97,5 +97,6 @@ namespace KilnGod.PlotlyCharts.Layout
             }
         }
 
+       
     }
 }

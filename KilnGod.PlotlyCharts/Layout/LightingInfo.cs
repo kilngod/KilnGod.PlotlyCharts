@@ -21,43 +21,43 @@ namespace KilnGod.PlotlyCharts.Layout
 
         public LightingInfo() : base() { }
 
-        public float? Ambient
+        public double? Ambient
         {
             get { return (ValueItems as dynamic).ambient; }
             set { (ValueItems as dynamic).ambient = value; }
         }
 
-        public float? Diffuse
+        public double? Diffuse
         {
             get { return (ValueItems as dynamic).diffuse; }
             set { (ValueItems as dynamic).diffuse = value; }
         }
 
-        public float? FaceNormalsepsilon
+        public double? FaceNormalsepsilon
         {
             get { return (ValueItems as dynamic).facenormalsepsilon; }
             set { (ValueItems as dynamic).facenormalsepsilon = value; }
         }
 
-        public float? Fresnel
+        public double? Fresnel
         {
             get { return (ValueItems as dynamic).fresnel; }
             set { (ValueItems as dynamic).fresnel = value; }
         }
 
-        public float? Roughness
+        public double? Roughness
         {
             get { return (ValueItems as dynamic).roughness; }
             set { (ValueItems as dynamic).roughness = value; }
         }
 
-        public float? Specular
+        public double? Specular
         {
             get { return (ValueItems as dynamic).specular; }
             set { (ValueItems as dynamic).specular = value; }
         }
 
-        public float? VertexNormalsepsilon
+        public double? VertexNormalsepsilon
         {
             get { return (ValueItems as dynamic).vertexnormalsepsilon; }
             set { (ValueItems as dynamic).vertexnormalsepsilon = value; }

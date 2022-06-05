@@ -45,7 +45,7 @@ namespace KilnGod.PlotlyCharts.Layout
             }
         }
 
-        public float? Thickness
+        public double? Thickness
         {
             get { return (ValueItems as dynamic).thickness; }
             set { (ValueItems as dynamic).thickness = value; }

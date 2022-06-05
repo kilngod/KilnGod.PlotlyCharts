@@ -53,13 +53,13 @@ namespace KilnGod.PlotlyCharts.Layout
             set { (ValueItems as dynamic).shape = value?.GetDescription(); }
         }
 
-        public float? Size
+        public double? Size
         {
             get { return (ValueItems as dynamic).size; }
             set { (ValueItems as dynamic).size = value; }
         }
 
-        public float? Solidity
+        public double? Solidity
         {
             get { return (ValueItems as dynamic).solidity; }
             set { (ValueItems as dynamic).solidity = value; }

@@ -91,19 +91,7 @@ namespace KilnGod.PlotlyCharts.Traces
             }
         }
 
-        public object? X
-        {
-            get { return (ValueItems as dynamic).x; }
-            set { (ValueItems as dynamic).x = value; }
-        }
-
-
-        public object? Y
-        {
-            get { return (ValueItems as dynamic).y; }
-            set { (ValueItems as dynamic).y = value; }
-        }
-
+   
         public object? Z
         {
             get { return (ValueItems as dynamic).z; }

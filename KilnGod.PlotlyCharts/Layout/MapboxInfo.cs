@@ -28,7 +28,7 @@ namespace KilnGod.PlotlyCharts.Layout
 			set { (ValueItems as dynamic).accesstoken = value; }
 		}
 
-		public float? Bearing
+		public double? Bearing
 		{
 			get { return (ValueItems as dynamic).bearing; }
 			set { (ValueItems as dynamic).bearing = value; }
@@ -69,7 +69,7 @@ namespace KilnGod.PlotlyCharts.Layout
 			}
 		}
 
-		public float? Pitch
+		public double? Pitch
 		{
 			get { return (ValueItems as dynamic).pitch; }
 			set { (ValueItems as dynamic).pitch = value; }
@@ -87,7 +87,7 @@ namespace KilnGod.PlotlyCharts.Layout
 			set { (ValueItems as dynamic).uirevision = value; }
 		}
 
-		public float? Zoom
+		public double? Zoom
 		{
 			get { return (ValueItems as dynamic).zoom; }
 			set { (ValueItems as dynamic).zoom = value; }

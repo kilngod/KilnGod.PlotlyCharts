@@ -1365,10 +1365,13 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 
 					LayoutInfo layout = new LayoutInfo()
 					{
+						
 						Width = plotWidth,
 						Height = plotHeight,
+						Title = new TitleInfo() { Text = "2016 US Unemployment by County" },
 						Mapbox = new MapboxInfo() { Style = StyleOptions.CartoPositron, Zoom = 3.2, Center = new CenterInfo() { Lat = 37.0902, Lon = -95.7129 } },
-						ColorAxis = new ColorAxisInfo() { ShowScale=false, ColorScale = ColorScaleOptions.Viridis.GetDescription() }
+						ColorAxis = new ColorAxisInfo() { ShowScale=false, ColorScale = ColorScaleOptions.Viridis.GetDescription()},
+						
 					};
 
 					TraceList dataTraces = new TraceList(trace);

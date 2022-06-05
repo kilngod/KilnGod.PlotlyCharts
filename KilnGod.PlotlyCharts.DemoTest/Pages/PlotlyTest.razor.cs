@@ -21,6 +21,8 @@ using KilnGod.PlotlyCharts.Enumerations.LayoutEnums;
 using KilnGod.PlotlyCharts.Wrappers;
 using KilnGod.PlotlyCharts.DemoTest.Models;
 using KilnGod.PlotlyCharts.Enumerations.TransformsEnums;
+using KilnGod.PlotlyCharts.Enumerations;
+using Newtonsoft.Json;
 
 namespace KilnGod.PlotlyCharts.DemoTest.Pages
 {
@@ -1152,44 +1154,40 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 					int iCount = 0;
 					string[] values;
 
-					try
+
+					for (int i = 0; i < rows.Length; i++)
 					{
-						for (int i = 0; i < rows.Length; i++)
+						if (rows[i] == String.Empty || i == 0)
 						{
-							if (rows[i] == String.Empty || i == 0)
-							{
-								// skip the header
-								continue;
-							}
-
-							
-							iCount = i;
-							values = rows[i].Replace("\r", "").Replace("\"Hong Kong S.A.R., China\",", "Hong Kong,Eastern Asia").Split(",");
-						
-							WorldHappiness score = new WorldHappiness()
-							{
-								Year = values[0],
-								Country = values[1],
-								Region = values[2],
-								HappinessRank = Convert.ToInt32(values[3]),
-								HappinessScore = Convert.ToDouble(values[4]),
-								StandardError = values[5],
-								Economy_GDP_per_Capita = Convert.ToDouble(values[6]),
-								Family = Convert.ToDouble(values[7]),
-								Health_Life_Expectancy = Convert.ToDouble(values[8]),
-								Freedom = Convert.ToDouble(values[9]),
-								Trust_Government_Corruption = Convert.ToDouble(values[10]),
-								Generosity = Convert.ToDouble(values[11]),
-								Dystopia_Residual = Convert.ToDouble(values[12])
-
-							};
-
-							happinessRanked.Add(score);
+							// skip the header
+							continue;
 						}
-					}catch(Exception ex)
-                    {
-						int crap = iCount;
-                    }
+
+
+						iCount = i;
+						values = rows[i].Replace("\r", "").Replace("\"Hong Kong S.A.R., China\",", "Hong Kong,Eastern Asia").Split(",");
+
+						WorldHappiness score = new WorldHappiness()
+						{
+							Year = values[0],
+							Country = values[1],
+							Region = values[2],
+							HappinessRank = Convert.ToInt32(values[3]),
+							HappinessScore = Convert.ToDouble(values[4]),
+							StandardError = values[5],
+							Economy_GDP_per_Capita = Convert.ToDouble(values[6]),
+							Family = Convert.ToDouble(values[7]),
+							Health_Life_Expectancy = Convert.ToDouble(values[8]),
+							Freedom = Convert.ToDouble(values[9]),
+							Trust_Government_Corruption = Convert.ToDouble(values[10]),
+							Generosity = Convert.ToDouble(values[11]),
+							Dystopia_Residual = Convert.ToDouble(values[12])
+
+						};
+
+						happinessRanked.Add(score);
+					}
+
 
 					ChoroplethTrace trace = new ChoroplethTrace()
 					{
@@ -1198,22 +1196,22 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 						Z = happinessRanked.Select(item => item.HappinessScore).ToArray(),
 						AutoColorScale = false,
 						ReverseScale = true,
-						ColorScale = "Portland",
-						Transforms = new ItemList<TransformsItem>() { 
-							new TransformsItem() 
+						ColorScale = ColorScaleOptions.Portland.GetDescription(),
+						Transforms = new ItemList<TransformsItem>() {
+							new TransformsItem()
 							{
 								TransformsType = TransformTypeOptions.Aggregate,
 								Groups = happinessRanked.Select(item => item.Country).ToArray(),
 								Aggregations = new ItemList<Transforms.AggregationItem>
-                                {
+								{
 									new Transforms.AggregationItem()
-                                    {
+									{
 										Target = "z",
 										Func =  Enumerations.TransformsEnums.FuncOptions.Avg,
 										Enabled= true
-                                    }
-                                }
-							} 
+									}
+								}
+							}
 						}
 					};
 
@@ -1221,17 +1219,17 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 
 					LayoutInfo layout = new LayoutInfo()
 					{
-						Title = new TitleInfo() { Text= "<b>World Happiness</b><br>2015 - 2017" },
+						Title = new TitleInfo() { Text = "<b>World Happiness</b><br>2015 - 2017" },
 						Geo = new GeoInfo()
 						{
 							ShowFrame = false,
 							ShowCoastLines = false,
 							Projection = new ProjectionInfo { ProjectionType = ProjectionTypeOptions.Orthographic }
 						},
-						UpdateMenus = new ItemList<UpdateMenusItem>() { 
-							new UpdateMenusItem() 
+						UpdateMenus = new ItemList<UpdateMenusItem>() {
+							new UpdateMenusItem()
 							{
-								X= 0.85, 
+								X= 0.85,
 								Y=1.15,
 								XRef = RefOptions.Paper,
 								YRef = RefOptions.Paper,
@@ -1239,7 +1237,7 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 								Active = 0,
 								ShowActive=true,
 								Buttons = new ItemList<ButtonsItem>()
-                                {
+								{
 									new ButtonsItem()
 									{
 								 		Method = MethodOptions.Restyle,
@@ -1289,8 +1287,8 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 										Label = "Last"
 									}
 								}
-							} 
-						}, 
+							}
+						},
 						Width = plotWidth,
 						Height = plotHeight,
 						Mapbox = new MapboxInfo() { Style = StyleOptions.StamenTerrain }
@@ -1300,6 +1298,87 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 				}
 			}
 		}
+
+
+		public async void ChoroplethMapboxChart()
+		{
+			//https://plotly.com/python/mapbox-county-choropleth/
+
+			if (Webfile != null)
+			{
+			//	string? geodata = await Webfile.DownloadText("https://raw.githubusercontent.com/plotly/datasets/master/geojson-counties-fips.json");
+
+				string? unemploymentdata = await Webfile.DownloadText("https://raw.githubusercontent.com/plotly/datasets/master/fips-unemp-16.csv");
+
+				if (unemploymentdata != null)
+				{
+				/*	JsonDocument geoDoc = JsonDocument.Parse(geodata);
+
+					var counties =	from todo in geoDoc.RootElement.EnumerateArray()
+						select new
+						{
+							userId = todo.GetProperty("userId").GetInt32(),
+							title = todo.GetProperty("title").GetString(),
+							completed = todo.GetProperty("completed").GetBoolean()
+						};
+				*/
+
+					List<UnemploymentData> unemploymentFipsArea = new List<UnemploymentData>();
+
+					string[] rows = unemploymentdata.Split("\n".ToCharArray());
+					
+					for (int i = 0; i < rows.Length; i++)
+					{
+						if (rows[i] == String.Empty || i == 0)
+						{
+							continue;
+						}
+						string[] values = rows[i].Split(",");
+
+						UnemploymentData fipsArea = new UnemploymentData()
+						{
+							Fips = values[0],
+							Unemp = Convert.ToDouble(values[1])				
+
+						};
+
+						unemploymentFipsArea.Add(fipsArea);
+
+					}
+
+
+					ChoroplethMapboxTrace trace = new ChoroplethMapboxTrace()
+					{
+						Z = unemploymentFipsArea.Select(item => item.Unemp).ToArray(),
+						Zmax=12,
+						Zmin=0,
+
+						Locations  = unemploymentFipsArea.Select(item => item.Fips).ToArray(),
+						GeoJson = "https://raw.githubusercontent.com/plotly/datasets/master/geojson-counties-fips.json",
+						
+						
+						
+						Opacity = 0.5,
+								
+						
+					};
+
+					LayoutInfo layout = new LayoutInfo()
+					{
+						Width = plotWidth,
+						Height = plotHeight,
+						Mapbox = new MapboxInfo() { Style = StyleOptions.CartoPositron, Zoom = 3.2, Center = new CenterInfo() { Lat = 37.0902, Lon = -95.7129 } },
+						ColorAxis = new ColorAxisInfo() { ShowScale=false, ColorScale = ColorScaleOptions.Viridis.GetDescription() }
+					};
+
+					TraceList dataTraces = new TraceList(trace);
+					await Chart1.newPlot(dataTraces, layout, commonConfig);
+
+				}
+
+			}
+		}
+
 		public async void DensityMapboxChart()
 		{
 			DensityMapboxTrace trace = new DensityMapboxTrace()

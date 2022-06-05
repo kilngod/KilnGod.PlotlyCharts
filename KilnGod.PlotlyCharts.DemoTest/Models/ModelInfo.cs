@@ -41,6 +41,13 @@ namespace KilnGod.PlotlyCharts.DemoTest.Models
     }
     // for 3d file.
 
+
+    public struct UnemploymentData
+    {
+        public string Fips { get; set; }
+        public double Unemp { get; set; }
+    }
+
     public struct FlightPath
     {
         public double StartLat { get; set; }

@@ -27,9 +27,9 @@ namespace KilnGod.PlotlyCharts.Enumerations
         [Description("carpet")]
         Specialized_Carpet,
         [Description("choropleth")]
-        Maps_Choropleth,
-        [Description("choroplethMapBox")]
-        Maps_ChoroplethMapBox,
+        Map_Choropleth,
+        [Description("choroplethmapbox")]
+        Map_ChoroplethMapBox,
         [Description("cone")]
         ThreeD_Cone,
         [Description("contour")]
@@ -44,6 +44,7 @@ namespace KilnGod.PlotlyCharts.Enumerations
         Finance_FunnelArea,
         [Description("heatmap")]
         Simple_Heatmap,
+
         [Description("heatmapgl")]
         Simple_HeatMapGl,
         [Description("histogram")]
@@ -54,6 +55,7 @@ namespace KilnGod.PlotlyCharts.Enumerations
         Distribution_Histogram2DContour,
         [Description("icicle")]
         Specialized_Icicle,
+        // not sure this is a thing
         [Description("image")]
         Simple_Image,
         [Description("indicator")]

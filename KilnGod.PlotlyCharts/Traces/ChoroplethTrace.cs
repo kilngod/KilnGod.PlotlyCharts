@@ -19,7 +19,7 @@ namespace KilnGod.PlotlyCharts.Traces
 {
     public class ChoroplethTrace : Trace
     {
-        public ChoroplethTrace() : base(TraceTypeOptions.Maps_Choropleth)
+        public ChoroplethTrace() : base(TraceTypeOptions.Map_Choropleth)
         {
 
         }

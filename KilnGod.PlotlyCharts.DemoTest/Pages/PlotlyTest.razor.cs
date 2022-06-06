@@ -556,6 +556,93 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 				}
 			}
 		}
+
+		public async void PointCloudChart()
+		{
+
+			TraceList dataTraces = new TraceList(
+				new Trace[] {
+					new PointCloudTrace()
+					{
+
+						X = new double[]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9},
+						Y = new double[]{9, 8, 7, 6, 5, 4, 3, 2, 1, 0 },
+						Mode = ModeOptions.Markers,
+						Marker = new MarkerInfo()
+						{
+							AreaRatio=0,
+							SizeMin=0.5,
+							SizeMax=100,
+							Color = "rgba(0, 0, 255, 0.9)",
+							
+						},
+						Opacity = 0.7
+					},
+					new PointCloudTrace()
+					{
+						X = new double[]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9},
+						Y = new double[]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+						Mode = ModeOptions.Markers,
+						Marker = new MarkerInfo()
+						{
+							AreaRatio=0,
+							Blend = true,
+							SizeMin=0.5,
+							SizeMax=100,
+							Color = "rgba(0, 0, 255, 0.9)",
+							Opacity = 0.8
+						},
+						Opacity = 0.7
+					},
+					new PointCloudTrace()
+					{
+						X = new double[]{3, 4.5, 6},
+						Y = new double[]{9, 9, 9},
+						Mode = ModeOptions.Markers,
+						Marker = new MarkerInfo()
+						{
+							AreaRatio=0,
+							Blend = true,
+							Border = new BorderInfo()
+                            {
+								Color = "rgb(0, 0, 0)",
+								AreaRatio = 0.7071
+							},
+							Color = "green",
+							Opacity = 0.8,
+							SizeMin=0.5,
+							SizeMax=100
+							
+							
+						},
+						Opacity = 0.7
+					}
+				}
+				);
+
+			LayoutInfo layout = new LayoutInfo()
+			{
+				AutoSize = true,
+				ShowLegend = false,
+				Title = new TitleInfo() { Text = "Basic Point Cloud" },
+				Height = plotHeight,
+				Width = plotWidth,
+				XAxis = new AxisInfo()
+				{
+					AxisType = AxisTypeOptions.Linear,
+					Range = new object[] { -2.501411175139456, 43.340777299865266 },
+					AutoRange = AutoRangeOptions.True
+				},
+				YAxis = new AxisInfo()
+				{
+					AxisType = AxisTypeOptions.Linear,
+					Range = new object[] { 4, 6 },
+					AutoRange = AutoRangeOptions.True
+				}
+			};
+			await Chart1.newPlot(dataTraces, layout, commonConfig);
+		}
+
 		public async void SankeyChart()
         {
 			TraceList dataTraces = new TraceList(
@@ -585,7 +672,7 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 				Height = plotHeight,
 				Width = plotWidth
 			};
-			await Chart1.newPlot(dataTraces, layout);
+			await Chart1.newPlot(dataTraces, layout, commonConfig);
 
 		}
 
@@ -2361,6 +2448,82 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 			}
 		}
 
+		public async void ConeChart()
+		{
+			if (Webfile != null)
+			{
+				string? fileText = await Webfile.DownloadText("https://raw.githubusercontent.com/plotly/datasets/master/vortex.csv");
+
+				if (fileText != null)
+				{
+
+					List<Vector> VectorList = new List<Vector>();
+
+					string[] rows = fileText.Split("\n".ToCharArray());
+					for (int i = 1; i < rows.Length; i++)
+					{
+
+						string[] values = rows[i].Split(",");
+
+						if (values.Length < 6)
+							continue;
+						Vector vector = new Vector()
+						{
+							
+							x = Convert.ToDouble(values[0]),
+							y = Convert.ToDouble(values[1]),
+							z = Convert.ToDouble(values[2]),
+							u = Convert.ToDouble(values[3]),
+							v = Convert.ToDouble(values[4]),
+							w = Convert.ToDouble(values[5])
+						};
+
+						VectorList.Add(vector);
+					}
+
+
+					ConeTrace trace = new Traces.ConeTrace()
+					{
+						X = VectorList.Select(vec => vec.x).ToArray(),
+						Y = VectorList.Select(vec => vec.y).ToArray(),
+						Z = VectorList.Select(vec => vec.z).ToArray(),
+						U = VectorList.Select(vec => vec.u).ToArray(),
+						V = VectorList.Select(vec => vec.v).ToArray(),
+						W = VectorList.Select(vec => vec.w).ToArray(),
+						ColorScale  =  ColorScaleOptions.Blues.GetDescription(),
+						SizeMode = SizeModeOptions.Absolute,
+						SizeRef = 40
+					};
+
+					LayoutInfo layout = new LayoutInfo()
+					{
+						Title = new TitleInfo() { Text = "Cone Vector Plot" },
+						
+						Width = plotWidth,
+						Height = plotHeight,
+						Scene = new SceneInfo()
+						{
+							AspectRatio = new AspectRatioInfo()
+							{
+								X = 1.0,
+								Y = 1.0,
+								Z = 0.8
+							},
+							Camera = new CameraInfo()
+							{
+								Eye = new PositionInfo() { X = 1.2, Y = 1.2, Z = 0.6 }
+							}
+						},
+
+					};
+
+					TraceList dataTraces = new TraceList( trace );
+
+					await Chart1.newPlot(dataTraces, layout, commonConfig);
+				}
+			}
+		}
+
 		public async void IsoSurface3DChart()
 		{
 			if (Webfile != null)
@@ -2708,7 +2871,7 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 				if (fileText != null)
 				{
 
-					List<Wind> Winds = new List<Wind>();
+					List<Vector> Winds = new List<Vector>();
 
 					string[] rows = fileText.Split("\n".ToCharArray());
 					for (int i = 1; i < rows.Length; i++)
@@ -2718,7 +2881,7 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 
 						if (values.Length < 7)
 							continue;
-						Wind wind = new Wind()
+						Vector wind = new Vector()
 						{
 							row = values[0],
 							x = Convert.ToDouble(values[1]),

@@ -28,6 +28,28 @@ namespace KilnGod.PlotlyCharts.Layout
             set { (ValueItems as dynamic).autocolorscale = value; }
         }
 
+        public object? AreaRatio
+        {
+            get { return (ValueItems as dynamic).arearatio; }
+            set { (ValueItems as dynamic).arearatio = value; }
+        }
+
+        BorderInfo? _BorderInfo = null;
+        public BorderInfo? Border
+        {
+            get { return _BorderInfo; }
+            set
+            {
+                _BorderInfo = value;
+                (ValueItems as dynamic).border = _BorderInfo?.ValueItems;
+            }
+        }
+
+        public bool? Blend
+        {
+            get { return (ValueItems as dynamic).blend; }
+            set { (ValueItems as dynamic).blend = value; }
+        }
         public bool? Cauto
         {
             get { return (ValueItems as dynamic).cauto; }
@@ -121,6 +143,18 @@ namespace KilnGod.PlotlyCharts.Layout
         {
             get { return (ValueItems as dynamic).size; }
             set { (ValueItems as dynamic).size = value; }
+        }
+
+        public object? SizeMin
+        {
+            get { return (ValueItems as dynamic).sizemin; }
+            set { (ValueItems as dynamic).sizemin = value; }
+        }
+
+        public object? SizeMax
+        {
+            get { return (ValueItems as dynamic).sizemax; }
+            set { (ValueItems as dynamic).sizemax = value; }
         }
 
 

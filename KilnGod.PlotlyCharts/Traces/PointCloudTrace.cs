@@ -17,13 +17,25 @@ using KilnGod.PlotlyCharts.Wrappers;
 
 namespace KilnGod.PlotlyCharts.Traces
 {
-    internal class PointCloud : Trace
+    public class PointCloudTrace : Trace
     {
        // https://plotly.com/javascript/pointcloud/
 
-        public PointCloud() : base(TraceTypeOptions.Specialized_PointCloud)
+        public PointCloudTrace() : base(TraceTypeOptions.Specialized_PointCloud)
         {
 
+        }
+
+        public object? X
+        {
+            get { return (ValueItems as dynamic).x; }
+            set { (ValueItems as dynamic).x = value; }
+        }
+
+        public object? Y
+        {
+            get { return (ValueItems as dynamic).y; }
+            set { (ValueItems as dynamic).y = value; }
         }
     }
 }

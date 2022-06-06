@@ -156,7 +156,7 @@ namespace KilnGod.PlotlyCharts.DemoTest.Models
     }
 
 
-    public struct Wind
+    public struct Vector
     {
         public string row { get; set; }
         public double x { get; set; }

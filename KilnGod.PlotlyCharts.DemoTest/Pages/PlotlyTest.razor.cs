@@ -1449,7 +1449,7 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 								LocationMode = LocationModeOptions.USAStates,
 								Mode = ModeOptions.Lines,
 								Longitude = new object[] { path.StartLon, path.EndLon },
-								Latitue = new object[] { path.StartLat, path.EndLat },
+								Latitude = new object[] { path.StartLat, path.EndLat },
 								Line = new LineInfo() { Width = 1, Color = "red" },
 								Opacity = path.Count * 1.0 / maxCount
 							}
@@ -1831,6 +1831,95 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 			await Chart1.newPlot(dataTraces, layout, commonConfig);
 		}
 
+		public async void BoxChart()
+		{
+
+			var xPlayers = new string[]
+			{
+				"Carmelo<br/>Anthony",
+				"Dwyane<br/>Wade",
+				"Deron<br/>Williams",
+				"Brook<br/>Lopez",
+				"Damian<br/>Lillard",
+				"David<br/>West",
+				"Blake<br/>Griffin",
+				"David<br/>Lee",
+				"Demar<br/>Derozan"
+			};
+
+			var yData = new object[]
+			{
+				BoxRandom(30,10),
+				BoxRandom(30,20),
+				BoxRandom(30,25),
+				BoxRandom(30,40),
+				BoxRandom(30,45),
+				BoxRandom(30,30),
+				BoxRandom(30,20),
+				BoxRandom(30,15),
+				BoxRandom(30,43)
+			};
+
+			var colors = new object[]
+			{
+				"rgba(93, 164, 214, 0.5)",
+				"rgba(255, 144, 14, 0.5)",
+				"rgba(44, 160, 101, 0.5)",
+				"rgba(255, 65, 54, 0.5)",
+				"rgba(207, 114, 255, 0.5)",
+				"rgba(127, 96, 0, 0.5)",
+				"rgba(255, 140, 184, 0.5)",
+				"rgba(79, 90, 117, 0.5)",
+				"rgba(222, 223, 0, 0.5)"
+			};
+
+			TraceList dataTraces = new TraceList();
+
+			for (int i = 0; i < xPlayers.Length; i++)
+			{
+				BoxTrace box = new BoxTrace()
+				{
+					Name = xPlayers[i],
+					Y = yData[i],
+					BoxPoints = BoxPointsOptions.All,
+					Jitter = 0.5,
+					WhiskerWidth = 0.2,
+					FillColor = "cls",
+					Marker = new MarkerInfo() { Size = 2 },
+					Line = new LineInfo() { Width = 1 }
+
+				};
+
+				dataTraces.AddTrace(box);
+			}
+
+			LayoutInfo layout = new LayoutInfo()
+			{
+				Title = new TitleInfo() { Text = "Points Scored by the Top 9 Scoring NBA Players in 2012" },
+				YAxis = new AxisInfo()
+				{
+					AutoRange = Enumerations.LayoutEnums.AutoRangeOptions.True,
+					ShowGrid = true,
+					ZeroLine = true,
+					DTick = 5,
+					GridColor = "rgb(255, 255, 255)",
+					Gridwidth = 1,
+					ZeroLineColor = "rgb(255, 255, 255)",
+					ZeroLinewidth = 2
+				},
+				Margin = new MarginInfo() { Left = 40, Right = 30, Bottom = 80, Top = 100 },
+				PaperBgColor = "rgb(243, 243, 243)",
+				PlotBgColor = "rgb(243, 243, 243)",
+				ShowLegend = false,
+				Height = plotHeight,
+				Width = plotWidth
+			};
+
+			await Chart1.newPlot(dataTraces, layout, commonConfig);
+
+		}
+
+
 		static double NextDouble(double min, double max)
 		{
 			System.Random random = new System.Random();
@@ -1937,176 +2026,429 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 			return result;
 		}
 
-		public async void BoxChart()
-		{
-
-			var xPlayers = new string[]
-			{
-				"Carmelo<br/>Anthony",
-				"Dwyane<br/>Wade",
-				"Deron<br/>Williams",
-				"Brook<br/>Lopez",
-				"Damian<br/>Lillard",
-				"David<br/>West",
-				"Blake<br/>Griffin",
-				"David<br/>Lee",
-				"Demar<br/>Derozan"
-			};
-
-			var yData = new object[]
-			{
-				BoxRandom(30,10),
-				BoxRandom(30,20),
-				BoxRandom(30,25),
-				BoxRandom(30,40),
-				BoxRandom(30,45),
-				BoxRandom(30,30),
-				BoxRandom(30,20),
-				BoxRandom(30,15),
-				BoxRandom(30,43)
-			};
-
-			var colors = new object[]
-			{
-				"rgba(93, 164, 214, 0.5)",
-				"rgba(255, 144, 14, 0.5)",
-				"rgba(44, 160, 101, 0.5)",
-				"rgba(255, 65, 54, 0.5)",
-				"rgba(207, 114, 255, 0.5)",
-				"rgba(127, 96, 0, 0.5)",
-				"rgba(255, 140, 184, 0.5)",
-				"rgba(79, 90, 117, 0.5)",
-				"rgba(222, 223, 0, 0.5)"
-			};
-
-			TraceList dataTraces = new TraceList();
-
-			for (int i = 0; i < xPlayers.Length; i++)
-			{
-				BoxTrace box = new BoxTrace()
-				{
-					Name = xPlayers[i],
-					Y = yData[i],
-					BoxPoints = BoxPointsOptions.All,
-					Jitter = 0.5,
-					WhiskerWidth = 0.2,
-					FillColor = "cls",
-					Marker = new MarkerInfo() { Size = 2 },
-					Line = new LineInfo() { Width = 1 }
-
-				};
-
-				dataTraces.AddTrace(box);
-			}
-
-			LayoutInfo layout = new LayoutInfo()
-			{
-				Title = new TitleInfo() { Text = "Points Scored by the Top 9 Scoring NBA Players in 2012" },
-				YAxis = new AxisInfo()
-				{
-					AutoRange = Enumerations.LayoutEnums.AutoRangeOptions.True,
-					ShowGrid = true,
-					ZeroLine = true,
-					DTick = 5,
-					GridColor = "rgb(255, 255, 255)",
-					Gridwidth = 1,
-					ZeroLineColor = "rgb(255, 255, 255)",
-					ZeroLinewidth = 2
-				},
-				Margin = new MarginInfo() { Left = 40, Right = 30, Bottom = 80, Top = 100 },
-				PaperBgColor = "rgb(243, 243, 243)",
-				PlotBgColor = "rgb(243, 243, 243)",
-				ShowLegend = false,
-				Height = plotHeight,
-				Width = plotWidth
-			};
-
-			await Chart1.newPlot(dataTraces, layout, commonConfig);
-
-		}
-
-		public async void Surface3DChart()
+	
+		public async void ParallelCategoriesChart()
 		{
 			if (Webfile != null)
 			{
-				string? fileText = await Webfile.DownloadText("https://raw.githubusercontent.com/plotly/datasets/master/api_docs/mt_bruno_elevation.csv");
+				string? fileText = await Webfile.DownloadText("https://raw.githubusercontent.com/plotly/datasets/master/titanic.csv");
 
 
 				if (fileText != null)
 				{
-
-					List<object[]> z_data = new List<object[]>();
+					List<TitanicPassenger> passengerList = new List<TitanicPassenger>();
 
 					string[] rows = fileText.Split("\n".ToCharArray());
 
 					for (int i = 0; i < rows.Length; i++)
 					{
-						if (rows[i] == String.Empty)
+						if (rows[i] == String.Empty || i == 0)
 						{
 							continue;
 						}
 						string[] values = rows[i].Split(",");
-						List<string> items = new List<string>();
-						for (int j = 0; j < values.Length; j++)
+
+						TitanicPassenger passenger = new TitanicPassenger()
 						{
+							PassengerId = Convert.ToInt32(values[0]),
+							Survived = Convert.ToInt32(values[1]),
+							Pclass = Convert.ToInt32(values[2]),
+							Name = (values[4] + " " + values[3]).Replace("\"", ""),
+							Sex = values[5],
+							Age = values[6],
+							SibSp = Convert.ToInt32(values[7]),
+							Parch = values[8],
+							Ticket = values[9],
+							Fare = Convert.ToDouble(values[10]),
+							Cabin = values[11],
+							Embarked = values[12]
 
-							items.Add(values[j]);
-
-						}
-						z_data.Add(items.ToArray());
+						};
+						passengerList.Add(passenger);
 					}
 
-					SurfaceTrace trace = new SurfaceTrace()
+					DimensionItem classDim = new DimensionItem()
 					{
-						Z = z_data,
-						Contours = new Contours3DInfo()
-						{
-							Z = new Contour3DLineInfo()
-							{
-								Show = true,
-								UseColorMap = true,
-								HighlightColor = "#42f462",
-								Project = new ProjectInfo()
-								{
-									Z = true
-								}
-							}
-						}
+						Label = "Class",
+						CategoryOrder = CategoryOrderOptions.CategoryAscending,
+						Values = passengerList.Select(passenger => passenger.Pclass).ToArray(),
 					};
 
-					LayoutInfo layout = new LayoutInfo()
+					DimensionItem genderDim = new DimensionItem()
 					{
-						Title = new TitleInfo() { Text = "Mt Bruno Elevation With Projected Contours" },
+						Label = "Gender",
+						CategoryOrder = CategoryOrderOptions.CategoryAscending,
+						Values = passengerList.Select(passenger => passenger.Sex).ToArray(),
+					};
 
-						Scene = new SceneInfo()
+					DimensionItem survivalDim = new DimensionItem()
+					{
+						Label = "Outcome",
+						CategoryArray = new int[] { 0, 1 },
+						Values = passengerList.Select(passenger => passenger.Survived).ToArray(),
+						TickText = new string[] { "perished", "survived" }
+					};
+
+					ItemList<DimensionItem> dimensions = new ItemList<DimensionItem>();
+					dimensions.Add(classDim);
+					dimensions.Add(genderDim);
+					dimensions.Add(survivalDim);
+
+					ParallelCategoriesTrace trace = new ParallelCategoriesTrace()
+					{
+						Arrangement = ArrangementOptions.Freeform,
+						Dimensions = dimensions,
+						LabelFont = new FontInfo() { Size = 14 },
+						Line = new LineInfo()
 						{
-							Camera = new CameraInfo()
-							{
-								Eye = new PositionInfo() { X = 1.87, Y = 0.88, Z = -0.64 }
-							}
+							Color = survivalDim.Values,
+							ColorScale = new object[] { new object[] { 0, "lightsteelblue" }, new object[] { 1, "mediumseagreen" } }
 						},
-						AutoSize = false,
-						Width = plotWidth,
-						Height = plotHeight,
-						Margin = new MarginInfo()
-						{
-							Left = 65,
-							Right = 50,
-							Bottom = 65,
-							Top = 90
-						}
-
+						HoverOn = HoverOnOptions.Color
 
 					};
 
 					TraceList dataTraces = new TraceList(trace);
 
+					LayoutInfo layout = new LayoutInfo()
+					{
+						Title = new TitleInfo() { Text = "Titanic Passenger Outcome" },
+						AutoSize = false,
+						Width = plotWidth,
+						Height = plotHeight,
+
+					};
+
+					await Chart1.newPlot(dataTraces, layout, commonConfig);
+				}
+
+			}
+		}
+
+
+		public double ColorLookup(string irisType)
+		{
+			double result = 0;
+			switch (irisType)
+			{
+				case "Iris-setosa":
+					result = 0;
+					break;
+				case "Iris-versicolor":
+					result = 0.5;
+					break;
+				case "Iris-virginica":
+					result = 1;
+					break;
+			}
+
+			return result;
+		}
+
+		public async void SplomChart()
+		{
+			if (Webfile != null)
+			{
+				string? fileText = await Webfile.DownloadText("https://raw.githubusercontent.com/plotly/datasets/master/iris-data.csv");
+
+				if (fileText != null)
+				{
+					List<IrisSample> samples = new List<IrisSample>();
+
+					string[] rows = fileText.Split("\n".ToCharArray());
+
+					for (int i = 0; i < rows.Length; i++)
+					{
+						if (rows[i] == String.Empty || i == 0)
+						{
+							continue;
+						}
+						string[] values = rows[i].Split(",");
+
+						IrisSample iris = new IrisSample()
+						{
+							SepalLength = Convert.ToDouble(values[0]),
+							SepalWidth = Convert.ToDouble(values[1]),
+							PetalLength = Convert.ToDouble(values[2]),
+							PetalWidth = Convert.ToDouble(values[3]),
+							IrisClass = values[4]
+
+						};
+						samples.Add(iris);
+					}
+
+					DimensionItem dim1 = new DimensionItem()
+					{
+						Label = "sepal length",
+
+						Values = samples.Select(iris => iris.SepalLength).ToArray(),
+					};
+
+					DimensionItem dim2 = new DimensionItem()
+					{
+						Label = "sepal width",
+
+						Values = samples.Select(iris => iris.SepalWidth).ToArray(),
+					};
+
+					DimensionItem dim3 = new DimensionItem()
+					{
+						Label = "petal length",
+
+						Values = samples.Select(iris => iris.PetalLength).ToArray(),
+
+					};
+
+					DimensionItem dim4 = new DimensionItem()
+					{
+						Label = "petal width",
+
+						Values = samples.Select(iris => iris.PetalWidth).ToArray(),
+
+					};
+
+					ItemList<DimensionItem> dimensions = new ItemList<DimensionItem>();
+					dimensions.Add(dim1);
+					dimensions.Add(dim2);
+					dimensions.Add(dim3);
+					dimensions.Add(dim4);
+
+					SplomTrace trace = new SplomTrace()
+					{
+
+						Dimensions = dimensions,
+
+						Marker = new MarkerInfo()
+						{
+							Color = samples.Select(iris => ColorLookup(iris.IrisClass)).ToArray(),
+							ColorScale = new object[]
+							{
+									new object[]{0.0, "#19d3f3" },
+									new object[]{0.333, "#19d3f3" },
+									new object[]{0.333, "#e763fa" },
+									new object[]{0.666, "#e763fa" },
+									new object[]{0.666, "#636efa" },
+									new object[]{ 1, "#636efa" },
+							},
+							Line = new LineInfo()
+							{
+								Color = "white",
+								Width = 0.5
+							},
+							Size = 7
+
+						},
+
+						Text = samples.Select(iris => iris.IrisClass).ToArray(),
+					};
+
+					TraceList dataTraces = new TraceList(trace);
+
+					AxisInfo axis = new AxisInfo()
+					{
+						ShowLine = false,
+						ZeroLine = false,
+						GridColor = "#fff",
+						Ticklen = 4
+
+					};
+
+					LayoutInfo layout = new LayoutInfo()
+					{
+						Title = new TitleInfo() { Text = "Iris Dataset" },
+						AutoSize = false,
+						Width = plotWidth,
+						Height = plotHeight,
+						HoverMode = HoverModeOptions.Closest,
+						DragMode = DragModeOptions.Select,
+						PlotBgColor = "rgba(240, 240, 240, 0.95)"
+
+
+
+					};
+					// badly flawed architecture by plotly
+					(layout.ValueItems as dynamic).xaxis = axis.ValueItems;
+					(layout.ValueItems as dynamic).xaxis2 = axis.ValueItems;
+					(layout.ValueItems as dynamic).xaxis3 = axis.ValueItems;
+					(layout.ValueItems as dynamic).xaxis4 = axis.ValueItems;
+					(layout.ValueItems as dynamic).yaxis = axis.ValueItems;
+					(layout.ValueItems as dynamic).yaxis2 = axis.ValueItems;
+					(layout.ValueItems as dynamic).yaxis3 = axis.ValueItems;
+					(layout.ValueItems as dynamic).yaxis4 = axis.ValueItems;
 
 
 					await Chart1.newPlot(dataTraces, layout, commonConfig);
 				}
 			}
 		}
+
+		public async void ViolinChart()
+		{
+			if (Webfile != null)
+			{
+				string? fileText = await Webfile.DownloadText("https://raw.githubusercontent.com/plotly/datasets/master/violin_data.csv");
+
+				if (fileText != null)
+				{
+					List<DinnerSample> samples = new List<DinnerSample>();
+
+					string[] rows = fileText.Split("\n".ToCharArray());
+
+					for (int i = 0; i < rows.Length; i++)
+					{
+						if (rows[i] == String.Empty || i == 0)
+						{
+							continue;
+						}
+						string[] values = rows[i].Split(",");
+
+						DinnerSample meal = new DinnerSample()
+						{
+							TotalBill = Convert.ToDouble(values[0]),
+							Tip = Convert.ToDouble(values[1]),
+							Sex = values[2],
+							Smoker = values[3],
+							Day = values[4],
+							Time = values[5],
+							Size = Convert.ToInt32(values[6])
+
+
+						};
+						samples.Add(meal);
+					}
+
+					ViolinTrace traceYes = new ViolinTrace()
+					{
+						X = samples.Select(meal => meal.Day).ToArray(),
+						Y = samples.Select(meal => meal.TotalBill).ToArray(),
+						LegendGroup = "Yes",
+						ScaleGroup = "Yes",
+						Name = "Yes",
+						Side = DensitySideOptions.Negative,
+						Box = new BoxInfo() { Visible = true },
+						Line = new LineInfo() { Color = "blue", Width = 2 },
+						MeanLine = new LineInfo() { }
+					};
+
+					ViolinTrace traceNo = new ViolinTrace()
+					{
+						X = samples.Select(meal => meal.Day).ToArray(),
+						Y = samples.Select(meal => meal.TotalBill).ToArray(),
+						LegendGroup = "No",
+						ScaleGroup = "No",
+						Name = "No",
+						Side = DensitySideOptions.Positive,
+						Box = new BoxInfo() { Visible = true },
+						Line = new LineInfo() { Color = "green", Width = 2 },
+						MeanLine = new LineInfo() { }
+					};
+
+					TraceList dataTraces = new TraceList(new[] { traceYes, traceNo });
+
+					LayoutInfo layout = new LayoutInfo()
+					{
+						Title = new TitleInfo() { Text = "Split Violin Plot" },
+						Height = plotHeight,
+						Width = plotWidth,
+						YAxis = new AxisInfo() { ZeroLine = false },
+						ViolinGap = 0,
+						ViolinGroupGap = 0,
+						ViolinMode = ViolinModeOptions.Overlay
+					};
+
+					await Chart1.newPlot(dataTraces, layout, commonConfig);
+				}
+			}
+		}
+
+		public async void IsoSurface3DChart()
+		{
+			if (Webfile != null)
+			{
+				string? fileText = await Webfile.DownloadText("https://raw.githubusercontent.com/plotly/datasets/master/clebsch-cubic.csv");
+
+				if (fileText != null)
+				{
+					List<Line3D1> lines = new List<Line3D1>();
+
+					string[] rows = fileText.Split("\n".ToCharArray());
+
+					for (int i = 0; i < rows.Length; i++)
+					{
+						if (rows[i] == String.Empty || i == 0)
+						{
+							continue;
+						}
+						string[] values = rows[i].Split(",");
+
+						Line3D1 line = new Line3D1()
+						{
+							row = Convert.ToInt32(values[0]),
+							x1 = Convert.ToDouble(values[1]),
+							y1 = Convert.ToDouble(values[2]),
+							z1 = Convert.ToDouble(values[3]),
+							value = Convert.ToDouble(values[4])
+						};
+						lines.Add(line);
+					}
+
+					IsoSurfaceTrace trace1 = new IsoSurfaceTrace()
+					{
+						X = lines.Select(item => item.x1).ToArray(),
+						Y = lines.Select(item => item.y1).ToArray(),
+						Z = lines.Select(item => item.z1).ToArray(),
+						Value = lines.Select(item => item.value).ToArray(),
+						IsoMin = -100,
+						IsoMax = 100,
+						Surface = new SurfaceInfo { Show = true, Count = 1, Fill = 0.8 },
+						Slices = new SlicesInfo
+						{
+							Z = new SliceRenderInfo()
+							{
+								Show = true,
+								Locations = new double[] { -0.3, 0.5 },
+							}
+						},
+						Caps = new CapsInfo()
+						{
+							X = new CapRenderInfo { Show = false },
+							Y = new CapRenderInfo { Show = false },
+							Z = new CapRenderInfo { Show = false }
+						}
+
+
+
+					};
+
+					TraceList dataTraces = new TraceList(new[] { trace1 });
+
+					LayoutInfo layout = new LayoutInfo()
+					{
+						Title = new TitleInfo() { Text = "3D Line Plot" },
+						AutoSize = false,
+						Width = plotWidth,
+						Height = plotHeight,
+						Scene = new SceneInfo()
+						{
+							Camera = new CameraInfo()
+							{
+								Eye = new PositionInfo() { X = 1.87, Y = 0.61, Z = 0.98 }
+							}
+						},
+						Margin = new MarginInfo()
+						{
+							Left = 0,
+							Bottom = 0,
+							Top = 0
+						}
+					};
+
+					await Chart1.newPlot(dataTraces, layout, commonConfig);
+				}
+			}
+		}
+
+
 
 		public async void Line3DChart()
 		{
@@ -2355,428 +2697,257 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 			}
 		}
 
-		public async void IsoSurface3DChart()
+
+		public async void StreamTubeChart()
 		{
 			if (Webfile != null)
 			{
-				string? fileText = await Webfile.DownloadText("https://raw.githubusercontent.com/plotly/datasets/master/clebsch-cubic.csv");
+				string? fileText = await Webfile.DownloadText("https://raw.githubusercontent.com/plotly/datasets/master/streamtube-wind.csv");
+
 
 				if (fileText != null)
 				{
-					List<Line3D1> lines = new List<Line3D1>();
+
+					List<Wind> Winds = new List<Wind>();
+
+					string[] rows = fileText.Split("\n".ToCharArray());
+					for (int i = 1; i < rows.Length; i++)
+					{					
+						
+						string[] values = rows[i].Split(",");
+
+						if (values.Length < 7)
+							continue;
+						Wind wind = new Wind()
+						{
+							row = values[0],
+							x = Convert.ToDouble(values[1]),
+							y = Convert.ToDouble(values[2]),
+							z = Convert.ToDouble(values[3]),
+							u = Convert.ToDouble(values[4]),
+							v = Convert.ToDouble(values[5]),
+							w = Convert.ToDouble(values[6])
+						};
+
+						Winds.Add(wind);
+					}
+
+
+					StreamTubeTrace trace = new StreamTubeTrace()
+					{
+						X = Winds.Select(wind => wind.x).ToArray(),
+						Y = Winds.Select(wind => wind.y).ToArray(),
+						Z = Winds.Select(wind => wind.z).ToArray(),
+						U = Winds.Select(wind => wind.u).ToArray(),
+						V = Winds.Select(wind => wind.v).ToArray(),
+						W = Winds.Select(wind => wind.w).ToArray(),
+						SizeRef = 0.3,
+						ColorScale = ColorScaleOptions.Portland.GetDescription(),
+						ShowScale = false,
+						MaxDisplayed = 3000,
+						Starts = new PositionInfo()
+						{
+							X = new int[] { 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80 },
+							Y = new int[] { 20, 30, 40, 50, 20, 30, 40, 50, 20, 30, 40, 50, 20, 30, 40, 50 },
+							Z = new int[] { 0, 0, 0, 0, 5, 5, 5, 5, 10, 10, 10, 10, 15, 15, 15, 15 }
+						},
+						Opacity=0.8
+
+					};
+
+
+					LayoutInfo layout = new LayoutInfo()
+					{
+						Scene = new SceneInfo()
+						{
+							
+							AspectRatio = new AspectRatioInfo()
+							{
+								X = 2,
+								Y = 1,
+								Z = 0.3
+							}
+						},
+						Width = plotWidth,
+						Height = plotHeight,
+						Margin = new MarginInfo()
+						{
+							Left = 20,
+							Right = 20,
+							Bottom = 20,
+							Top = 20
+						}
+					};
+
+
+					TraceList dataTraces = new TraceList(trace);
+
+
+
+					await Chart1.newPlot(dataTraces, layout, commonConfig);
+				}
+			}
+		}
+
+
+		public async void Surface3DChart()
+		{
+			if (Webfile != null)
+			{
+				string? fileText = await Webfile.DownloadText("https://raw.githubusercontent.com/plotly/datasets/master/api_docs/mt_bruno_elevation.csv");
+
+
+				if (fileText != null)
+				{
+
+					List<object[]> z_data = new List<object[]>();
 
 					string[] rows = fileText.Split("\n".ToCharArray());
 
 					for (int i = 0; i < rows.Length; i++)
 					{
-						if (rows[i] == String.Empty || i == 0)
+						if (rows[i] == String.Empty)
 						{
 							continue;
 						}
 						string[] values = rows[i].Split(",");
-
-						Line3D1 line = new Line3D1()
+						List<string> items = new List<string>();
+						for (int j = 0; j < values.Length; j++)
 						{
-							row = Convert.ToInt32(values[0]),
-							x1 = Convert.ToDouble(values[1]),
-							y1 = Convert.ToDouble(values[2]),
-							z1 = Convert.ToDouble(values[3]),
-							value = Convert.ToDouble(values[4])
-						};
-						lines.Add(line);
+
+							items.Add(values[j]);
+
+						}
+						z_data.Add(items.ToArray());
 					}
 
-					IsoSurfaceTrace trace1 = new IsoSurfaceTrace()
+					SurfaceTrace trace = new SurfaceTrace()
 					{
-						X = lines.Select(item => item.x1).ToArray(),
-						Y = lines.Select(item => item.y1).ToArray(),
-						Z = lines.Select(item => item.z1).ToArray(),
-						Value = lines.Select(item => item.value).ToArray(),
-						IsoMin = -100,
-						IsoMax = 100,
-						Surface = new SurfaceInfo { Show = true, Count = 1, Fill = 0.8 },
-						Slices = new SlicesInfo
+						Z = z_data,
+						Contours = new Contours3DInfo()
 						{
-							Z = new SliceRenderInfo()
+							Z = new Contour3DLineInfo()
 							{
 								Show = true,
-								Locations = new double[] { -0.3, 0.5 },
+								UseColorMap = true,
+								HighlightColor = "#42f462",
+								Project = new ProjectInfo()
+								{
+									Z = true
+								}
 							}
-						},
-						Caps = new CapsInfo()
-						{
-							X = new CapRenderInfo { Show = false },
-							Y = new CapRenderInfo { Show = false },
-							Z = new CapRenderInfo { Show = false }
 						}
-
-
-
 					};
-
-					TraceList dataTraces = new TraceList(new[] { trace1 });
 
 					LayoutInfo layout = new LayoutInfo()
 					{
-						Title = new TitleInfo() { Text = "3D Line Plot" },
-						AutoSize = false,
-						Width = plotWidth,
-						Height = plotHeight,
+						Title = new TitleInfo() { Text = "Mt Bruno Elevation With Projected Contours" },
+
 						Scene = new SceneInfo()
 						{
 							Camera = new CameraInfo()
 							{
-								Eye = new PositionInfo() { X = 1.87, Y = 0.61, Z = 0.98 }
+								Eye = new PositionInfo() { X = 1.87, Y = 0.88, Z = -0.64 }
 							}
 						},
+						AutoSize = false,
+						Width = plotWidth,
+						Height = plotHeight,
 						Margin = new MarginInfo()
 						{
-							Left = 0,
-							Bottom = 0,
-							Top = 0
+							Left = 65,
+							Right = 50,
+							Bottom = 65,
+							Top = 90
 						}
-					};
 
-					await Chart1.newPlot(dataTraces, layout, commonConfig);
-				}
-			}
-		}
-
-
-		public async void ParallelCategoriesChart()
-		{
-			if (Webfile != null)
-			{
-				string? fileText = await Webfile.DownloadText("https://raw.githubusercontent.com/plotly/datasets/master/titanic.csv");
-
-
-				if (fileText != null)
-				{
-					List<TitanicPassenger> passengerList = new List<TitanicPassenger>();
-
-					string[] rows = fileText.Split("\n".ToCharArray());
-
-					for (int i = 0; i < rows.Length; i++)
-					{
-						if (rows[i] == String.Empty || i == 0)
-						{
-							continue;
-						}
-						string[] values = rows[i].Split(",");
-
-						TitanicPassenger passenger = new TitanicPassenger()
-						{
-							PassengerId = Convert.ToInt32(values[0]),
-							Survived = Convert.ToInt32(values[1]),
-							Pclass = Convert.ToInt32(values[2]),
-							Name = (values[4] + " " + values[3]).Replace("\"", ""),
-							Sex = values[5],
-							Age = values[6],
-							SibSp = Convert.ToInt32(values[7]),
-							Parch = values[8],
-							Ticket = values[9],
-							Fare = Convert.ToDouble(values[10]),
-							Cabin = values[11],
-							Embarked = values[12]
-
-						};
-						passengerList.Add(passenger);
-					}
-
-					DimensionItem classDim = new DimensionItem()
-					{
-						Label = "Class",
-						CategoryOrder = CategoryOrderOptions.CategoryAscending,
-						Values = passengerList.Select(passenger => passenger.Pclass).ToArray(),
-					};
-
-					DimensionItem genderDim = new DimensionItem()
-					{
-						Label = "Gender",
-						CategoryOrder = CategoryOrderOptions.CategoryAscending,
-						Values = passengerList.Select(passenger => passenger.Sex).ToArray(),
-					};
-
-					DimensionItem survivalDim = new DimensionItem()
-					{
-						Label = "Outcome",
-						CategoryArray = new int[] { 0, 1 },
-						Values = passengerList.Select(passenger => passenger.Survived).ToArray(),
-						TickText = new string[] { "perished", "survived" }
-					};
-
-					ItemList<DimensionItem> dimensions = new ItemList<DimensionItem>();
-					dimensions.Add(classDim);
-					dimensions.Add(genderDim);
-					dimensions.Add(survivalDim);
-
-					ParallelCategoriesTrace trace = new ParallelCategoriesTrace()
-					{
-						Arrangement = ArrangementOptions.Freeform,
-						Dimensions = dimensions,
-						LabelFont = new FontInfo() { Size = 14 },
-						Line = new LineInfo()
-						{
-							Color = survivalDim.Values,
-							ColorScale = new object[] { new object[] { 0, "lightsteelblue" }, new object[] { 1, "mediumseagreen" } }
-						},
-						HoverOn = HoverOnOptions.Color
 
 					};
 
 					TraceList dataTraces = new TraceList(trace);
 
-					LayoutInfo layout = new LayoutInfo()
-					{
-						Title = new TitleInfo() { Text = "Titanic Passenger Outcome" },
-						AutoSize = false,
-						Width = plotWidth,
-						Height = plotHeight,
 
-					};
-
-					await Chart1.newPlot(dataTraces, layout, commonConfig);
-				}
-
-			}
-		}
-		public async void ViolinChart()
-		{
-			if (Webfile != null)
-			{
-				string? fileText = await Webfile.DownloadText("https://raw.githubusercontent.com/plotly/datasets/master/violin_data.csv");
-
-				if (fileText != null)
-				{
-					List<DinnerSample> samples = new List<DinnerSample>();
-
-					string[] rows = fileText.Split("\n".ToCharArray());
-
-					for (int i = 0; i < rows.Length; i++)
-					{
-						if (rows[i] == String.Empty || i == 0)
-						{
-							continue;
-						}
-						string[] values = rows[i].Split(",");
-
-						DinnerSample meal = new DinnerSample()
-						{
-							TotalBill = Convert.ToDouble(values[0]),
-							Tip = Convert.ToDouble(values[1]),
-							Sex = values[2],
-							Smoker = values[3],
-							Day = values[4],
-							Time = values[5],
-							Size = Convert.ToInt32( values[6])
-							
-
-						};
-						samples.Add(meal);
-					}
-
-					ViolinTrace traceYes = new ViolinTrace()
-					{
-						X = samples.Select(meal => meal.Day).ToArray(),
-						Y = samples.Select(meal => meal.TotalBill).ToArray(),
-						LegendGroup = "Yes",
-						ScaleGroup = "Yes",
-						Name = "Yes",
-						Side = DensitySideOptions.Negative,
-						Box = new BoxInfo() { Visible = true },
-						Line = new LineInfo() { Color = "blue", Width = 2 },
-						MeanLine = new LineInfo() { }
-					};
-
-					ViolinTrace traceNo = new ViolinTrace()
-					{
-						X = samples.Select(meal => meal.Day).ToArray(),
-						Y = samples.Select(meal => meal.TotalBill).ToArray(),
-						LegendGroup = "No",
-						ScaleGroup = "No",
-						Name = "No",
-						Side = DensitySideOptions.Positive,
-						Box = new BoxInfo() { Visible = true },
-						Line = new LineInfo() { Color = "green", Width = 2 },
-						MeanLine = new LineInfo() { }
-					}; 
-
-					TraceList dataTraces = new TraceList(new[] { traceYes, traceNo });
-
-					LayoutInfo layout = new LayoutInfo()
-					{
-						Title = new TitleInfo() { Text = "Split Violin Plot" },
-						Height = plotHeight,
-						Width = plotWidth,
-						YAxis = new AxisInfo() { ZeroLine = false},
-						ViolinGap =0,
-						ViolinGroupGap = 0,
-						ViolinMode = ViolinModeOptions.Overlay
-					};
 
 					await Chart1.newPlot(dataTraces, layout, commonConfig);
 				}
 			}
 		}
 
-		public double ColorLookup(string irisType)
-		{
-			double result = 0;
-			switch (irisType)
+		public async void VolumeChart()
+        {
+			VolumeTrace trace = new Traces.VolumeTrace()
 			{
-				case "Iris-setosa":
-					result = 0;
-					break;
-				case "Iris-versicolor":
-					result = 0.5;
-					break;
-				case "Iris-virginica":
-					result = 1;
-					break;
-			}
-
-			return result;
-		}
-
-		public async void SplomChart()
-		{
-			if (Webfile != null)
-			{
-				string? fileText = await Webfile.DownloadText("https://raw.githubusercontent.com/plotly/datasets/master/iris-data.csv");
-
-				if (fileText != null)
+				Caps = new CapsInfo()
 				{
-					List<IrisSample> samples = new List<IrisSample>();
+					X = new CapRenderInfo() { Show = true },
+					Y = new CapRenderInfo() { Show = true },
+					Z = new CapRenderInfo() { Show = true }
+				},
+				ColorScale = new object[] { new object[] { 0.0, "rgb(0,0,255)" }, new object[] { 0.5, "rgb(255,255,255)" }, new object[] { 0.75, "rgb(255,255,0)" }, new object[] { 0.875, "rgb(255,0,0)" }, new object[] { 1.0, "rgb(127,127,127)}" } },
+				Contour = new ContourInfo() { Width=4, Show=true},
+				FlatShading = true,
+				Opacity = 0.05,
+				OpacityScale = new Object[] { new double[] { 0, 1.0 }, new double[] { 0.2, 0.9 }, new double[] { 0.3, 0.5 }, new double[] { 0.4, 0.4 }, new double[] { 0.5, 0.5 }, new double[] { 1, 1.0 } },
+				Lighting = new LightingInfo() { FaceNormalsEpsilon=0},
+				ReverseScale = true,
+				Slices = new SlicesInfo()
+				{
+					X = new SliceRenderInfo() { Show = true },
+					Y = new SliceRenderInfo() { Show = true },
+					Z = new SliceRenderInfo() { Show = true }
+				},
+				SpaceFrame = new SpaceFrameInfo() { Fill=1, Show = true},
+				Surface = new SurfaceInfo() { Show=true, Fill=1, Pattern= Enumerations.TracesEnums.PatternOptions.All, Count=25},
+				Value = KilnGod.PlotlyCharts.DemoTest.Data.VolumeData.Value,
+				X = KilnGod.PlotlyCharts.DemoTest.Data.VolumeData.X,
+				Y = KilnGod.PlotlyCharts.DemoTest.Data.VolumeData.Y,
+				Z = KilnGod.PlotlyCharts.DemoTest.Data.VolumeData.Z,
+			};
 
-					string[] rows = fileText.Split("\n".ToCharArray());
+			TraceList dataTraces = new TraceList(trace);
 
-					for (int i = 0; i < rows.Length; i++)
+			LayoutInfo layout = new LayoutInfo()
+			{
+				Title = new TitleInfo() { Text = "volume airflow model" },
+				
+				Width = plotWidth,
+				Height = plotHeight,
+				Scene = new SceneInfo()
+				{
+					AspectRatio = new AspectRatioInfo()
 					{
-						if (rows[i] == String.Empty || i == 0)
+						X = 1,
+						Y = 1,
+						Z = 1
+					},
+					XAxis = new AxisInfo() { NTicks = 12 },
+					YAxis = new AxisInfo() { NTicks = 12 },
+					ZAxis = new AxisInfo() { NTicks = 12 },
+					Camera = new CameraInfo()
+					{
+						Center = new CenterInfo()
 						{
-							continue;
-						}
-						string[] values = rows[i].Split(",");
-
-						IrisSample iris = new IrisSample()
-						{
-							SepalLength = Convert.ToDouble(values[0]),
-							SepalWidth = Convert.ToDouble(values[1]),
-							PetalLength = Convert.ToDouble(values[2]),
-							PetalWidth = Convert.ToDouble(values[3]),
-							IrisClass = values[4]
-
-						};
-						samples.Add(iris);
-					}
-
-					DimensionItem dim1 = new DimensionItem()
-					{
-						Label = "sepal length",
-
-						Values = samples.Select(iris => iris.SepalLength).ToArray(),
-					};
-
-					DimensionItem dim2 = new DimensionItem()
-					{
-						Label = "sepal width",
-
-						Values = samples.Select(iris => iris.SepalWidth).ToArray(),
-					};
-
-					DimensionItem dim3 = new DimensionItem()
-					{
-						Label = "petal length",
-
-						Values = samples.Select(iris => iris.PetalLength).ToArray(),
-
-					};
-
-					DimensionItem dim4 = new DimensionItem()
-					{
-						Label = "petal width",
-
-						Values = samples.Select(iris => iris.PetalWidth).ToArray(),
-
-					};
-
-					ItemList<DimensionItem> dimensions = new ItemList<DimensionItem>();
-					dimensions.Add(dim1);
-					dimensions.Add(dim2);
-					dimensions.Add(dim3);
-					dimensions.Add(dim4);
-
-					SplomTrace trace = new SplomTrace()
-					{
-
-						Dimensions = dimensions,
-
-						Marker = new MarkerInfo()
-						{
-							Color = samples.Select(iris => ColorLookup(iris.IrisClass)).ToArray(),
-							ColorScale = new object[]
-							{
-									new object[]{0.0, "#19d3f3" },
-									new object[]{0.333, "#19d3f3" },
-									new object[]{0.333, "#e763fa" },
-									new object[]{0.666, "#e763fa" },
-									new object[]{0.666, "#636efa" },
-									new object[]{ 1, "#636efa" },
-							},
-							Line = new LineInfo()
-							{
-								Color = "white",
-								Width = 0.5
-							},
-							Size = 7
-
+							X = 0,
+							Y = 0,
+							Z = 0
 						},
+						Eye = new PositionInfo()
+						{
+							X = 1.75,
+							Y = 0.2,
+							Z = 0.35
+						}
 
-						Text = samples.Select(iris => iris.IrisClass).ToArray(),
-					};
-
-					TraceList dataTraces = new TraceList(trace);
-
-					AxisInfo axis = new AxisInfo()
-					{
-						ShowLine = false,
-						ZeroLine = false,
-						GridColor = "#fff",
-						Ticklen = 4
-
-					};
-
-					LayoutInfo layout = new LayoutInfo()
-					{
-						Title = new TitleInfo() { Text = "Iris Dataset" },
-						AutoSize = false,
-						Width = plotWidth,
-						Height = plotHeight,
-						HoverMode = HoverModeOptions.Closest,
-						DragMode = DragModeOptions.Select,
-						PlotBgColor = "rgba(240, 240, 240, 0.95)"
-						
-
-
-					};
-					// badly flawed architecture by plotly
-					(layout.ValueItems as dynamic).xaxis = axis.ValueItems;
-					(layout.ValueItems as dynamic).xaxis2 = axis.ValueItems;
-					(layout.ValueItems as dynamic).xaxis3 = axis.ValueItems;
-					(layout.ValueItems as dynamic).xaxis4 = axis.ValueItems;
-					(layout.ValueItems as dynamic).yaxis = axis.ValueItems;
-					(layout.ValueItems as dynamic).yaxis2 = axis.ValueItems;
-					(layout.ValueItems as dynamic).yaxis3 = axis.ValueItems;
-					(layout.ValueItems as dynamic).yaxis4 = axis.ValueItems;
-
-
-					await Chart1.newPlot(dataTraces, layout, commonConfig);
+					}
 				}
-			}
+
+			};
+
+			await Chart1.newPlot(dataTraces, layout, commonConfig);
 		}
+	
 
-
-
+	
 	}
 }
 

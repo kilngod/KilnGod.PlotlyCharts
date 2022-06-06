@@ -33,6 +33,24 @@ namespace KilnGod.PlotlyCharts.Layout
 			set { (ValueItems as dynamic).lon = value; }
 		}
 
+		public double? X
+		{
+			get { return (ValueItems as dynamic).x; }
+			set { (ValueItems as dynamic).x = value; }
+		}
+
+		public double? Y
+		{
+			get { return (ValueItems as dynamic).y; }
+			set { (ValueItems as dynamic).y = value; }
+		}
+
+		public double? Z
+		{
+			get { return (ValueItems as dynamic).z; }
+			set { (ValueItems as dynamic).z = value; }
+		}
+
 	}
 
 

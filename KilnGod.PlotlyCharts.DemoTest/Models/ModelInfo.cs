@@ -156,6 +156,18 @@ namespace KilnGod.PlotlyCharts.DemoTest.Models
     }
 
 
+    public struct Wind
+    {
+        public string row { get; set; }
+        public double x { get; set; }
+        public double y { get; set; }
+        public double z { get; set; }
+
+        public double u { get; set; }
+        public double v { get; set; }
+        public double w { get; set; }
+    }
+
     public struct WorldHappiness
     {
 

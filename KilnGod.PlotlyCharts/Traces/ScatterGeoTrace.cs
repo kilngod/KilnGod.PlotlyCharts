@@ -22,7 +22,7 @@ namespace KilnGod.PlotlyCharts.Traces
 
         }
 
-        public object? Latitue
+        public object? Latitude
         {
             get { return (ValueItems as dynamic).lat; }
             set { (ValueItems as dynamic).lat = value; }

@@ -853,6 +853,8 @@ public enum OperationOptions
 	{
 		[Description("A")]
 		A,
+		[Description("all")]
+		All,
 		[Description("B")]
 		B,
 		[Description("C")]

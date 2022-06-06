@@ -33,7 +33,7 @@ namespace KilnGod.PlotlyCharts.Layout
             set { (ValueItems as dynamic).diffuse = value; }
         }
 
-        public double? FaceNormalsepsilon
+        public double? FaceNormalsEpsilon
         {
             get { return (ValueItems as dynamic).facenormalsepsilon; }
             set { (ValueItems as dynamic).facenormalsepsilon = value; }

@@ -235,7 +235,7 @@ namespace KilnGod.PlotlyCharts.Layout
 				_ImagesItems = value;
 				if (value != null)
 				{
-					(ValueItems as dynamic).images = value.Values;
+					(ValueItems as dynamic).images = _ImagesItems?.Values;
 				}
 			}
 		}
@@ -366,7 +366,7 @@ namespace KilnGod.PlotlyCharts.Layout
 				_ShapeItems = value;
 				if (value != null)
 				{
-					(ValueItems as dynamic).shapes = value.Values;
+					(ValueItems as dynamic).shapes = _ShapeItems?.Values;
 				}
 			}
 		}
@@ -390,7 +390,7 @@ namespace KilnGod.PlotlyCharts.Layout
 				_SlidersItems = value;
 				if (value != null)
 				{
-					(ValueItems as dynamic).sliders = value.Values;
+					(ValueItems as dynamic).sliders = _SlidersItems?.Values;
 				}
 			}
 		}
@@ -482,7 +482,7 @@ namespace KilnGod.PlotlyCharts.Layout
 				_UpdateMenusItems = value;
 				if (value != null)
 				{
-					(ValueItems as dynamic).updatemenus = value.Values;
+					(ValueItems as dynamic).updatemenus = _UpdateMenusItems?.Values;
 				}
 			}
 		}

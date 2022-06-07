@@ -22,16 +22,14 @@ namespace KilnGod.PlotlyCharts.Transforms
 		public AggregationsOptions() : base() { }
 
 		ItemList<AggregationItem>? _AggregationItems = null;
-		public ItemList<AggregationItem> AggregationItems
+		public ItemList<AggregationItem>? AggregationItems
 		{
-			get
+			get { return _AggregationItems; }
+			set
 			{
-				if (_AggregationItems == null)
-				{
-					_AggregationItems = new ItemList<AggregationItem>();
-				}
-				return _AggregationItems;
-			}
+				_AggregationItems = value;
+				(ValueItems as dynamic).aggregations = _AggregationItems?.Values;
+			}			
 		}
 
 	}

@@ -297,13 +297,18 @@ namespace KilnGod.PlotlyCharts.Layout
         ItemList<ValuesObject>? _TransformsItems = null;
         public ItemList<ValuesObject> TransformsItems
         {
+
             get
             {
-                if (_TransformsItems == null)
-                {
-                    _TransformsItems = new ItemList<ValuesObject>();
-                }
                 return _TransformsItems;
+            }
+            set
+            {
+                _TransformsItems = value;
+                if (value != null)
+                {
+                    (ValueItems as dynamic).transforms = _TransformsItems?.Values;
+                }
             }
         }
 

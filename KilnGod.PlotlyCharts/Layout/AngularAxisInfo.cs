@@ -225,7 +225,7 @@ namespace KilnGod.PlotlyCharts.Layout
 				_TickFormatStopsItems = value;
 				if (value != null)
 				{
-					(ValueItems as dynamic).tickformatstops = value.Values;
+					(ValueItems as dynamic).tickformatstops = _TickFormatStopsItems?.Values;
 				}
 			}
 		}

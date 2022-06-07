@@ -22,16 +22,14 @@ namespace KilnGod.PlotlyCharts.Transforms
 		public StylesOptions() : base() { }
 
 		ItemList<StyleItem>? _StyleItems = null;
-		public ItemList<StyleItem> StyleItems
+		public ItemList<StyleItem>? Style
 		{
-			get
+			get { return _StyleItems; }
+			set
 			{
-				if (_StyleItems == null)
-				{
-					_StyleItems = new ItemList<StyleItem>();
-				}
-				return _StyleItems;
-			}
+				_StyleItems = value;
+				(ValueItems as dynamic).style = _StyleItems?.Values;
+			}			
 		}
 
 	}

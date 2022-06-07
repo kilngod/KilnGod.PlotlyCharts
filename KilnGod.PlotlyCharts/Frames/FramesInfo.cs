@@ -33,7 +33,7 @@ namespace KilnGod.PlotlyCharts.Frames
 				_FramesEntryItems = value;
 				if (value != null)
 				{
-					(ValueItems as dynamic).frames = value.Values;
+					(ValueItems as dynamic).frames = _FramesEntryItems?.Values;
 				}
 			}
 		}

@@ -56,17 +56,20 @@ namespace KilnGod.PlotlyCharts.Layout
 			}
 		}
 
-		ItemList<LayersItem>? _LayersItemss = null;
-		public ItemList<LayersItem> LayersItemss
+		ItemList<LayersItem>? _LayersItems = null;
+		public ItemList<LayersItem>? Layers
 		{
 			get
 			{
-				if (_LayersItemss == null)
-				{
-					_LayersItemss = new ItemList<LayersItem>();
-				}
-				return _LayersItemss;
+				return _LayersItems;
 			}
+			set
+			{
+				_LayersItems = value;
+				(ValueItems as dynamic).layers = _LayersItems?.Values;
+			}
+
+			
 		}
 
 		public double? Pitch

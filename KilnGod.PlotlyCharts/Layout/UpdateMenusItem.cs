@@ -56,7 +56,7 @@ namespace KilnGod.PlotlyCharts.Layout
 				_ButtonsItems = value;
 				if (value != null)
 				{
-					(ValueItems as dynamic).buttons = value.Values;
+					(ValueItems as dynamic).buttons = _ButtonsItems?.Values;
 				}
 			}
 		}

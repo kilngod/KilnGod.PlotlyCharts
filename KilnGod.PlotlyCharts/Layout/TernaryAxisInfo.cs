@@ -171,7 +171,7 @@ namespace KilnGod.PlotlyCharts.Layout
 		}
 
 		ItemList<TickFormatStopItem>? _TickFormatStopsItems = null;
-		public ItemList<TickFormatStopItem>? TickFormatStopsItems
+		public ItemList<TickFormatStopItem>? TickFormatStops
 		{
 			get
 			{
@@ -182,7 +182,7 @@ namespace KilnGod.PlotlyCharts.Layout
 				_TickFormatStopsItems = value;
 				if (value != null)
 				{
-					(ValueItems as dynamic).tickformatstops = value.Values;
+					(ValueItems as dynamic).tickformatstops = _TickFormatStopsItems?.Values;
 				}
 			}
 		}

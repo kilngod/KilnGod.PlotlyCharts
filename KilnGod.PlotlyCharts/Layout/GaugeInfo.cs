@@ -81,7 +81,7 @@ namespace KilnGod.PlotlyCharts.Layout
                 _StepsItems = value;
                 if (value != null)
                 {
-                    (ValueItems as dynamic).steps = value.Values;
+                    (ValueItems as dynamic).steps = _StepsItems?.Values;
                 }
             }
         }

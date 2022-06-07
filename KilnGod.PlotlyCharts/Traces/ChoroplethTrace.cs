@@ -68,7 +68,7 @@ namespace KilnGod.PlotlyCharts.Traces
                 _TransformsItems = value;
                 if (value != null)
                 {
-                    (ValueItems as dynamic).transforms = value.Values;
+                    (ValueItems as dynamic).transforms = _TransformsItems?.Values;
                 }
             }
         }

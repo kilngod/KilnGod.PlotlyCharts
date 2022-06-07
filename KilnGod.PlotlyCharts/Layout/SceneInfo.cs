@@ -22,16 +22,17 @@ namespace KilnGod.PlotlyCharts.Layout
 
 		public SceneInfo() : base() { }
 
-		ItemList<AnnotationItem>? _AnnotationsItemss = null;
-		public ItemList<AnnotationItem> AnnotationsItemss
+		ItemList<AnnotationItem>? _AnnotationsItems = null;
+		public ItemList<AnnotationItem>? Annotations
 		{
 			get
 			{
-				if (_AnnotationsItemss == null)
-				{
-					_AnnotationsItemss = new ItemList<AnnotationItem>();
-				}
-				return _AnnotationsItemss;
+				return _AnnotationsItems;
+			}
+			set
+			{
+				_AnnotationsItems = value;
+				(ValueItems as dynamic).annotations = _AnnotationsItems?.Values;
 			}
 		}
 

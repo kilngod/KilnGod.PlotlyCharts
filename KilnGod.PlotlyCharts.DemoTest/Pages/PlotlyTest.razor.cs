@@ -52,7 +52,7 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 			Height = plotHeight,
 			Width = plotWidth
 		};
-		ConfigInfo commonConfig = new ConfigInfo() { Responsive = true, Editable = false, DisplayLogo = false };
+		ConfigInfo commonConfig = new ConfigInfo() { Responsive = true, Editable = true, DisplayLogo = false };
 
 		protected override async Task OnAfterRenderAsync(bool firstRender)
 		{
@@ -2087,15 +2087,15 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 
 			var xPlayers = new string[]
 			{
-				"Carmelo<br/>Anthony",
-				"Dwyane<br/>Wade",
-				"Deron<br/>Williams",
-				"Brook<br/>Lopez",
-				"Damian<br/>Lillard",
-				"David<br/>West",
-				"Blake<br/>Griffin",
-				"David<br/>Lee",
-				"Demar<br/>Derozan"
+				"Carmelo<br />Anthony",
+				"Dwyane<br />Wade",
+				"Deron<br />Williams",
+				"Brook<br />Lopez",
+				"Damian<br />Lillard",
+				"David<br />West",
+				"Blake<br />Griffin",
+				"David<br />Lee",
+				"Demar<br />Derozan"
 			};
 
 			var yData = new object[]

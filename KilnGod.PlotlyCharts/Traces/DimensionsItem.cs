@@ -76,5 +76,11 @@ namespace KilnGod.PlotlyCharts.Traces
 			set { (ValueItems as dynamic).values = value; }
 		}
 
+		public bool? Visible
+		{
+			get { return (ValueItems as dynamic).visible; }
+			set { (ValueItems as dynamic).visible = value; }
+		}
+
 	}
 }

@@ -18,6 +18,20 @@ using System.Threading.Tasks;
 namespace KilnGod.PlotlyCharts.DemoTest.Models
 {
 
+    public struct BlockData
+    {
+        public int colorVal { get; set; }
+        public double blockHeight { get; set; }
+        public double blockWidth { get; set; }
+        public double cycMaterial { get; set; }
+        public double blockMaterial { get; set; }
+        public double totalWeight { get; set; }
+        public double assemblyPW { get; set; }
+        public double HstW { get; set; }
+        public double minHW { get; set; }
+        public double minWD { get; set; }
+        public double rfBlock { get; set; }
+    }
 
     public struct CoffeeData
     {

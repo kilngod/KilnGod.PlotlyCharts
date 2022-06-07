@@ -121,7 +121,8 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 				XAxis = new AxisInfo() { Title = new TitleInfo() { Text = "X Axis" }, AutoRange = AutoRangeOptions.True, AxisType = AxisTypeOptions.Log },
 				YAxis = new AxisInfo() { Title = new TitleInfo() { Text = "Y Axis" }, AutoRange = AutoRangeOptions.True, AxisType = AxisTypeOptions.Log },
 				Height = plotHeight,
-				Width = plotWidth
+				Width = plotWidth,
+				ShowLegend = false
 			};
 			
 
@@ -1081,14 +1082,14 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 			};
 			FunnelTrace TorontoFunnel = new FunnelTrace()
 			{
-				Name = "Montreal",
+				Name = "Toronto",
 				X = new double[] { 100, 60, 40, 30, 20 },
 				Y = new string[] { "Website visit", "Downloads", "Potential customers", "Requested price", "invoice sent" },
 				TextInfo = TextInfoOptions.Value_PercentInitial,
 			};
 			FunnelTrace VancouverFunnel = new FunnelTrace()
 			{
-				Name = "Montreal",
+				Name = "Vancouver",
 				X = new double[] { 90, 70, 50, 30, 10, 5 },
 				Y = new string[] { "Website visit", "Downloads", "Potential customers", "Requested price", "invoice sent", "closed deals" },
 				TextInfo = TextInfoOptions.Value_PercentInitial,
@@ -1748,29 +1749,146 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 
 		public async void ParallelCoordinateChart()
 		{
+
+
+
 			//https://plotly.com/javascript/parallel-coordinates-plot/
 
-			ItemList<DimensionItem> dimensions = new ItemList<DimensionItem>();
-
-
-			dimensions.Add(new DimensionItem() { Label = "A", Values = new double[] { 1, 4 }, Range = new object[] { 1, 5 }, ConstraintRange = new object[] { 1, 2 } });
-			dimensions.Add(new DimensionItem() { Label = "B", Values = new double[] { 3, 1.5 }, Range = new object[] { 1, 5 }, TickVals = new object[] { 1.5, 3, 4.5 } });
-			dimensions.Add(new DimensionItem() { Label = "C", Values = new double[] { 2, 4 }, Range = new object[] { 1, 5 }, TickVals = new object[] { 1, 2, 4, 5 }, TickText = new string[] { "text 1", "text 2", "text 4", "text 5" } });
-			dimensions.Add(new DimensionItem() { Label = "D", Values = new double[] { 4, 2 }, Range = new object[] { 1, 5 } });
-
-			ParallelCoordinateTrace trace = new ParallelCoordinateTrace()
+			if (Webfile != null)
 			{
-				Line = new LineInfo() { Color = "blue" },
-				Dimensions = dimensions
-			};
+				string? fileText = await Webfile.DownloadText("https://raw.githubusercontent.com/bcdunbar/datasets/master/parcoords_data.csv");
 
 
-			TraceList dataTraces = new TraceList(trace);
+				if (fileText != null)
+				{
+					List<BlockData> blockList = new List<BlockData>();
 
+					string[] rows = fileText.Split("\n".ToCharArray());
 
+					for (int i = 1; i < rows.Length; i++)
+					{
+						if (rows[i] == String.Empty || i == 0)
+						{
+							continue;
+						}
+						string[] values = rows[i].Replace("\r,", "").Split(",");
 
-			await Chart1.newPlot(dataTraces, commonLayout, commonConfig);
+						BlockData block = new BlockData()
+						{
 
+							colorVal = Convert.ToInt32(values[0]),
+							blockHeight = Convert.ToDouble(values[1]),
+							blockWidth = Convert.ToDouble(values[2]),
+							cycMaterial = Convert.ToDouble(values[3]),
+							blockMaterial = Convert.ToDouble(values[4]),
+							totalWeight = Convert.ToDouble(values[5]),
+							assemblyPW = Convert.ToDouble(values[6]),
+							HstW = Convert.ToDouble(values[7]),
+							minHW = Convert.ToDouble(values[8]),
+							minWD = Convert.ToDouble(values[9]),
+							rfBlock = Convert.ToDouble(values[10])
+						};
+						blockList.Add(block);
+					}
+
+					ItemList<DimensionItem> dimensions = new ItemList<DimensionItem>(
+						new DimensionItem[] {
+							new DimensionItem()
+							{
+								ConstraintRange = new object[] { 100000, 150000 },
+								Range = new object[] { 32000, 227900 },
+								Label = "Block height",
+								Values = blockList.Select(block => block.blockHeight).ToArray()
+							},
+							new DimensionItem()
+							{
+								Range = new object[] { 0, 700000 },
+								Label = "Block width",
+								Values = blockList.Select(block => block.blockWidth).ToArray()
+							},
+							new DimensionItem()
+							{
+								TickVals = new double[]{0, 0.5, 1, 2, 3},
+								TickText = new string[]{"A", "AB", "B", "Y", "Z"},
+								Label = "Cylinder material",
+								Values = blockList.Select(block => block.blockWidth).ToArray()
+							},
+							new DimensionItem()
+							{
+								Range = new object[] { -1, 4 },
+								TickVals = new double[]{0, 1, 2, 3},
+								Label = "Block material",
+								Values = blockList.Select(block => block.blockMaterial).ToArray()
+							},
+							new DimensionItem()
+							{
+								Range = new object[] {134, 3154 },
+								Label = "Total weight",
+								Visible = true,
+								Values = blockList.Select(block => block.totalWeight).ToArray()
+							},
+							new DimensionItem()
+							{
+								Range = new object[] { 9, 19984 },
+								Label = "Assembly penalty weight",
+								Values = blockList.Select(block => block.assemblyPW).ToArray()
+							},
+							new DimensionItem()
+							{
+								Range = new object[] { 49000, 568000 },
+								Label = "Height st width",
+								Values = blockList.Select(block => block.HstW).ToArray()
+							},
+							new DimensionItem()
+							{
+								Range = new object[] {-28000, 196430 },
+								Label = "Min height width",
+								Values = blockList.Select(block => block.minHW).ToArray()
+							},
+							new DimensionItem()
+							{
+								Range = new object[] {98453, 501789 },
+								Label = "Min width diameter",
+								Values = blockList.Select(block => block.minWD).ToArray()
+							},
+							new DimensionItem()
+							{
+								Range = new object[] { 1417, 107154 },
+								Label = "RF block",
+								Values = blockList.Select(block => block.rfBlock).ToArray()
+							}
+
+						}
+					);
+
+					ParallelCoordinateTrace trace = new ParallelCoordinateTrace()
+					{
+						Dimensions = dimensions,
+						Line = new LineInfo()
+						{
+							ShowScale = true,
+							ReverseScale = true,
+							ColorScale = ColorScaleOptions.Jet.GetDescription(),
+							Cmin = -4000,
+							Cmax = -100,
+							Color = blockList.Select(block => block.colorVal).ToArray()
+						}
+					};
+
+					TraceList dataTraces = new TraceList(trace);
+
+					LayoutInfo layout = new LayoutInfo()
+					{
+						Title = new TitleInfo() { Text = "Parallel Coordinate Chart" },
+						ShowLegend = false,
+						Height = plotHeight,
+						Width = plotWidth,
+						Margin = new MarginInfo() { Left = 50, Right = 0, Top = 250, Bottom = 250 }
+					};
+
+					await Chart1.newPlot(dataTraces, layout, commonConfig);
+				}
+			}
 		}
 
 		public async void PolarChart()
@@ -2916,7 +3034,8 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 							Right = 0,
 							Bottom = 0,
 							Top = 0
-						}
+						},
+						ShowLegend = false
 					};
 
 					await Chart1.newPlot(dataTraces, layout, commonConfig);
@@ -3148,6 +3267,8 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 				
 				Width = plotWidth,
 				Height = plotHeight,
+			
+				Margin = new MarginInfo() { Pad=50},
 				Scene = new SceneInfo()
 				{
 					AspectRatio = new AspectRatioInfo()

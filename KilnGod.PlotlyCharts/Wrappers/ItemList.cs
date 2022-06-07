@@ -41,7 +41,12 @@ namespace KilnGod.PlotlyCharts.Wrappers
             _Items.Add(item);
         }
 
-      
+        public ItemList(T[] items)
+        {
+            _Items = new List<T>();
+            foreach (T item in items) { _Items.Add(item); }            
+        }
+
 
         public T this[int index] { get => ((IList<T>)_Items)[index]; set => ((IList<T>)_Items)[index] = value; }
 

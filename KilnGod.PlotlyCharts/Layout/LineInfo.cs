@@ -111,6 +111,12 @@ namespace KilnGod.PlotlyCharts.Layout
             set { (ValueItems as dynamic).smoothing = value; }
         }
 
+        public bool? ShowScale
+        {
+            get { return (ValueItems as dynamic).showscale; }
+            set { (ValueItems as dynamic).showscale = value; }
+        }
+
         public bool? Visible
         {
             get { return (ValueItems as dynamic).visible; }

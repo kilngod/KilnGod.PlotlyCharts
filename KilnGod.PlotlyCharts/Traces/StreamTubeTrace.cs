@@ -61,6 +61,12 @@ namespace KilnGod.PlotlyCharts.Traces
             get { return (ValueItems as dynamic).w; }
             set { (ValueItems as dynamic).w = value; }
         }
+
+        public bool? AutoColorScale
+        {
+            get { return (ValueItems as dynamic).autocolorscale; }
+            set { (ValueItems as dynamic).autocolorscale = value; }
+        }
         public object? ColorScale
         {
             get { return (ValueItems as dynamic).colorscale; }

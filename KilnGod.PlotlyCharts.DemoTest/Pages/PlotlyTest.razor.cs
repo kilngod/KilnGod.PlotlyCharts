@@ -573,8 +573,9 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 							AreaRatio=0,
 							SizeMin=0.5,
 							SizeMax=100,
-							Color = "rgba(0, 0, 255, 0.9)",
-							
+							Color = "rgba(255, 0, 0, 0.6)"
+							//,	Size = 1
+
 						},
 						Opacity = 0.7
 					},
@@ -591,6 +592,7 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 							SizeMax=100,
 							Color = "rgba(0, 0, 255, 0.9)",
 							Opacity = 0.8
+							//,	Size = 1
 						},
 						Opacity = 0.7
 					},
@@ -600,8 +602,7 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 						Y = new double[]{9, 9, 9},
 						Mode = ModeOptions.Markers,
 						Marker = new MarkerInfo()
-						{
-							AreaRatio=0,
+						{							
 							Blend = true,
 							Border = new BorderInfo()
                             {
@@ -611,8 +612,8 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 							Color = "green",
 							Opacity = 0.8,
 							SizeMin=0.5,
-							SizeMax=100
-							
+							SizeMax=100//,
+							//Size = 1
 							
 						},
 						Opacity = 0.7
@@ -630,13 +631,13 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 				XAxis = new AxisInfo()
 				{
 					AxisType = AxisTypeOptions.Linear,
-					Range = new object[] { -2.501411175139456, 43.340777299865266 },
+					Range = new object[] { -1,10 },
 					AutoRange = AutoRangeOptions.True
 				},
 				YAxis = new AxisInfo()
 				{
 					AxisType = AxisTypeOptions.Linear,
-					Range = new object[] { 4, 6 },
+					Range = new object[] { -1,10 },
 					AutoRange = AutoRangeOptions.True
 				}
 			};
@@ -2490,6 +2491,7 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 						U = VectorList.Select(vec => vec.u).ToArray(),
 						V = VectorList.Select(vec => vec.v).ToArray(),
 						W = VectorList.Select(vec => vec.w).ToArray(),
+						AutoColorScale = false,
 						ColorScale  =  ColorScaleOptions.Blues.GetDescription(),
 						SizeMode = SizeModeOptions.Absolute,
 						SizeRef = 40
@@ -2883,13 +2885,13 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 							continue;
 						Vector wind = new Vector()
 						{
-							row = values[0],
-							x = Convert.ToDouble(values[1]),
-							y = Convert.ToDouble(values[2]),
-							z = Convert.ToDouble(values[3]),
-							u = Convert.ToDouble(values[4]),
-							v = Convert.ToDouble(values[5]),
-							w = Convert.ToDouble(values[6])
+							row = values[0],							
+							u = Convert.ToDouble(values[1]),
+							v = Convert.ToDouble(values[2]),
+							w = Convert.ToDouble(values[3]),
+							x = Convert.ToDouble(values[4]),
+							y = Convert.ToDouble(values[5]),
+							z = Convert.ToDouble(values[6])
 						};
 
 						Winds.Add(wind);
@@ -2905,7 +2907,8 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 						V = Winds.Select(wind => wind.v).ToArray(),
 						W = Winds.Select(wind => wind.w).ToArray(),
 						SizeRef = 0.3,
-						ColorScale = ColorScaleOptions.Portland.GetDescription(),
+						AutoColorScale = false,
+						ColorScale = ColorScaleOptions.Blues.GetDescription(),
 						ShowScale = false,
 						MaxDisplayed = 3000,
 						Starts = new PositionInfo()

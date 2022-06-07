@@ -1,8 +1,19 @@
-﻿using KilnGod.PlotlyCharts.Layout;
-using KilnGod.PlotlyCharts.Enumerations.LayoutEnums;
+﻿//***********************************************************************************
+// KilnGod.PlotlyCharts 
+//
+// Copyright (c) 2022 James Carpenter (KilnGod)
+//
+// File: ScatterSmithTrace.cs
+//
+// This file is part of KilnGod.PlotlyCharts and is distributed under the MIT Open
+// Source License. See LICENSE.txt for details.
+//***********************************************************************************
+
 using KilnGod.PlotlyCharts.Enumerations.TracesEnums;
 using KilnGod.PlotlyCharts.Enumerations;
 using KilnGod.PlotlyCharts.Wrappers;
+using System.Dynamic;
+using KilnGod.PlotlyCharts.Layout;
 
 namespace KilnGod.PlotlyCharts.Traces
 {

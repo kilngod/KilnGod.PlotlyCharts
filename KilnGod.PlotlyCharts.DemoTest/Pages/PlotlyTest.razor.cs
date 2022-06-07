@@ -22,7 +22,7 @@ using KilnGod.PlotlyCharts.Wrappers;
 using KilnGod.PlotlyCharts.DemoTest.Models;
 using KilnGod.PlotlyCharts.Enumerations.TransformsEnums;
 using KilnGod.PlotlyCharts.Enumerations;
-using Newtonsoft.Json;
+
 
 namespace KilnGod.PlotlyCharts.DemoTest.Pages
 {

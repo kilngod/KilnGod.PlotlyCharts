@@ -72,6 +72,7 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 
 		public async void ScatterChart()
 		{
+			//https://plotly.com/javascript/line-and-scatter/
 
 			ScatterTrace trace = new ScatterTrace();
 
@@ -130,7 +131,7 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 
 		public async void BarChart()
 		{
-
+			//https://plotly.com/javascript/bar-charts/
 
 			BarTrace trace1 = new BarTrace();
 
@@ -165,7 +166,7 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 
 		public async void PieChart()
 		{
-
+			//https://plotly.com/javascript/pie-charts/
 
 			PieTrace trace = new PieTrace();
 
@@ -372,7 +373,7 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 							B = soil.Mixes.Select(item => item.Sand).ToArray(),
 							C = soil.Mixes.Select(item => item.Silt).ToArray(),
 							Line = new LineInfo() { Color = "#444" },
-							Fill = FillOptions.Toself,
+							Fill = FillOptions.ToSelf,
 							FillColor = colors[i]
 						};
 						dataTraces.AddTrace(trace);
@@ -439,6 +440,8 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 
 		public async void SunburstChart()
 		{
+			//https://plotly.com/javascript/sunburst-charts/
+
 			if (Webfile != null)
 			{
 				string? fileText = await Webfile.DownloadText("https://raw.githubusercontent.com/plotly/datasets/master/coffee-flavors.csv");
@@ -559,6 +562,7 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 
 		public async void PointCloudChart()
 		{
+			//https://plotly.com/javascript/pointcloud/
 
 			TraceList dataTraces = new TraceList(
 				new Trace[] {
@@ -646,6 +650,8 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 
 		public async void SankeyChart()
         {
+			//https://plotly.com/javascript/sankey-diagram/
+
 			TraceList dataTraces = new TraceList(
 				new Trace[] { new SankeyTrace()
 				{
@@ -686,14 +692,14 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 					R = new double[] { 39, 28, 8, 7, 28, 39},
 					Theta = new string[] { "A","B","C", "D", "E", "A" },
 					Name = "Group A",
-					Fill = FillOptions.Toself
+					Fill = FillOptions.ToSelf
 				},
 				new ScatterPolarTrace()
 				{
 					R = new double[] {1.5, 10, 39, 31, 15, 1.5},
 					Theta = new string[] {"A","B","C", "D", "E", "A" },
 					Name = "Group B",
-					Fill = FillOptions.Toself
+					Fill = FillOptions.ToSelf
 				}				
 				});
 			LayoutInfo layout = new LayoutInfo()
@@ -714,6 +720,8 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 
 		public async void TableChart()
 		{
+			//https://plotly.com/javascript/table/
+
 			if (Webfile != null)
 			{
 				string? fileText = await Webfile.DownloadText("https://raw.githubusercontent.com/plotly/datasets/master/Mining-BTC-180.csv");
@@ -797,6 +805,8 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 
 		public async void TreeMapChart()
 		{
+			//https://plotly.com/javascript/treemaps/
+
 			if (Webfile != null)
 			{
 				string? fileText = await Webfile.DownloadText("https://raw.githubusercontent.com/plotly/datasets/master/coffee-flavors.csv");
@@ -842,6 +852,7 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 
 		public async void CandlestickChart()
 		{
+			//https://plotly.com/javascript/candlestick-charts/
 
 			CandlestickTrace trace = new CandlestickTrace();
 
@@ -896,7 +907,7 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 
 		public async void OHLCChart()
 		{
-
+			//https://plotly.com/javascript/ohlc-charts/
 
 			OHLCTrace trace = new OHLCTrace();
 
@@ -951,6 +962,8 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 
 		public async void WaterfallChart()
 		{
+			//https://plotly.com/javascript/waterfall-charts/
+
 			WaterfallTrace waterfallTrace = new WaterfallTrace()
 			{
 				Name = "2018",
@@ -1030,6 +1043,8 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 
 		public async void FunnelChart()
 		{
+			//https://plotly.com/javascript/funnel-charts/
+
 			FunnelTrace funnel = new FunnelTrace()
 			{
 				Connector = new ConnectorInfo() { Line = new LineInfo() { Color = "royalblue", Dash = DashOptions.Dot, Width = 3 } },
@@ -1055,6 +1070,8 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 
 		public async void StackedFunnelChart()
 		{
+			//https://plotly.com/javascript/funnel-charts/
+
 			FunnelTrace MontreallFunnel = new FunnelTrace()
 			{
 				Name = "Montreal",
@@ -1096,6 +1113,8 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 
 		public async void FunnelAreaChart()
 		{
+			//https://plotly.com/javascript/funnel-charts/
+
 			FunnelAreaTrace funnel = new FunnelAreaTrace()
 			{
 				Values = new int[] { 5, 4, 3, 2, 1 },
@@ -1131,7 +1150,7 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 		// step items not displaying
 		public async void GuageChart()
 		{
-
+			//https://plotly.com/javascript/gauge-charts/
 			ItemList<GaugeStepItem> steps = new ItemList<GaugeStepItem>()
 			{
 				new GaugeStepItem() { Range=new object[] { 0, 250 }, Color="cyan" },
@@ -1180,8 +1199,10 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 			await Chart1.newPlot(dataTraces, layout, commonConfig);
 		}
 
+		// step items not displaying
 		public async void BulletChart()
 		{
+			//https://plotly.com/javascript/bullet-charts/
 
 			ItemList<GaugeStepItem> steps = new ItemList<GaugeStepItem>()
 			{
@@ -1229,6 +1250,7 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 
 		public async void ChoroplethChart()
 		{
+			// https://plotly.com/javascript/aggregations/
 
 			if (Webfile != null)
 			{
@@ -1472,6 +1494,8 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 
 		public async void DensityMapboxChart()
 		{
+			//https://plotly.com/javascript/mapbox-density-heatmaps/
+
 			DensityMapboxTrace trace = new DensityMapboxTrace()
 			{
 				Lon = new double[] { 10, 20, 30 },
@@ -1492,6 +1516,7 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 
 		public async void LineGeoChart()
 		{
+			//https://plotly.com/javascript/lines-on-maps/
 
 			if (Webfile != null)
 			{
@@ -1570,6 +1595,8 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 		}
 		public async void ScatterGeoChart()
 		{
+			//https://plotly.com/javascript/filled-area-on-mapbox/
+
 			ScatterGeoTrace geo = new ScatterGeoTrace()
 			{
 				Locations = new string[] { "FRA", "DEU", "RUS", "ESP" },
@@ -1603,9 +1630,11 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 	
 		public async void ScatterMapboxChart()
 		{
-			ScatterMapbox trace = new ScatterMapbox()
+		   // https://plotly.com/javascript/scattermapbox/
+
+			ScatterMapboxTrace trace = new ScatterMapboxTrace()
 			{
-				Fill = FillOptions.Toself,
+				Fill = FillOptions.ToSelf,
 				Lon = new double[] { -74, -70, -70, -74 },
 				Lat = new double[] { 47, 47, 45, 45 },
 				Marker = new MarkerInfo() { Size = 10, Color = "orange" }
@@ -1626,6 +1655,8 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 
 		public async void ContourChart()
 		{
+			//https://plotly.com/javascript/contour-plots/
+
 			var data = new object[] {
 				new double[] { 10, 10.625, 12.5, 15.625, 20 },
 				new double[] { 5.625, 6.25, 8.125, 11.25, 15.625 },
@@ -1653,6 +1684,8 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 
 		public async void ContourCarpetChart()
 		{
+			// https://plotly.com/javascript/carpet-contour/
+
 			ContourCarpetTrace trace1 = new ContourCarpetTrace()
 			{
 				A = new double[] { 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3 },
@@ -1697,6 +1730,8 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 		}
 		public async void HeatmapChart()
 		{
+			//https://plotly.com/javascript/heatmaps/
+
 			TraceList dataTraces = new TraceList(new HeatmapTrace()
 			{
 				X = new string[] { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday" },
@@ -1713,6 +1748,7 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 
 		public async void ParallelCoordinateChart()
 		{
+			//https://plotly.com/javascript/parallel-coordinates-plot/
 
 			ItemList<DimensionItem> dimensions = new ItemList<DimensionItem>();
 
@@ -1739,13 +1775,15 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 
 		public async void PolarChart()
 		{
+			//https://plotly.com/javascript/polar-chart/
+
 			PolarTrace polar1 = new PolarTrace()
 			{
 				Mode = ModeOptions.Lines,
 				R = new double[] { 0, 1.5, 1.5, 0, 2.5, 2.5, 0 },
 				Theta = new double[] { 0, 10, 25, 0, 205, 215, 0 },
 				Line = new LineInfo() { Color = "black" },
-				Fill = FillOptions.Toself,
+				Fill = FillOptions.ToSelf,
 				FillColor = "#709BFF"
 			};
 
@@ -1755,7 +1793,7 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 				R = new double[] { 0, 3.5, 3.5, 0 },
 				Theta = new double[] { 0, 55, 75, 0 },
 				Line = new LineInfo() { Color = "black" },
-				Fill = FillOptions.Toself,
+				Fill = FillOptions.ToSelf,
 				FillColor = "#E4FF87"
 			};
 			PolarTrace polar3 = new PolarTrace()
@@ -1764,7 +1802,7 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 				R = new double[] { 0, 4.5, 4.5, 0, 4.5, 4.5, 0 },
 				Theta = new double[] { 0, 100, 120, 0, 305, 320, 0 },
 				Line = new LineInfo() { Color = "black" },
-				Fill = FillOptions.Toself,
+				Fill = FillOptions.ToSelf,
 				FillColor = "#FFAA70"
 			};
 			PolarTrace polar4 = new PolarTrace()
@@ -1773,7 +1811,7 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 				R = new double[] { 0, 4, 4, 0 },
 				Theta = new double[] { 0, 4.5, 4.5, 0, 4.5, 4.5, 0 },
 				Line = new LineInfo() { Color = "black" },
-				Fill = FillOptions.Toself,
+				Fill = FillOptions.ToSelf,
 				FillColor = "#FFDF70"
 			};
 			PolarTrace polar5 = new PolarTrace()
@@ -1782,7 +1820,7 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 				R = new double[] { 0, 3, 3, 0 },
 				Theta = new double[] { 0, 262.5, 277.5, 0 },
 				Line = new LineInfo() { Color = "black" },
-				Fill = FillOptions.Toself,
+				Fill = FillOptions.ToSelf,
 				FillColor = "#B6FFB4"
 			};
 
@@ -1806,6 +1844,8 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 
 		public async void ScatterCarpetChart()
 		{
+			//https://plotly.com/javascript/carpet-scatter/
+
 			CarpetTrace trace1 = new CarpetTrace()
 			{
 				A = new double[] { 4e-6, 4e-6, 4e-6, 4.5e-6, 4.5e-6, 4.5e-6, 5e-6, 5e-6, 5e-6, 6e-6, 6e-6, 6e-6 },
@@ -1833,6 +1873,8 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 
 		public async void ScatterSmithChart()
         {
+			//https://plotly.com/python/smith-charts/
+
 			ScatterSmithTrace trace = new ScatterSmithTrace()
 			{
 				Real = new double[] { 0.5, 1, 2, 3 },
@@ -1846,6 +1888,8 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 
 		public async void TernaryChart()
 		{
+			//https://plotly.com/javascript/ternary-plots/
+
 			TernaryTrace trace = new TernaryTrace()
 			{
 				A = new double[] { 75, 70, 75, 5, 10, 10, 20, 10, 15, 10, 20 },
@@ -1921,6 +1965,7 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 
 		public async void BoxChart()
 		{
+			//https://plotly.com/javascript/box-plots/
 
 			var xPlayers = new string[]
 			{
@@ -2017,6 +2062,8 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 
 		public async void Histogram()
 		{
+		//https://plotly.com/javascript/histograms/
+
 			int size = 500;
 			var x1 = new double[size];
 			var y1 = new double[size];
@@ -2077,6 +2124,8 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 
 		public async void HistogramContour2D()
 		{
+			//https://plotly.com/javascript/2d-histogram-contour/
+
 			int size = 500;
 			var x = new double[size];
 			var y = new double[size];
@@ -2117,6 +2166,8 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 	
 		public async void ParallelCategoriesChart()
 		{
+			//https://plotly.com/javascript/parallel-categories-diagram/
+
 			if (Webfile != null)
 			{
 				string? fileText = await Webfile.DownloadText("https://raw.githubusercontent.com/plotly/datasets/master/titanic.csv");
@@ -2235,6 +2286,8 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 
 		public async void SplomChart()
 		{
+			//https://plotly.com/javascript/splom/
+
 			if (Webfile != null)
 			{
 				string? fileText = await Webfile.DownloadText("https://raw.githubusercontent.com/plotly/datasets/master/iris-data.csv");
@@ -2372,6 +2425,8 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 
 		public async void ViolinChart()
 		{
+			//https://plotly.com/javascript/violin/
+
 			if (Webfile != null)
 			{
 				string? fileText = await Webfile.DownloadText("https://raw.githubusercontent.com/plotly/datasets/master/violin_data.csv");
@@ -2451,6 +2506,8 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 
 		public async void ConeChart()
 		{
+			//https://plotly.com/javascript/cone-plot/
+
 			if (Webfile != null)
 			{
 				string? fileText = await Webfile.DownloadText("https://raw.githubusercontent.com/plotly/datasets/master/vortex.csv");
@@ -2528,6 +2585,8 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 
 		public async void IsoSurface3DChart()
 		{
+
+		 // https://plotly.com/javascript/3d-isosurface-plots/
 			if (Webfile != null)
 			{
 				string? fileText = await Webfile.DownloadText("https://raw.githubusercontent.com/plotly/datasets/master/clebsch-cubic.csv");
@@ -2617,6 +2676,7 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 
 		public async void Line3DChart()
 		{
+			// https://plotly.com/javascript/3d-line-plots/
 			if (Webfile != null)
 			{
 				string? fileText = await Webfile.DownloadText("https://raw.githubusercontent.com/plotly/datasets/master/_3d-line-plot.csv");
@@ -2757,6 +2817,8 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 
 		public async void Scatter3DChart()
 		{
+			//https://plotly.com/javascript/3d-scatter-plots/
+
 			if (Webfile != null)
 			{
 				string? fileText = await Webfile.DownloadText("https://raw.githubusercontent.com/plotly/datasets/master/3d-scatter.csv");
@@ -2865,6 +2927,8 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 
 		public async void StreamTubeChart()
 		{
+			//https://plotly.com/javascript/streamtube-plot/
+
 			if (Webfile != null)
 			{
 				string? fileText = await Webfile.DownloadText("https://raw.githubusercontent.com/plotly/datasets/master/streamtube-wind.csv");
@@ -2958,6 +3022,8 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 
 		public async void Surface3DChart()
 		{
+			// https://plotly.com/javascript/3d-surface-plots/
+
 			if (Webfile != null)
 			{
 				string? fileText = await Webfile.DownloadText("https://raw.githubusercontent.com/plotly/datasets/master/api_docs/mt_bruno_elevation.csv");
@@ -3041,6 +3107,10 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 
 		public async void VolumeChart()
         {
+			//https://metacpan.org/pod/Chart::Plotly::Trace::Volume
+
+			//https://plotly.com/python/3d-volume-plots/
+
 			VolumeTrace trace = new Traces.VolumeTrace()
 			{
 				Caps = new CapsInfo()

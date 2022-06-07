@@ -492,7 +492,7 @@ namespace KilnGod.PlotlyCharts.Enumerations.TracesEnums
 		[Description("tonextx")]
 		Tonextx,
 		[Description("toself")]
-		Toself,
+		ToSelf,
 		[Description("tonext")]
 		Tonext
 	}

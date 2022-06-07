@@ -15,9 +15,9 @@ using KilnGod.PlotlyCharts.Wrappers;
 
 namespace KilnGod.PlotlyCharts.Traces
 {
-    public class ScatterMapbox : Trace
+    public class ScatterMapboxTrace : Trace
     {
-        public ScatterMapbox() : base(TraceTypeOptions.Map_ScatterMapBox)
+        public ScatterMapboxTrace() : base(TraceTypeOptions.Map_ScatterMapBox)
         {
 
         }

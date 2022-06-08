@@ -48,13 +48,14 @@ namespace KilnGod.PlotlyCharts.Traces
             }
         }
 
+     
+
+
         public object? Ids
         {
             get { return (ValueItems as dynamic).ids; }
             set { (ValueItems as dynamic).ids = value; }
         }
-
-       
 
         public object? Value
         {

@@ -1148,7 +1148,7 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 		}
 
 
-		// step items not displaying
+		
 		public async void GuageChart()
 		{
 			//https://plotly.com/javascript/gauge-charts/
@@ -1162,9 +1162,9 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 				Delta = new DeltaInfo() { Reference = 400, Increasing = new AreaChangeInfo() { Color = "RebeccaPurple" } },
 				Gauge = new GaugeInfo()
 				{
-#nullable disable
-					Axis = new GaugeAxisInfo { Range = new object[] { null, 500 }, TickWidth = 1, TickColor = "darkblue" },
-#nullable enable
+
+					Axis = new GaugeAxisInfo { Range = new object?[] { null, 500 }, TickWidth = 1, TickColor = "darkblue" },
+
 					Bar = new BarInfo { Color = "darkblue" },
 					BgColor = "white",
 					BorderWidth = 2,
@@ -1202,7 +1202,7 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 			await Chart1.newPlot(dataTraces, layout, commonConfig);
 		}
 
-		// step items not displaying, not shown as bullet.
+		
 		public async void BulletChart()
 		{
 			//https://plotly.com/javascript/bullet-charts/
@@ -1218,10 +1218,7 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 
 				Gauge = new GaugeInfo()
 				{
-#nullable disable
-					Axis = new GaugeAxisInfo { Range = new object[] { null, 300 } },
-#nullable enable
-
+					Axis = new GaugeAxisInfo { Range = new object?[] { null, 300 } },
 					Bar = new BarInfo { Color = "darkblue" },
 					BgColor = "white",
 					Steps = new ItemList<GaugeStepItem>()

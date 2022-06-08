@@ -3240,6 +3240,7 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 
 			VolumeTrace trace = new Traces.VolumeTrace()
 			{
+				AutoColorScale = false,
 				Caps = new CapsInfo()
 				{
 					X = new CapRenderInfo() { Show = true },

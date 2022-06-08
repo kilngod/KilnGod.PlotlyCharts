@@ -24,18 +24,19 @@ namespace KilnGod.PlotlyCharts.Traces
 
         }
 
+        public object? Z
+        {
+            get { return (ValueItems as dynamic).z; }
+            set { (ValueItems as dynamic).z = value; }
+        }
+
         public object? AutoColorScale
         {
             get { return (ValueItems as dynamic).autocolorscale; }
             set { (ValueItems as dynamic).autocolorscale = value; }
         }
 
-        public object? ReverseScale
-        {
-            get { return (ValueItems as dynamic).reversescale; }
-            set { (ValueItems as dynamic).reversescale = value; }
-        }
-
+   
 
         public object? ColorScale
         {
@@ -56,6 +57,13 @@ namespace KilnGod.PlotlyCharts.Traces
 
         }
 
+        public object? ReverseScale
+        {
+            get { return (ValueItems as dynamic).reversescale; }
+            set { (ValueItems as dynamic).reversescale = value; }
+        }
+
+
         ItemList<TransformsItem>? _TransformsItems = null;
         public ItemList<TransformsItem>? Transforms
         {
@@ -73,11 +81,7 @@ namespace KilnGod.PlotlyCharts.Traces
             }
         }
 
-        public object? Z
-        {
-            get { return (ValueItems as dynamic).z; }
-            set { (ValueItems as dynamic).z = value; }
-        }
+     
     }
 }
 

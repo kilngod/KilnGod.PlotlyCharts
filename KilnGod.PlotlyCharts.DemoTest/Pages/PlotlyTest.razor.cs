@@ -1422,22 +1422,13 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 
 			if (Webfile != null)
 			{
-			//	string? geodata = await Webfile.DownloadText("https://raw.githubusercontent.com/plotly/datasets/master/geojson-counties-fips.json");
+		
 
 				string? unemploymentdata = await Webfile.DownloadText("https://raw.githubusercontent.com/plotly/datasets/master/fips-unemp-16.csv");
 
 				if (unemploymentdata != null)
 				{
-				/*	JsonDocument geoDoc = JsonDocument.Parse(geodata);
-
-					var counties =	from todo in geoDoc.RootElement.EnumerateArray()
-						select new
-						{
-							userId = todo.GetProperty("userId").GetInt32(),
-							title = todo.GetProperty("title").GetString(),
-							completed = todo.GetProperty("completed").GetBoolean()
-						};
-				*/
+				
 
 					List<UnemploymentData> unemploymentFipsArea = new List<UnemploymentData>();
 
@@ -1468,15 +1459,9 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 						Z = unemploymentFipsArea.Select(item => item.Unemp).ToArray(),
 						Zmax=12,
 						Zmin=0,
-
 						Locations  = unemploymentFipsArea.Select(item => item.Fips).ToArray(),
 						GeoJson = "https://raw.githubusercontent.com/plotly/datasets/master/geojson-counties-fips.json",
-						
-						
-						
-						Opacity = 0.5,
-								
-						
+						Opacity = 0.5
 					};
 
 					LayoutInfo layout = new LayoutInfo()

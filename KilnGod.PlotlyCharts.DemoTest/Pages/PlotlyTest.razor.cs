@@ -52,7 +52,7 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 			Height = plotHeight,
 			Width = plotWidth
 		};
-		ConfigInfo commonConfig = new ConfigInfo() { Responsive = true, Editable = true, DisplayLogo = false };
+		ConfigInfo commonConfig = new ConfigInfo() { Responsive = true, Editable = false, DisplayLogo = false };
 
 		protected override async Task OnAfterRenderAsync(bool firstRender)
 		{

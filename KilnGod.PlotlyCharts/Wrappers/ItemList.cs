@@ -59,7 +59,7 @@ namespace KilnGod.PlotlyCharts.Wrappers
                 {
                     values.Add(item.ValueItems);
                 }
-                return values.ToArray();
+                return values;
             }
         }
 

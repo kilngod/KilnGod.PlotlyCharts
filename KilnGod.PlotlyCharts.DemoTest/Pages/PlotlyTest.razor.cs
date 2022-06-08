@@ -1152,12 +1152,7 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 		public async void GuageChart()
 		{
 			//https://plotly.com/javascript/gauge-charts/
-			ItemList<GaugeStepItem> steps = new ItemList<GaugeStepItem>()
-			{
-				new GaugeStepItem() { Range=new object[] { 0, 250 }, Color="cyan" },
-				new GaugeStepItem() { Range=new object[] { 250, 400 }, Color="royalblue" }
-			};
-
+		
 
 			IndicatorTrace guage = new IndicatorTrace()
 			{
@@ -1167,12 +1162,19 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 				Delta = new DeltaInfo() { Reference = 400, Increasing = new AreaChangeInfo() { Color = "RebeccaPurple" } },
 				Gauge = new GaugeInfo()
 				{
-					Axis = new GaugeAxisInfo { Range = new object?[] { null, 500 }, TickWidth=1, TickColor = "darkblue" },
+#nullable disable
+					Axis = new GaugeAxisInfo { Range = new object[] { null, 500 }, TickWidth = 1, TickColor = "darkblue" },
+#nullable enable
 					Bar = new BarInfo { Color = "darkblue" },
 					BgColor = "white",
 					BorderWidth = 2,
 					BorderColor = "gray",
-					Steps = steps,
+					Steps = new ItemList<GaugeStepItem>()
+					{
+						new GaugeStepItem() { Range=new object[] { 0, 250 }, Color="cyan" },
+						new GaugeStepItem() { Range=new object[] { 250, 400 }, Color="royalblue" }
+					},
+					Shape = GaugeShapeOptions.Angular,
 					Threshold = new ThresholdInfo()
 					{
 						Line = new LineInfo() { Color = "red", Width = 4 },
@@ -1200,32 +1202,33 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 			await Chart1.newPlot(dataTraces, layout, commonConfig);
 		}
 
-		// step items not displaying
+		// step items not displaying, not shown as bullet.
 		public async void BulletChart()
 		{
 			//https://plotly.com/javascript/bullet-charts/
 
-			ItemList<GaugeStepItem> steps = new ItemList<GaugeStepItem>()
-			{
-				new GaugeStepItem() { Range=new object[] { 0, 150 }, Color="cyan" }
-
-			};
-
 			
-
 			IndicatorTrace bullet = new IndicatorTrace()
 			{
-				Delta = new DeltaInfo() { Reference = 280, Position = PositionOptions.Top },
+				Delta = new DeltaInfo() { Reference = 200 },
 				Domain = new DomainInfo() { X = new double[] { 0, 1 }, Y = new double[] { 0, 1 } },
 				Value = 220,
 				Mode = ModeOptions.Number_Gauge_Delta,
 				Title = new TitleInfo() { Text = "<b>Profit</b><br><span style='color: gray; font-size:0.8em'>U.S. $</span>", Font = new FontInfo() { Size = 14 } },
+
 				Gauge = new GaugeInfo()
 				{
-					Axis = new GaugeAxisInfo { Range = new object?[] { null, 300 } },
-				//	Bar = new BarInfo { Color = "darkblue" },
+#nullable disable
+					Axis = new GaugeAxisInfo { Range = new object[] { null, 300 } },
+#nullable enable
+
+					Bar = new BarInfo { Color = "darkblue" },
 					BgColor = "white",
-					Steps = steps,
+					Steps = new ItemList<GaugeStepItem>()
+					{
+						new GaugeStepItem() { Range=new object[] { 0, 150 }, Color="lightgray" },
+						new GaugeStepItem() { Range=new object[] { 150, 250 }, Color="gray" }
+					},
 					Shape = GaugeShapeOptions.Bullet,
 					Threshold = new ThresholdInfo()
 					{
@@ -1243,7 +1246,12 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 			LayoutInfo layout = new LayoutInfo()
 			{
 				Width = plotWidth,
-				Height = 250
+				Height = plotHeight,
+				Margin = new MarginInfo()
+                {
+					Top=300,
+					Bottom=300
+                }
 			};
 			
 			await Chart1.newPlot(dataTraces, layout, commonConfig);

@@ -63,6 +63,14 @@ namespace KilnGod.PlotlyCharts.Layout
             set { (ValueItems as dynamic).borderwidth = value; }
         }
 
+        /*
+        public object? Shape
+        {
+            get { return (ValueItems as dynamic).shape; }
+            set { (ValueItems as dynamic).shape = value; }
+        }
+        */
+
         public GaugeShapeOptions? Shape
         {
             get { return EnumerationStatic.GetValueFromDescription<GaugeShapeOptions>((ValueItems as dynamic).shape); }

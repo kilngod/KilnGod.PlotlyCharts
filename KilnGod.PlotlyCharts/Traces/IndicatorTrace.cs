@@ -44,7 +44,7 @@ namespace KilnGod.PlotlyCharts.Traces
             set
             {
                 _Gauge = value;
-                (ValueItems as dynamic).guage = _Gauge?.ValueItems;
+                (ValueItems as dynamic).gauge = _Gauge?.ValueItems;
             }
         }
 

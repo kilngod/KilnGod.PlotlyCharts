@@ -31,7 +31,7 @@ Plotly internally uses json "sudo" code for ploting, I tried to keep the strongl
 ```
 // C# Code
 
-	TraceList data = new TraceList(new HeatmapTrace()
+	var data = new TraceList(new HeatmapTrace()
 	{
 		X = new string[] { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday" },
 		Y = new string[] { "Morning", "Afternoon", "Evening" },

@@ -31,7 +31,7 @@ Plotly internally uses json "sudo" code for ploting, I tried to keep the strongl
 ```
 // C# Code
 
-	TraceList dataTraces = new TraceList(new HeatmapTrace()
+	TraceList data = new TraceList(new HeatmapTrace()
 	{
 		X = new string[] { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday" },
 		Y = new string[] { "Morning", "Afternoon", "Evening" },
@@ -39,7 +39,7 @@ Plotly internally uses json "sudo" code for ploting, I tried to keep the strongl
 		HoverOnGaps = false
 	});
 
-	await Chart1.newPlot(dataTraces, commonLayout, commonConfig);
+	await Chart1.newPlot(data);
 
 // Original JavaScript
 

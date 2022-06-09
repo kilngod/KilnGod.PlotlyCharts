@@ -16,7 +16,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace KilnGod.PlotlyCharts.Data
+namespace KilnGod.PlotlyCharts.Services
 {
     public class WebfileRepository : IWebfileRepository
     {

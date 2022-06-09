@@ -14,7 +14,7 @@ using System.Dynamic;
 using System.Text.Json;
 using KilnGod.PlotlyCharts.Configuration;
 using KilnGod.PlotlyCharts.Layout;
-using KilnGod.PlotlyCharts.Data;
+using KilnGod.PlotlyCharts.Services;
 using KilnGod.PlotlyCharts.Traces;
 using KilnGod.PlotlyCharts.Enumerations.TracesEnums;
 using KilnGod.PlotlyCharts.Enumerations.LayoutEnums;

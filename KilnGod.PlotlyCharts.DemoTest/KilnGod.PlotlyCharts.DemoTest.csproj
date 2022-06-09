@@ -7,15 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="JsonSchema\AnimationSchema.cs" />
-    <Compile Remove="JsonSchema\ConfigSchema.cs" />
-    <Compile Remove="JsonSchema\DefsSchema.cs" />
-    <Compile Remove="JsonSchema\FrameSchema.cs" />
-    <Compile Remove="JsonSchema\TransformsSchema.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Remove="wwwroot\plot-schema.json" />
+    <Compile Remove="JsonSchema\**" />
+    <Content Remove="JsonSchema\**" />
+    <EmbeddedResource Remove="JsonSchema\**" />
+    <None Remove="JsonSchema\**" />
   </ItemGroup>
 
 
@@ -33,7 +28,6 @@
 
   <ItemGroup>
     <Folder Include="Tests\" />
-    <Folder Include="wwwroot\" />
   </ItemGroup>
 
 </Project>

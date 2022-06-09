@@ -15,7 +15,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KilnGod.PlotlyCharts.Data
+namespace KilnGod.PlotlyCharts.Services
 {
     public interface IWebfileRepository 
     {

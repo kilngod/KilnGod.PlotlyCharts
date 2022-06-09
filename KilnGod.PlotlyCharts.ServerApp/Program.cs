@@ -10,7 +10,7 @@
 //***********************************************************************************
 
 
-using KilnGod.PlotlyCharts.Data;
+using KilnGod.PlotlyCharts.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 

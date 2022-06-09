@@ -295,7 +295,7 @@ namespace KilnGod.PlotlyCharts.Layout
 
       
         ItemList<ValuesObject>? _TransformsItems = null;
-        public ItemList<ValuesObject> TransformsItems
+        public ItemList<ValuesObject>? TransformsItems
         {
 
             get

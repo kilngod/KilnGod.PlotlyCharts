@@ -10,12 +10,11 @@
 //***********************************************************************************
 
 using System.Text.Json;
-using KilnGod.PlotlyCharts.DemoTest.JsonSchema;
 using KilnGod.PlotlyCharts.DemoTest.SchemaReview;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using System.Linq;
-
+using KilnGod.PlotlyCharts.Services;
 
 namespace KilnGod.PlotlyCharts.DemoTest.Pages
 {
@@ -29,8 +28,10 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
         public ElementReference textArea => this._textArea1;
 
 
+        [Inject]
+        public IWebfileRepository? Webfile { get; set; }
 
-        protected string AreaText { get; set; } = PlotlySchema.TracesSchema;
+        protected string AreaText { get; set; } = string.Empty;
 
 
         public string SchemaNode { get; set; } = "traces";
@@ -41,6 +42,12 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
         {
             if (firstRender)
             {
+                if (Webfile != null)
+                {
+                    string? jsonschema = await Webfile.DownloadText("./_content/KilnGod.PlotlyCharts.DemoTest/plot-schema.json");
+                    AreaText = jsonschema != null ? jsonschema:string.Empty;
+                }
+
                 DisabledButtons = false;
                 StateHasChanged();
             }

@@ -22,7 +22,7 @@ namespace KilnGod.PlotlyCharts.DemoTest.SchemaReview
         objectOption,
         boolOption,
         intOption,
-        floatOption,
+        doubleOption,
         numberOption,
         enumOption,
         classOption,
@@ -37,7 +37,8 @@ namespace KilnGod.PlotlyCharts.DemoTest.SchemaReview
         infoArrayOption,
         dataArrayOption,
         angleOption,
-        subplotIdOption
+        subplotIdOption,
+        flagListOption
 
 
 

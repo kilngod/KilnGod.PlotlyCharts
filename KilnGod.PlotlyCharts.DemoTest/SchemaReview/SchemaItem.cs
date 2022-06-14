@@ -29,7 +29,9 @@ namespace KilnGod.PlotlyCharts.DemoTest.SchemaReview
             DfltDecorator = string.Empty;
             ElementType = SchemaElementType.objectOption;
             Parent = null;
-            
+            RootItemType = string.Empty;
+
+
         }
         public string Name { get; set; }
         public string CsType { get; set; }
@@ -44,6 +46,10 @@ namespace KilnGod.PlotlyCharts.DemoTest.SchemaReview
 
         public List<string>? Enumeration { get; set; }
         public List<SchemaItem> Children { get; set; }
+
+        public string RootItemType { get; set; }
         
+        public MapNameType map { get; set; }
+
     }
 }

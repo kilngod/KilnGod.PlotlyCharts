@@ -5,7 +5,7 @@
 <strong>This needs a rewrite from the lessons learned building out the 0.1 library.</strong>
 <br />
 
-  <button class="btn btn-primary m-1" @onclick="GenerateSource">Generate Source</button>
+  <button class="btn btn-primary m-1" disabled="@DisabledButtons" @onclick="GenerateSource">Generate Source</button>
   <br />
 
   <textarea id="textArea1" name="textArea1" rows="30" @ref="_textArea1" cols="100" style="overflow-y:'scroll'; height:600px">

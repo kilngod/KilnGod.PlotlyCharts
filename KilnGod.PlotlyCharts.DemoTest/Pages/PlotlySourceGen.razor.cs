@@ -15,6 +15,9 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using System.Linq;
 using KilnGod.PlotlyCharts.Services;
+using KilnGod.PlotlyCharts.Enumerations;
+using KilnGod.PlotlyCharts.Enumerations.TracesEnums;
+using KilnGod.PlotlyCharts.Enumerations.TransformsEnums;
 
 namespace KilnGod.PlotlyCharts.DemoTest.Pages
 {
@@ -38,14 +41,17 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 
         public bool DisabledButtons { get; set; } = true;
 
+        public string OutputFolder { get; set; } = "!PlotlyCode";  // <- only blazor server compliant.
+
+
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
             if (firstRender)
             {
                 if (Webfile != null)
                 {
-                    string? jsonschema = await Webfile.DownloadText("./_content/KilnGod.PlotlyCharts.DemoTest/plot-schema.json");
-                    AreaText = jsonschema != null ? jsonschema:string.Empty;
+                    string? jsonschema = await Webfile.DownloadText("https://localhost:7132/_content/KilnGod.PlotlyCharts.DemoTest/plot-schema.json");
+                    AreaText = jsonschema != null ? jsonschema : string.Empty;
                 }
 
                 DisabledButtons = false;
@@ -55,424 +61,201 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
         }
 
 
-        public List<SchemaItem> ResultSchema = new List<SchemaItem>();
-        public List<SchemaItem> ResultEnumerations = new List<SchemaItem>();
-        public List<SchemaItem> ResultClasses = new List<SchemaItem>();
 
+        public List<SchemaItem> SchemaTree = new List<SchemaItem>();
 
+        public List<MapNameType> ClassList = new List<MapNameType>();
 
+        public List<MapNameType> EnumList = new List<MapNameType>();
 
-        public void EnumerateClass(SchemaItem root)
-        {
-            try
-            {
-                switch (root.ElementType)
-                {
-                    case SchemaElementType.arrayOption:
-                        ResultClasses.Add(root);
-                        break;
-
-                    case SchemaElementType.objectOption:
-                    case SchemaElementType.classOption:
-                        if (root.Enumeration == null)
-                        {
-                            ResultClasses.Add(root);
-                        }
-                        else
-                        {
-                            ResultEnumerations.Add(root);
-                        }
-                        break;
-                    case SchemaElementType.enumOption:
-                        ResultEnumerations.Add(root);
-
-                        break;
-                    default:
-                        if (root.Enumeration != null)
-                        {
-                            ResultEnumerations.Add(root);
-                        }
-                        break;
-
-                }
-
-
-                foreach (SchemaItem item in root.Children)
-                {
-                    EnumerateClass(item);
-
-                }
-            }
-            catch (Exception ex)
-            {
-                string badness = ex.Message;
-
-            }
-
-        }
-
-     
-
-        public void PublishEnumerations(SchemaItem head)
+        public void GenerateSource()
         {
 
 
-            string result = string.Empty;
-            string blowup = string.Empty;
-            EnumerateClass(head);
-            string indent = "\t\t";
-            var query = ResultEnumerations.OrderBy(x => x.Name);
+            string value = FuncOptions.Range.GetDescription();
+            JsonDocument doc = JsonDocument.Parse(AreaText);
 
-            string lastResultName = "";
-            int lastItemCount = 0;
-            SchemaItem lastItem = head;
-            foreach (SchemaItem item in query)
+
+            List<MapNameType> names = new List<MapNameType>();
+
+            foreach (var item in doc.RootElement.EnumerateObject())
             {
-                lastItem = item;
-                try
-                {
-                    
+                SchemaItem head = new SchemaItem() { RootItemType = item.Name, Name = item.Name, CsType = item.Name };
+                SchemaTree.Add(head);
+                MapSchema(head, item.Value);
 
-                    if  ((item.ElementType == SchemaElementType.enumOption) && (item.Name != lastResultName || item.Children.Count != lastItemCount))
+
+                MapNames(head, names, item.Name);
+              //  break;
+            }
+
+            string namelist = "";
+
+            for (int i = 0; i < names.Count; i++)
+            {
+                MapNameType name = names[i];
+                FixClassNames(ref name);
+                if (name.IsEnumeration)
+                {
+                    EnumList.Add(name);
+                } 
+                else if (!string.IsNullOrWhiteSpace( name.ClassTypeName) && name.HasChildren && name.Name != "traces" && name.Name != "transforms")// && name.Name != "traces" )
+                {
+                    ClassList.Add(name);
+
+                }
+            }
+
+
+            names = ClassList.OrderBy(x => x.PropertyName).ThenBy(x => MapNameType.ChildCount(x)).ToList();
+
+            string reasons = string.Empty;
+
+            for (int i = 1; i < names.Count; i++)
+            {
+                MapNameType priorName = names[i - 1];
+                MapNameType name = names[i];
+
+                bool isDifferentClass = false;
+                string reason = string.Empty;
+                if (name.ClassTypeName == priorName.ClassTypeName)
+                {
+                    if (name.item.Children.Count != priorName.item.Children.Count)
                     {
-
-                        string enumName = item.Name;
-
-                        if (enumName=="type" && item.Parent != null)
-                        {
-                            enumName = item.Parent.Name+"Type";
-                        }
-
-                        result = result + indent + "/******************************\n";
-                        result = result + indent + "*** Enum Name: "+enumName+"\n\n";
-                        
-                        result = result + indent + "*** Description: "+ item.Description+"\n";
-                        result = result + indent + "******************************/\n\n";
-
-
-
-                        bool isSymbol = (item.Name == "symbol");
-                        
-                        string itemsList = string.Empty;
-
-                        result = result + indent+ "public enum " + CamelCaseEnumName(enumName) +"Options" + System.Environment.NewLine +indent+ "{" + System.Environment.NewLine;
-                        
-                        if (item.Enumeration != null)
-                        {
-                            if (isSymbol)
-                            {
-                                for (int i = 0; i < item.Enumeration.Count; i++)
-                                {
-                                    if (i % 3 == 0 || i % 3 == 1)
-                                    {
-                                        continue;
-                                    }
-                                    if (itemsList != string.Empty)
-                                    {
-                                        itemsList += ",\n";
-
-                                    }
-
-                                    itemsList += indent + "\t[Description(\"" + item.Enumeration[i-1] + "\")]\n" + indent + "\t" + CamelCapEnumItem(item.Enumeration[i]);
-
-
-                                }
-                            }
-                            else
-                            {
-
-                                foreach (string enumItem in item.Enumeration)
-                                {
-
-
-
-
-                                    if (enumItem != string.Empty)
-                                    {
-
-                                        if (itemsList != string.Empty)
-                                        {
-                                            itemsList += ",\n";
-
-                                        }
-                                        if (enumItem.StartsWith("/") && enumItem.Length > 2)
-                                        {
-                                            itemsList += indent + "\t[Description(\"" + enumItem.Replace("\"", "\\\"") + "\")]\n" + indent + "\tRegEx_" + enumItem[2].ToString().ToUpper();
-                                        }
-                                        else
-                                        {
-                                            if (enumItem == "\\")
-                                            {
-                                                itemsList += indent + "\t[Description(\"" + "\\\\" + "\")]\n" + indent + "\t" + CamelCapEnumItem(enumItem);
-                                            }
-                                            else
-                                            {
-                                                itemsList += indent + "\t[Description(\"" + enumItem + "\")]\n" + indent + "\t" + CamelCapEnumItem(enumItem);
-                                            }
-                                        }
-
-                                    }
-                                }
-                            }
-                        }
-
-                        result = result + itemsList + System.Environment.NewLine+ indent + "}" + System.Environment.NewLine + System.Environment.NewLine;
-                        
-                        lastResultName = item.Name;
-                        lastItemCount = item.Children.Count;
+                        isDifferentClass = true;
+                        reason = "property count is different";
                     }
-                } catch (Exception ex)
-                {
-                    blowup = ex.Message;
+                    else if (name.item.Children.Count>0) 
+                    { 
+                        foreach(var child in name.item.Children)
+                        {
+                            var mia = priorName.item.Children.Find(x => x.Name == child.Name);
+
+                            if (mia == null)
+                            {
+                                isDifferentClass = true;
+                                reason = "property not found: " + child.Name;
+                            }
+                        }
+                    }
+
+                    if (isDifferentClass)
+                    {
+                        reasons = reasons+ System.Environment.NewLine + name.PropertyName + " " + name.Name + " != " + priorName.Name + " : " + reason;
+                    }
                 }
-            }
-
-
-            AreaText = result;
-            StateHasChanged();
-
-        }
-
-        public string CamelCapEnumItem(string enumItem)
-        {
-          
-
-            enumItem = enumItem.Replace(">=", "GreaterThanEquals");
-            enumItem = enumItem.Replace(">", "GreaterThan");
-            enumItem = enumItem.Replace("<=", "LessThanEquals");
-            enumItem = enumItem.Replace("<", "LessThan");
-            enumItem = enumItem.Replace("!=", "NotEquals");
-            enumItem = enumItem.Replace("=", "Equals");
-            enumItem = enumItem.Replace("|", "Pipe");
-            enumItem = enumItem.Replace("/", "ForwardSlash");
-            enumItem = enumItem.Replace("\\", "BackSlash");
-
-            switch (enumItem)
-            {
-                case "-":
-                    enumItem = "Auto";
-                    break;
-
-                case "-1":
-                    enumItem = "Neg_1";
-                    break;
-                case "1":
-                    enumItem = "Plus_1";
-                    break;
-                case "2":
-                    enumItem = "Plus_2";
-                    break;
-                case "0":
-                    enumItem = "Zero";
-                    break;
-
-                case "h":
-                    enumItem = "Horizontal";
-                    break;
-                case "v":
-                    enumItem = "Vertical";
-                    break;
-                case "e":                    
-                    enumItem = "Small_e";
-                        break;
-                case "E":
-                    enumItem = "Big_E";
-                    break;
-                case "x":
-                    enumItem = "X";
-                    break;
-                case "y":
-                    enumItem = "Y";
-                    break;
-                case "z":
-                    enumItem = "Z";
-                    break;
-                case "_":
-                    enumItem = "Underscore";
-                    break;
-                case "|":
-                    enumItem = "Pipe";
-                    break;
-                case "+":
-                    enumItem = "Plus";
-                    break;
-                case ".":
-                    enumItem = "Dot";
-                    break;
-                case "[]":
-                    enumItem = "LBRB";
-                    break;
-                case "][":
-                    enumItem = "RBLB";
-                    break;
-                case "()":
-                    enumItem = "LPRP";
-                    break;
-
-                case ")(":
-                    enumItem = "RPLP";
-                    break;
-                case "[)":
-                    enumItem = "RBRP";
-                    break;
-                case "(]":
-                    enumItem = "LPRB";
-                    break;
-                case "](":
-                    enumItem = "RBLP";
-                    break;
-                case ")[":
-                    enumItem = "TPLB";
-                    break;
-
-                case "{}":
-                    enumItem = "LCRC";
-                    break;
-
-                case "}{":
-                    enumItem = "RCLC";
-                    break;
-
-            }
-
-            enumItem = enumItem.Replace(" ", "_").Replace("-", "_");
-
-
-            for (int i = 1; i < enumItem.Length; i++)
-            {
-                if (enumItem[i] == '_')
-                {
-                    enumItem = enumItem.Substring(0, i) + enumItem[i + 1].ToString().ToUpper() + enumItem.Substring(i + 2);
-                }
-            }
-
-            if (enumItem.Length > 1)
-            {
-                enumItem = enumItem.Substring(0, 1).ToUpper() + enumItem.Substring(1);
-            }
-            return (enumItem);
-        }
-
-        public string CamelCaseEnumName(string enumName)
-        {
-            if (string.IsNullOrWhiteSpace(enumName))
-            {
-                return string.Empty;
-            }
-            enumName = enumName.Replace("align", "Align")
-                .Replace("anchor", "Anchor")
-                .Replace("angle", "Angle")
                 
-                .Replace("array", "Array")
-                .Replace("axis", "Axis")
-                .Replace("axref", "AXRef")               
-                .Replace("ayref", "AYRef")
-                .Replace("bar", "Bar")
-                .Replace("bin", "Bin")
-                
-                .Replace("bounds", "Bounds")
-                .Replace("break", "Break")
-                .Replace("calendar", "Calendar")                
-                .Replace("click", "Click")
-                .Replace("color", "Color")
-                .Replace("current", "Current")                
-                .Replace("double", "Double")
-                .Replace("direction", "Direction")
-                .Replace("exponent", "Exponent")
-                .Replace("fade", "Fade")
-                .Replace("font", "Font")
-                .Replace("format", "Format")
-                .Replace("func", "Func")
-                .Replace("gaps", "Gaps")
-                .Replace("hoveron", "HoverOn")
-                .Replace("info", "Info")
-                .Replace("items", "Items")    
-                .Replace("json", "Json")
-                .Replace("label", "Label")
-                .Replace("layer", "Layer")
-                .Replace("line", "Line")
-                .Replace("logo", "Logo")
-                .Replace("method", "Method")
-                .Replace("mean", "Mean")
-                .Replace("menu", "Menu")
-                .Replace("mode", "Mode")
-                .Replace("norm", "Norm")
-                .Replace("numbers", "Numbers")
-                .Replace("order", "Order")
-                .Replace("orientation", "Orientation")
-                .Replace("others", "Others")
-                .Replace("overflow", "Overflow")
-                .Replace("paths", "Paths")
-                .Replace("points", "Points")
-                .Replace("period", "Period")
-                .Replace("position", "Position")
-                .Replace("prefix", "Prefix")             
-                .Replace("range", "Range")
-                .Replace("ratio", "Ratio")
-                .Replace("DuRation","Duration")
-                .Replace("revision", "Revision")
-                .Replace("rule", "Rule")
-                .Replace("scale", "Scale")
-                .Replace("selector", "Selector")
-                .Replace("shape", "Shape")
-                .Replace("side", "Side")
-                .Replace("sizable", "Sizable")
-                .Replace("sizing", "Sizing")
-                .Replace("slider", "Slider")
-                .Replace("smooth", "Smooth")
-                .Replace("snap", "Snap")
-                .Replace("stops", "Stops")
-                .Replace("suffix", "Suffix")
-                .Replace("text", "Text")               
-                .Replace("tick", "Tick")
-                .Replace("title", "Title")
-                .Replace("toshow", "ToShow")
-                .Replace("toward", "Toward")
-                .Replace("type", "Type")
-                .Replace("unit", "Unit")
-                .Replace("value", "Value")
-                .Replace("xref", "XRef")
-                .Replace("xside", "XSide")
-                .Replace("xsize", "XSize")
-                .Replace("yanchor", "YAnchor")
-                .Replace("yaxis", "YAxis")
-                .Replace("yref", "YRef")
-                .Replace("yside", "YSide")
-                .Replace("ysize", "YSize");
-
-
-            enumName = enumName.Substring(0, 1).ToUpper() + enumName.Substring(1);
-
-            for (int i = 1; i < enumName.Length; i++)
-            {
-                if (enumName[i] == '_')
-                {
-                    enumName = enumName.Substring(0, i) + enumName[i + 1].ToString().ToUpper() + enumName.Substring(i + 2);
-                }
             }
 
 
-            return enumName;
+            /*
+
+            for (int i = 0; i < names.Count; i++)
+            {
+                MapNameType name = names[i];
+                namelist += "\t\t\t\tnew MapNameType(){PropertyName=\""+name.PropertyName+ "\", ClassTypeName=\"" + name.ClassTypeName + "\", OriginalName=\"" + name.OriginalName + "\", FileName=\""+name.FileName+ "\", SchemaSection=\"" + name.SchemaSection + "\", JsonType=\"" + name.JsonType + "\", Name = \"" + name.Name + "\"}," + System.Environment.NewLine;
+            }
+            
+            */
+            AreaText = reasons;
+            
+
         }
 
-       
 
-        public void DigDeeper(SchemaItem currentRoot, JsonElement root)
+        public void MapNames(SchemaItem node, List<MapNameType> names, string schemaSection)
         {
-            string blowup = "";
-
-            //   SchemaElementType ParentResult = SchemaElementType.unknownOption;
-
-
-            try
+            if (node.Name.IndexOf("src")>0)
             {
-                bool isItems = currentRoot.Name == "items";
-                JsonElement valType;
-                bool isArray = false;
-                bool useParent = false;
+                return;
+            }
+
+            MapNameType name = new MapNameType()
+            {
+                Name = node.Name,
+
+                PropertyName = CamelCaseName(node.Name),
+
+                OriginalName = node.Name,
+
+                SchemaSection = schemaSection,
+
+                JsonType = node.ElementType.ToString(),
+
+                HasChildren = node.Children.Count > 0,
+
+                IsEnumeration = node.Enumeration != null && node.Enumeration.Count > 0 ? true : false,
+                
+                item = node
+
+            };
+
+            node.map = name;
+
+            if (name.IsEnumeration)
+            {
+                name.ClassTypeName = name.PropertyName + "Options";
+            } else if (name.HasChildren)
+            {
+                if (node.Parent != null && node.Parent.Name == "traces")
+                {
+                    name.ClassTypeName = name.PropertyName + "Trace";
+                }
+                else
+                {
+                    name.ClassTypeName = name.PropertyName + "Info";
+                }
+            }
+            if (!string.IsNullOrEmpty(name.ClassTypeName))
+            {
+                name.FileName = name.ClassTypeName + ".cs";
+            }
+
+            if (node.Parent != null)// && node.Parent.Name != "attributes")
+            {
+                name.Name = node.Parent.Name +"." + name.Name;
+
+                if (node.Parent.Parent != null)// && node.Parent.Parent.Name != "attributes")
+                {
+                    name.Name = node.Parent.Parent.Name + "." + name.Name;
+                }
+            }
+
+            if (name.JsonType == "infoArrayOption" && !string.IsNullOrEmpty(name.ClassTypeName))
+            {
+                name.ClassTypeName = string.Empty;
+                name.FileName = String.Empty;
+                name.HasChildren = false;
+                name.item.Children.Clear();
+                name.item.ElementType = SchemaElementType.objectOption;
+                name.IsEnumeration = false;
+                name.JsonType = SchemaElementType.objectOption.ToString();
+
+            }
+
+            if (names.FindIndex(x => x.Name == name.Name) <0)
+            {
+                names.Add(name);
+            }
+
+            foreach(SchemaItem child in node.Children)
+            {
+                MapNames(child, names, schemaSection);
+            }
+        }
+
+
+        public void MapSchema(SchemaItem node, JsonElement root)
+        {
+            bool isItems = node.Name == "items";
+            JsonElement valType;
+            bool isArray = false;
+            bool useParent = false;
+            if (root.ValueKind != JsonValueKind.String)
+            {
                 if (root.TryGetProperty("valType", out valType))
                 {
-                    switch(valType.ToString())
+                    switch (valType.ToString())
                     {
                         case "string":
                         case "number":
@@ -493,288 +276,853 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
                             isArray = true;
                             break;
                     }
-                    
+
                 }
-                else if(isItems)
+            }
+            else if (isItems)
+            {
+                isArray = true;
+                useParent = true;
+            }
+
+            if (root.ValueKind == JsonValueKind.Array || (isItems && isArray))
+            {
+
+
+                if (root.ValueKind == JsonValueKind.Array)
                 {
-                    isArray = true;
-                    useParent = true;
-                }
-               
+                    SchemaItem schemaItem = new SchemaItem() { Name = LookupName(node.Name, node), ElementType = SchemaElementType.arrayOption, Parent = node, Description = "Array Element" };
+                    //  CheckTypeName(schemaItem);
+                    node.Children.Add(schemaItem);
 
-
-                if (root.ValueKind == JsonValueKind.Array || (isItems && isArray))
-                {
- 
-
-                    if (root.ValueKind == JsonValueKind.Array)
+                    foreach (JsonElement element in root.EnumerateArray())
                     {
-                        SchemaItem schemaItem = new SchemaItem() { Name = CamelCaseEnumName(currentRoot.Name + "Items"), ElementType = SchemaElementType.arrayOption, Parent = currentRoot, Description = "Array Element" };
-                        CheckTypeName(schemaItem);
-                        currentRoot.Children.Add(schemaItem);
 
-                        foreach (JsonElement element in root.EnumerateArray())
-                        {
-
-                            DigDeeper(schemaItem, element);
-                        }
-                    }
-                    else if (useParent && currentRoot.Parent != null)
-                    {
-                        currentRoot = currentRoot.Parent;
-                        currentRoot.Children.Clear();
-                        currentRoot.Name = CamelCaseEnumName(currentRoot.Name + "Items");
-                        currentRoot.CsType = CamelCaseEnumName(currentRoot.CsType + "Item");
-                        currentRoot.ElementType = SchemaElementType.arrayOption;
-
-                        foreach (JsonProperty prop in root.EnumerateObject())
-                        {                          
-
-                            DigDeeper(currentRoot, prop.Value);
-                        }
-
-                    }
-                    else
-                    {
-                        currentRoot.ElementType = SchemaElementType.arrayOption;
-
-
-                        foreach (JsonProperty prop in root.EnumerateObject())
-                        {
-                            currentRoot.Name = CamelCaseEnumName(prop.Name + "Item");
-                            currentRoot.CsType = CamelCaseEnumName(prop.Name + "Item");
-
-                            DigDeeper(currentRoot, prop.Value);
-                        }
+                        MapSchema(schemaItem, element);
                     }
                 }
-                else
+                else if (useParent && node.Parent != null)
                 {
-                    SchemaElementType propType = SchemaElementType.unknownOption;
-                    
-                    switch (root.ValueKind )
-                    {
-                        case JsonValueKind.Array:
-                            propType = SchemaElementType.arrayOption;
-                            break;
-                        case JsonValueKind.Object:
-                            propType = SchemaElementType.objectOption;
-                            break;
-                        case JsonValueKind.Undefined:
-                            propType = SchemaElementType.unknownOption;
-                            break;
-                        case JsonValueKind.String:
-                            propType = SchemaElementType.stringOption;
-                            break;
-                        case JsonValueKind.Number:
-                            propType = SchemaElementType.numberOption;
-                            break;
-                        case JsonValueKind.False:
-                            propType = SchemaElementType.boolOption;
-                            break;
-                        case JsonValueKind.True:
-                            propType = SchemaElementType.boolOption;
-                            break;
-                        case JsonValueKind.Null:
-                            propType = SchemaElementType.nullOption;
-                            break;
-                        
-                        default:
-                            break;
-                    }
-
-                 
-
-                    string description = string.Empty;
-                   
-                    
-                    List<string>? enumeration = null;
-                    string name = root.ToString();
-
-                    JsonElement? objectValue = null;
+                    node = node.Parent;
+                    node.Children.Clear();
+                    node.Name = LookupName(node.Name, node);
+                    node.CsType = LookupName(node.CsType, node);
+                    node.ElementType = SchemaElementType.arrayOption;
 
                     foreach (JsonProperty prop in root.EnumerateObject())
                     {
-
-                       
-
-                        if (prop.Name.IndexOf('_')==0)
-                        {
-                            continue;
-                        }
-
-                     
-                        if (prop.Value.ValueKind == JsonValueKind.Object)
-                        {
-                            objectValue = prop.Value;
-
-                            if (objectValue.HasValue && prop.Name != "impliedEdits")
-                            {
-                              
-
-                                SchemaItem simpleItem = new SchemaItem() { ElementType = propType, Name = prop.Name, CsType = ClassRename(prop.Name, currentRoot), Parent = currentRoot, Description = description };
-                                if (prop.Name == "yaxis" && currentRoot.CsType.ToLower() == "rangeslider")
-                                {
-                                    simpleItem.ElementType = SchemaElementType.classOption;
-                                }
-
-
-                                CheckTypeName(simpleItem);
-                                    currentRoot.Children.Add(simpleItem);
-                                    DigDeeper(simpleItem, objectValue.Value);
-                                
-                            }
-
-                        }
-
-                        if (prop.Name == "impliedEdits")
-                        {
-
-                            currentRoot.EditTypeDecorator = prop.Value.ToString();
-                            
-                            continue;
-                        } 
-                        else if (prop.Name == "valType")
-                        {
-                            string jsontype = prop.Value.ToString();
-
-                            switch (jsontype)
-                            {
-                                case "angle":
-                                    propType = SchemaElementType.angleOption;
-                                    break;
-                                case "colorscale":
-                                    propType = SchemaElementType.colorScaleOption;
-                                    break;
-                                case "colorlist":
-                                    propType = SchemaElementType.colorListOption;
-                                    break;
-
-                                case "info_array":
-                                    propType = SchemaElementType.infoArrayOption;
-                                    break;
-                                case "data_array":
-                                    propType = SchemaElementType.dataArrayOption;
-                                    break;
-
-                                case "color":
-                                    propType = SchemaElementType.colorOption;
-                                    break;
-                                case "string":
-                                    propType = SchemaElementType.stringOption;
-                                    break;
-
-                                case "boolean":
-                                    propType = SchemaElementType.boolOption;
-                                    break;
-                                case "enumerated":
-                                    propType = SchemaElementType.enumOption;
-                                    break;
-                                case "flaglist":
-                                    propType = SchemaElementType.enumOption;
-                                    break;
-                                case "integer":
-                                    propType = SchemaElementType.intOption;
-                                    break;
-                                case "any":
-                                    propType = SchemaElementType.anyOption;
-                                    break;
-
-                                case "number":
-                                    propType = SchemaElementType.floatOption;
-                                    break;
-                                case "role":
-                                    if (currentRoot.Name != "impliedEdits")
-                                    {
-                                        propType = SchemaElementType.classOption;
-                                    }
-                                    break;
-                                case "type":
-                                    propType = SchemaElementType.classOption;
-                                    
-                                    break;
-                                case "subplotid":
-                                    propType = SchemaElementType.subplotIdOption;
-
-                                    break;
-                                default:
-
-                                    break;
-                            }
-
-                           
-                            currentRoot.ElementType = propType;
-                        }
-                        else if (prop.Name == "description")
-                        {
-                            currentRoot.Description = prop.Value.ToString();
-
-                        }
-                        else if (prop.Name == "flags")
-                        {
-                            JsonElement flagsInfo = prop.Value;
-                            enumeration = new List<string>();
-                            foreach (var item in flagsInfo.EnumerateArray())
-                            {
-                                string value = item.ToString();
-                                enumeration.Add(value);
-                            }
-
-                            currentRoot.Enumeration = enumeration;
-
-                        }
-                        else if (prop.Name == "values")
-                        {
-                            // an array of string
-                            JsonElement enumItems = prop.Value;
-                            enumeration = new List<string>();
-                            foreach (var item in enumItems.EnumerateArray())
-                            {
-                                string value = item.ToString();
-                                enumeration.Add(value);
-                            }
-
-                            currentRoot.Enumeration = enumeration;
-
-                        }
-                        else if (prop.Name == "editType")
-                        {
-                            currentRoot.EditTypeDecorator = prop.Value.ToString();
-                        }
-                        else if (prop.Name == "dflt")
-                        {
-                            currentRoot.DfltDecorator = prop.Value.ToString();
-                        }
-
-
-
+                      
+                        MapSchema(node, prop.Value);
                     }
 
-                    if (currentRoot.Enumeration != null && currentRoot.Enumeration.Count > 0 && currentRoot.ElementType != SchemaElementType.enumOption)
+                }
+                else
+                {
+                    node.ElementType = SchemaElementType.arrayOption;
+
+
+                    foreach (JsonProperty prop in root.EnumerateObject())
                     {
-                        currentRoot.ElementType = SchemaElementType.enumOption;
-                    }
+                        if (node.Name.EndsWith("src"))
+                        {
+                            continue;
+                        }
 
-                   
-                    
+                        node.Name = LookupName(prop.Name, node);
+                        node.CsType = LookupName(prop.Name, node);
+
+                        MapSchema(node, prop.Value);
+                    }
+                }
+            }
+            else
+            {
+                SchemaElementType propType = SchemaElementType.unknownOption;
+
+                switch (root.ValueKind)
+                {
+                    case JsonValueKind.Array:
+                        propType = SchemaElementType.arrayOption;
+                        break;
+                    case JsonValueKind.Object:
+                        propType = SchemaElementType.objectOption;
+                        break;
+                    case JsonValueKind.Undefined:
+                        propType = SchemaElementType.unknownOption;
+                        break;
+                    case JsonValueKind.String:
+                        propType = SchemaElementType.stringOption;
+                        break;
+                    case JsonValueKind.Number:
+                        propType = SchemaElementType.numberOption;
+                        break;
+                    case JsonValueKind.False:
+                        propType = SchemaElementType.boolOption;
+                        break;
+                    case JsonValueKind.True:
+                        propType = SchemaElementType.boolOption;
+                        break;
+                    case JsonValueKind.Null:
+                        propType = SchemaElementType.nullOption;
+                        break;
+
+                    default:
+                        break;
                 }
 
 
 
+                string description = string.Empty;
+
+
+                List<string>? enumeration = null;
+                string name = root.ToString();
+
+                JsonElement? objectValue = null;
+                switch (root.ValueKind)
+                {
+                    case JsonValueKind.String:
+
+                        break;
+                    default:
+
+                        foreach (JsonProperty prop in root.EnumerateObject())
+                        {
+                            if (prop.Name.EndsWith("src"))
+                            {
+                                continue;
+                            }
+
+
+                            if (prop.Name.IndexOf('_') == 0)
+                            {
+                                continue;
+                            }
+
+
+                            if (prop.Value.ValueKind == JsonValueKind.Object)
+                            {
+                                objectValue = prop.Value;
+
+                                if (objectValue.HasValue && prop.Name != "impliedEdits")
+                                {
+
+
+                                    SchemaItem simpleItem = new SchemaItem() { ElementType = propType, Name = prop.Name, CsType = LookupClassName(prop.Name, node), Parent = node, Description = description };
+                                    if (prop.Name == "yaxis" && node.CsType.ToLower() == "rangeslider")
+                                    {
+                                        simpleItem.ElementType = SchemaElementType.classOption;
+                                    }
+
+
+                                  //  CheckTypeName(simpleItem);
+                                    node.Children.Add(simpleItem);
+                                    MapSchema(simpleItem, objectValue.Value);
+
+                                }
+
+                            }
+
+                            if (prop.Name == "impliedEdits")
+                            {
+
+                                node.EditTypeDecorator = prop.Value.ToString();
+
+                                continue;
+                            }
+                            else if (prop.Name == "valType")
+                            {
+                                string jsontype = prop.Value.ToString();
+
+                                switch (jsontype)
+                                {
+                                    case "angle":
+                                        propType = SchemaElementType.angleOption;
+                                        break;
+                                    case "colorscale":
+                                        propType = SchemaElementType.colorScaleOption;
+                                        break;
+                                    case "colorlist":
+                                        propType = SchemaElementType.colorListOption;
+                                        break;
+
+                                    case "info_array":
+                                        propType = SchemaElementType.infoArrayOption;
+                                        break;
+                                    case "data_array":
+                                        propType = SchemaElementType.dataArrayOption;
+                                        break;
+
+                                    case "color":
+                                        propType = SchemaElementType.colorOption;
+                                        break;
+                                    case "string":
+                                        propType = SchemaElementType.stringOption;
+                                        break;
+
+                                    case "boolean":
+                                        propType = SchemaElementType.boolOption;
+                                        break;
+                                    case "enumerated":
+                                        propType = SchemaElementType.enumOption;
+                                        break;
+                                    case "flaglist":
+                                        propType = SchemaElementType.flagListOption;
+                                        break;
+                                    case "integer":
+                                        propType = SchemaElementType.intOption;
+                                        break;
+                                    case "any":
+                                        propType = SchemaElementType.anyOption;
+                                        break;
+
+                                    case "number":
+                                        propType = SchemaElementType.doubleOption;
+                                        break;
+                                    case "role":
+                                        if (node.Name != "impliedEdits")
+                                        {
+                                            propType = SchemaElementType.classOption;
+                                        }
+                                        break;
+                                    case "type":
+                                        propType = SchemaElementType.classOption;
+
+                                        break;
+                                    case "subplotid":
+                                        propType = SchemaElementType.subplotIdOption;
+
+                                        break;
+                                    default:
+
+                                        break;
+                                }
+
+
+                                node.ElementType = propType;
+                            }
+                            else if (prop.Name == "description")
+                            {
+                                node.Description = prop.Value.ToString();
+
+                            }
+                            else if (prop.Name == "flags")
+                            {
+                                JsonElement flagsInfo = prop.Value;
+                                enumeration = new List<string>();
+                                foreach (var item in flagsInfo.EnumerateArray())
+                                {
+                                    string value = item.ToString();
+                                    enumeration.Add(value);
+                                }
+
+                                node.Enumeration = enumeration;
+
+                            }
+                            else if (prop.Name == "values" && prop.Value.ValueKind == JsonValueKind.Array && propType != SchemaElementType.infoArrayOption)
+                            {
+                                // an array of string
+                                JsonElement enumItems = prop.Value;
+                                enumeration = new List<string>();
+
+                                foreach (var item in enumItems.EnumerateArray())
+                                {
+                                    string value = item.ToString();
+                                    enumeration.Add(value);
+                                }
+
+                                node.Enumeration = enumeration;
+
+                            }
+                            else if (prop.Name == "editType")
+                            {
+                                node.EditTypeDecorator = prop.Value.ToString();
+                            }
+                            else if (prop.Name == "dflt")
+                            {
+                                node.DfltDecorator = prop.Value.ToString();
+                            }
+
+
+                        }
+                        break;
+                }
+
+                if (node.Enumeration != null && node.Enumeration.Count > 0 && node.ElementType != SchemaElementType.enumOption)
+                {
+                    node.ElementType = SchemaElementType.enumOption;
+                }
+
+                
+
             }
 
-            catch (Exception ex)
+
+
+
+
+        }
+
+        public void FixClassNames(ref MapNameType node)
+        {
+            if (node.PropertyName == "Items")
             {
-                blowup = ex.Message;
+                node.ClassTypeName = string.Empty;
+                node.FileName = string.Empty;
+                node.JsonType = "ItemsList";
+            }
+            else if (node.item != null && (node.item.ElementType == SchemaElementType.doubleOption || node.item.ElementType == SchemaElementType.stringOption || node.item.ElementType == SchemaElementType.anyOption))
+            {
+                node.ClassTypeName = string.Empty;
+                node.FileName = string.Empty;
+                node.JsonType = node.item.ElementType.ToString(); 
+            }           
+            switch (node.Name)
+            {
+                case "scattergeo.attributes.line":
+                case "scatterpolargl.attributes.line":
+                    node.ClassTypeName = "RadialLineInfo";
+                    node.FileName = "RadialLineInfo.cs";
+                    break;
+
+                case "totals.marker.line":
+                case "attributes.marker.line":
+                    node.ClassTypeName = "MarkerLineInfo";
+                    node.FileName = "MarkerLineInfo.cs";
+                    break;
+                case "scatterternary.attributes.line":
+                    node.ClassTypeName = "TernaryLineInfo";
+                    node.FileName = "TernaryLineInfo.cs";
+                    break;
+
+                case "ohlc.attributes.line":
+                case "candlestick.attributes.line":
+                    node.ClassTypeName = "FinanceLineInfo";
+                    node.FileName = "FinanceLineInfo.cs";
+                    break;
+
+                case "attributes.decreasing.marker":
+                    node.ClassTypeName = "ChangeMarkerInfo";
+                    node.FileName = "ChangeMarkerInfo.cs";
+                    break;
+                case "scattergeo.attributes.marker":
+                case "choroplethmapbox.attributes.marker":
+                    node.ClassTypeName = "GeoMarkerInfo";
+                    node.FileName = "GeoMarkerInfo.cs";
+                    break;
+                case "attributes.selected.marker":
+                case "attributes.unselected.marker":
+                    node.ClassTypeName = "MarkerSelectionInfo";
+                    node.FileName = "MarkerSelectionInfo.cs";
+                    break;
+
+                case "indicator.attributes.title":
+                    node.ClassTypeName = "IndicatorTitleInfo";
+                    node.FileName = "IndicatorTitleInfo.cs";
+                    break;
+                case "pie.attributes.title":
+                    node.ClassTypeName = "PieTitleInfo";
+                    node.FileName = "PieTitleInfo.cs";
+                    break;
+
+                case "layoutAttributes.legend.title":
+                    node.ClassTypeName = "LegendTitleInfo";
+                    node.FileName = "LegendTitleInfo.cs";
+                    break;
+
+                case "bar.attributes.selected":
+                case "bar.attributes.unselected":
+                    node.ClassTypeName = "BarSelectionInfo";
+                    node.FileName = "BarSelectionInfo.cs";
+                    break;
+
+                case "violin.attributes.selected":
+                case "violin.attributes.unselected":
+                    node.ClassTypeName = "ViolinSelectionInfo";
+                    node.FileName = "ViolinSelectionInfo.cs";
+                    break;
+
+                case "scatter3d.attributes.projection":
+        
+                       node.ClassTypeName = "Scatter3DProjection";
+                       node.FileName = "Scatter3DProjection.cs";
+                       break;
+                case "ohlc.attributes.decreasing":
+                case "candlestick.attributes.decreasing":
+                case "ohlc.attributes.increasing":
+                case "candlestick.attributes.increasing":
+                    node.ClassTypeName = "FinanceChangeInfo";
+                    node.FileName = "FinanceChangeInfo.cs";
+                    break;
+                case "layer.symbol.textfont":
+                    node.ClassTypeName = "FontInfo";
+                    node.FileName = "FontInfo.cs";
+                    break;
+
+                case "waterfall.attributes.decreasing":
+                case "waterfall.attributes.increasing":
+                    node.ClassTypeName = "WaterfallChangeInfo";
+                    node.FileName = "WaterfallChangeInfo.cs";
+                    break;
+
+                case "attributes.delta.decreasing":
+                case "attributes.delta.increasing":
+                    node.ClassTypeName = "AreaChangeInfo";
+                    node.FileName = "AreaChangeInfo.cs";
+                    break;
+
+                case "items.annotation.hoverlabel":
+                    node.ClassTypeName = "AnnotationHoverLabelInfo";
+                    node.FileName = "AnnotationHoverLabelInfo.cs";
+                    break;
+
+                case "layout.layoutAttributes.hoverlabel":
+                    node.ClassTypeName = "LayoutHoverLabelInfo";
+                    node.FileName = "LayoutHoverLabelInfo.cs";
+                    break;
+
+                case "coloraxis.colorbar.title":
+                case "marker.colorbar.title":
+                case "attributes.colorbar.title":
+                case "line.colorbar.title":
+                    node.ClassTypeName = "ColorbarTitleInfo";
+                    node.FileName = "ColorbarTitleInfo.cs";
+                    break;
+                case "icicle.attributes.tiling":
+                    node.ClassTypeName = "IcicleTilingInfo";
+                    node.FileName = "IcicleTilingInfo.cs";
+                    break;
+
+                case "treemap.attributes.tiling":
+                    node.ClassTypeName = "TreemapTilingInfo";
+                    node.FileName = "TreemapTilingInfo.cs";
+                    break;
+
+                case "animation.transition":
+                    node.ClassTypeName = "AnimationTransitionInfo";
+                    node.FileName = "AnimationTransitionInfo.cs";
+                    break;
+
+                case "attributes.cells.fill":
+                    node.ClassTypeName = "CellFillInfo";
+                    node.FileName = "CellFillInfo.cs";
+                    break;
+
+                case "layoutAttributes.geo.domain":
+                    node.ClassTypeName = "GeoDomainInfo";
+                    node.FileName = "GeoDomainInfo.cs";
+                    break;
+                case "scatter3d.attributes.error_x":
+                case "scatter3d.attributes.error_y":
+                case "scatter3d.attributes.error_z":
+                    node.ClassTypeName = "Scatter3DErrorInfo";
+                    node.FileName = "Scatter3DErrorInfo.cs";
+                    break;
+
+                case "scene.camera.center":
+                    node.ClassTypeName = "CameraCenterInfo";
+                    node.FileName = "CameraCenterInfo.cs";
+                    break;
+
+                case "transforms.sort.attributes":
+               
+                    node.ClassTypeName = "SortAttributesInfo";
+                    node.FileName = "SortAttributesInfo.cs";
+                    break;
+                case "transforms.groupby.attributes":
+                    node.ClassTypeName = "GroupByAttributesInfo";
+                    node.FileName = "GroupByAttributesInfo.cs";
+                    break;
+
+                case "xaxis.rangeslider.yaxis":
+                    node.ClassTypeName = "RangeSliderAxisInfo";
+                    node.FileName = "RangeSliderAxisInfo.cs";
+                    break;
+                case "attributes.gauge.axis":
+                    node.ClassTypeName = "GaugeAxisInfo";
+                    node.FileName = "GaugeAxisInfo.cs";
+                    break;
+                case "items.dimension.axis":
+                    node.ClassTypeName = "DimensionAxisInfo";
+                    node.FileName = "DimensionAxisInfo.cs";
+                    break;
+                case "carpet.attributes.baxis":
+                case "carpet.attributes.aaxis":
+                case "carpet.attributes.caxis":
+                    node.ClassTypeName = "CarpetAxisInfo";
+                    node.FileName = "CarpetAxisInfo.cs";
+                    break;
+
+                case "cone.attributes.lightposition":
+                case "isosurface.attributes.lightposition":
+                case "mesh3d.attributes.lightposition":
+                case "streamtube.attributes.lightpositio":
+                case "surface.attributes.lightposition":
+                case "volume.attributes.lightposition":
+                case "scene.camera.eye":
+                case "streamtube.attributes.starts":
+
+                    node.ClassTypeName = "PositionInfo";
+                    node.FileName = "PositionInfo.cs";
+                    break;
+                case "items.slider.steps":
+                    node.ClassTypeName = "SliderSteps";
+                    node.FileName = "SliderSteps.cs";
+                    break;
+                case "attributes.gauge.steps":
+                    node.ClassTypeName = "GaugeSteps";
+                    node.FileName = "GaugeSteps.cs";
+                    break;
+
+                case "histogram.attributes.xbins":
+                case "histogram2d.attributes.xbins":
+                case "histogram2dcontour.attributes.xbins":
+                case "histogram.attributes.ybins":
+                case "histogram2d.attributes.ybins":
+                case "histogram2dcontour.attributes.ybins":
+                case "histogram.attributes.zbins":
+                case "histogram2d.attributes.zbins":
+                case "histogram2dcontour.attributes.zbins":
+                    node.ClassTypeName = "BinsInfo";
+                    node.FileName = "BinsInfo.cs";
+                    break;
+
+                case "attributes.slices.x":
+                case "attributes.slices.y":
+                case "attributes.slices.z":
+                    node.ClassTypeName = "SlicesRenderInfo";
+                    node.FileName = "SlicesRenderInfo.cs";
+                    break;
+
+                case "attributes.projection.x":
+                case "attributes.projection.y":
+                case "attributes.projection.z":
+                    node.ClassTypeName = "ProjectionRenderInfo";
+                    node.FileName = "ProjectionRenderInfo.cs";
+                    break;
+
+                case "attributes.contours.z":
+                case "attributes.contours.x":
+                case "attributes.contours.y":
+                    node.ClassTypeName = "ContoursRenderInfo";
+                    node.FileName = "ContoursRenderInfo.cs";
+                    break;
+                case "attributes.caps.z":
+                case "attributes.caps.x":
+                case "attributes.caps.y":
+                    node.ClassTypeName = "CapRenderInfo";
+                    node.FileName = "CapRenderInfo.cs";
+                    break;
+
+                case "layoutAttributes.geo.lataxis":
+                case "layoutAttributes.geo.lonaxis":
+                    node.ClassTypeName = "GeoAxisInfo";
+                    node.FileName = "GeoAxisInfo.cs";
+                    break;
+
+                case "layoutAttributes.ternary.aaxis":
+                case "layoutAttributes.ternary.baxis":
+                case "layoutAttributes.ternary.caxis":
+                    node.ClassTypeName = "TernaryAxisInfo";
+                    node.FileName = "TernaryAxisInfo.cs";
+                    break;
+                case "layoutAttributes.scene.xaxis":
+                case "layoutAttributes.scene.yaxis":
+                case "layoutAttributes.scene.zaxis":
+                    node.ClassTypeName = "SceneAxisInfo";
+                    node.FileName = "SceneAxisInfo.cs";
+                    break;
+
+                case "layout.layoutAttributes.xaxis":
+                case "layout.layoutAttributes.yaxis":
+                case "layout.layoutAttributes.zaxis":
+                    node.ClassTypeName = "LayoutAxisInfo";
+                    node.FileName = "LayoutAxisInfo.cs";
+                    break;
+
+            }
+        }
+
+
+
+        public string CamelCaseName(string name)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                return string.Empty;
+            }
+            switch (name)
+            {
+                case "da":
+                name = "DA";
+                    break;
+                case "dr":
+                    name = "DR";
+                    break;
+                case "db":
+                    name = "DB";
+                    break;
+                case "dx":
+                    name = "DX";
+                    break;
+                case "dy":
+                    name = "DY";
+                    break;
+                case "ids":
+                    name = "IDs";
+                    break;
+                case "sd":
+                    name = "SD";
+                    break;
+                case "imag":
+                    name = "Imaginary";
+                    break;
+            }
+
+            name = name.Replace("2d", "2D")
+                .Replace("3d", "3D")
+                .Replace("align", "Align")
+                .Replace("align", "Align")
+                .Replace("accesstoken", "AccessToken")        
+                .Replace("alphahull", "AlphaHull")
+                .Replace("anchor", "Anchor")
+                .Replace("angle", "Angle")
+                .Replace("arearatio", "AreaRatio")
+                .Replace("area", "Area")
+                .Replace("array", "Array")
+                .Replace("aspectratio", "AspectRatio")
+
+                .Replace("attribution", "Attribution")
+                .Replace("auto", "Auto")
+                .Replace("axis", "Axis")
+                .Replace("axes", "Axes")
+                .Replace("axref", "AXRef")
+                .Replace("ayref", "AYRef")
+                .Replace("background", "Background")
+                .Replace("bar", "Bar")
+                .Replace("nbinsx", "NBinsX")
+                .Replace("nbinsy", "NBinsY")
+                .Replace("bin", "Bin")
+                .Replace("bordercolor", "BorderColor")
+                .Replace("borderwidth", "BorderWidth")
+                .Replace("bounds", "Bounds")
+                .Replace("break", "Break")                
+                .Replace("calendar", "Calendar")
+                .Replace("captureevents", "CaptureEvents")
+                .Replace("carpet", "Carpet")
+                .Replace("click", "Click")
+                .Replace("cloud", "Cloud")
+                .Replace("colorlist", "ColorList")
+                .Replace("color", "Color")
+                .Replace("columnorder", "ColumnOrder")
+                .Replace("contour", "Contour")
+                .Replace("count", "Count")
+                .Replace("current", "Current")
+                .Replace("customdata", "CustomData")
+                .Replace("dash", "Dash")
+                .Replace("direction", "Direction")
+                .Replace("distance", "Distance")
+                .Replace("double", "Double")
+                
+                .Replace("dtick", "DTick")
+                .Replace("epsilon", "Epsilon")
+                .Replace("events", "events")
+              
+                .Replace("exponent", "Exponent")
+                .Replace("fade", "Fade")
+                .Replace("funnel", "Funnel")
+                .Replace("icicle", "Icicle")
+                .Replace("pie", "Pie")
+                .Replace("sunburst", "Sunburst")
+                .Replace("treemap", "Treemap")
+              
+
+
+                .Replace("featureidkey", "FeatureIDKey")
+                .Replace("fence", "Fence")
+                .Replace("font", "Font")
+                .Replace("flaglist", "FlagList")
+                .Replace("flatshading", "FlatShading")
+                .Replace("format", "Format")
+                .Replace("func", "Func")
+                .Replace("gap", "Gap")
+                .Replace("grid", "Grid")
+                .Replace("groupby", "GroupBy")
+                .Replace("group", "Group")
+                .Replace("hoveron", "HoverOn")
+                .Replace("heatmapgl", "HeatmapGL")
+                .Replace("hover", "Hover")
+                .Replace("hidesources", "HideSources")
+                .Replace("iconsize", "IconSize")
+                .Replace("index", "Index")
+                .Replace("info", "Info")
+                .Replace("itemname", "ItemName")
+                .Replace("items", "Items")
+                .Replace("json", "Json")
+                .Replace("label", "Label")
+                .Replace("layer", "Layer")
+                .Replace("legendrank", "LegendRank")
+                .Replace("legend", "Legend")
+                .Replace("length", "Length")
+                .Replace("line", "Line")
+                .Replace("logo", "Logo")
+                .Replace("maxdepth", "MaxDepth")
+                .Replace("maxdisplayed", "MaxDisplayed")
+                .Replace("maxzoom", "MaxZoom")
+               
+                .Replace("max", "Max")
+                .Replace("mapbox", "Mapbox")
+                .Replace("method", "Method")
+                .Replace("mean", "Mean")
+                .Replace("menu", "Menu")
+                .Replace("mid", "Mid")
+                
+                .Replace("minsize", "MinSize")
+                .Replace("minzoom", "MinZoom")
+                .Replace("min", "Min")
+                .Replace("mode", "Mode")
+                .Replace("multiselect", "MultiSelect")
+                .Replace("norm", "Norm")
+               
+                .Replace("numbers", "Numbers")
+               // .Replace("order", "Order")
+               .Replace("categoryorder", "CategoryOrder")
+               .Replace("traceorder", "TraceOrder")
+                .Replace("ocean", "Ocean")
+                .Replace("opacity", "Opacity")
+                .Replace("orientation", "Orientation")
+                .Replace("others", "Others")
+                .Replace("overflow", "Overflow")
+                .Replace("pad", "Pad")
+                .Replace("parcats", "ParallelCats")
+                .Replace("parcoords", "ParallelCoords")
+                .Replace("paths", "Paths")
+                .Replace("padding", "Padding")
+                .Replace("pattern", "Pattern")
+                .Replace("pointpos", "PointPosition")
+                .Replace("points", "Points")
+                .Replace("polargl", "PolarGL")
+                .Replace("polar", "Polar")
+                .Replace("period", "Period")
+                .Replace("position", "Position")
+                .Replace("prefix", "Prefix")
+                
+                .Replace("autorange", "AutoRange")
+                .Replace("constraintrange", "ConstraintRange")
+                .Replace("dtickrange", "DTickRange")
+                .Replace("fixedrange", "FixedRange")
+                .Replace("arrangement", "Arrangement")
+                // .Replace("range", "range")
+                // .Replace("ratio", "Ratio")
+                // .Replace("ref", "Ref")
+                .Replace("duration", "Duration")
+                .Replace("revision", "Revision")
+                .Replace("river", "River")
+                .Replace("roworder", "RowOrder")
+                .Replace("rule", "Rule")
+                .Replace("scaleratio", "ScaleRatio")
+                .Replace("scale", "Scale")
+                .Replace("scattergeo", "ScatterGeo")
+                .Replace("scattergl", "ScatterGL")
+                .Replace("selector", "Selector")
+                .Replace("shape", "Shape")
+                .Replace("showactive", "ShowActive")
+                .Replace("showarrow", "ShowArrow")
+                .Replace("showaxisrangerntryboxes", "ShowAxisRangeEntryBoxes")
+                .Replace("showdividers", "ShowDividers")
+                .Replace("showframe", "ShowFrame")
+                .Replace("showlowerhalf", "ShowLowerHalf")
+                .Replace("showlakes", "ShowLakes")
+                .Replace("showland", "ShowLand")
+                
+                .Replace("shift", "Shift")
+              
+                .Replace("side", "Side")
+
+                .Replace("sizable", "Sizable")
+                .Replace("sizeref", "SizeRef")
+                .Replace("sizex", "sizeX")
+                .Replace("sizey", "sizeY")
+                .Replace("sizing", "Sizing")
+                .Replace("slider", "Slider")
+                .Replace("slope", "Slope")
+                .Replace("smith", "Smith")
+                .Replace("smooth", "Smooth")
+                .Replace("snap", "Snap")
+                .Replace("span", "Span")
+                .Replace("spikes", "Spikes")
+                .Replace("squarifyratio", "SquarifyRatio")
+                .Replace("startarrowhead", "StartArrowhead")
+                .Replace("startarrowsize", "StartArrowSize")
+                .Replace("standoff", "Standoff")
+                .Replace("streamtube", "StreamTube")
+                .Replace("stop", "Stop")
+                .Replace("style", "Style")
+                .Replace("subplotid", "SubplotID")
+                .Replace("subunit", "Subunit")
+                .Replace("suffix", "Suffix")
+                .Replace("surface", "Surface")
+                .Replace("traceref", "TraceRef")
+                .Replace("tracerefminus", "TraceRefMinus")
+                .Replace("template", "Template")
+                .Replace("text", "Text")
+                .Replace("ternary", "Ternary")
+                .Replace("thickness", "Thickness")
+                .Replace("thetaunit", "ThetaUnit")
+                .Replace("theta", "Theta")
+                .Replace("ticklen", "TickLen")
+                .Replace("tickson", "TicksOn")
+                .Replace("tick", "Tick")
+                .Replace("title", "Title")
+                .Replace("thousands", "Thousands")
+                .Replace("toshow", "ToShow")
+                .Replace("toward", "Toward")
+                .Replace("type", "Type")
+                .Replace("uid", "UID")
+                //.Replace("unit", "Unit")
+                .Replace("upperhalf", "UpperHalf")
+                .Replace("value", "Value")
+                .Replace("vals", "Vals")
+                .Replace("width", "Width")
+                .Replace("xref", "XRef")
+                .Replace("xside", "XSide")
+                .Replace("xsize", "XSize")
+                .Replace("xy", "XY")
+                .Replace("yanchor", "YAnchor")
+                .Replace("yaxis", "YAxis")
+                .Replace("yref", "YRef")
+                .Replace("yside", "YSide")
+                .Replace("ysize", "YSize");
+
+
+            name = name.Substring(0, 1).ToUpper() + name.Substring(1);
+
+            for (int i = 1; i < name.Length; i++)
+            {
+                if (name[i] == '_')
+                {
+                    name = name.Substring(0, i) + name[i + 1].ToString().ToUpper() + name.Substring(i + 2);
+                }
             }
 
 
-           
+            return name;
+        }
+
+
+        public string LookupName(string Name, SchemaItem node)
+        {
+            return Name;
+        }
+
+        public string LookupClassName(string Name, SchemaItem node)
+        {
+            return Name;
         }
 
         public void CheckTypeName(SchemaItem item)
         {
-            if (item.Name.ToLower() == "type" && item.Parent !=null)
+            if (item.Name.ToLower() == "type" && item.Parent != null)
             {
                 item.Name = item.Parent.Name + "Type";
             }
@@ -782,308 +1130,5 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
         }
 
 
-        public string directMethodSigniture(string propertyName, string propertyType, string ValueName)
-        {
-            string indent = "\n\t\t\t";
-
-            string result = indent + "public " + propertyType + "? " + propertyName;
-            result += indent + "{";
-            result += indent + "\tget { return (ValueItems as dynamic)." + ValueName + "; }";
-            result += indent + "\tset { (ValueItems as dynamic)." + ValueName + " = value; }";
-            result += indent + "}\n";
-
-
-            return result;
-        }
-
-        public string fancyMethodSigniture(string propertyName, string className, string ValueName)
-        {
-            string indent = "\n\t\t\t";
-            string indent2 = "\n\t\t\t\t";
-            string indent3 = "\n\t\t\t\t\t";
-
-            string result = indent + className + "? _" + propertyName+" = null;";
-            result += indent + "public " + className + "? " + propertyName;
-            result += indent + "{";
-            result += indent2 + "get { return _" + propertyName+"; }";
-            result += indent2 + "set";
-            result += indent2 + "{";
-            result += indent3 + "_" + propertyName + " = value;";
-            result += indent3 + "(ValueItems as dynamic)."+ValueName+" = _"+propertyName+"?.ValueItems;";
-            result += indent2 + "}";
-            result += indent + "}\n";
-
-            return result;
-                     
-        }
-
-
-       
-        public string itemsMethodSigniture(string propertyName, string className)
-        {
-            string indent = "\n\t\t\t";
-            string indent2 = "\n\t\t\t\t";
-            string indent3 = "\n\t\t\t\t\t";
-
-            string result = indent + "ValuesCollection<"+ className + ">? _" + propertyName + " = null;";
-            result += indent + "public ValuesCollection<" + className + "> " + propertyName;
-            result += indent + "{";
-            result += indent2 + "get";
-            result += indent2 + "{ ";
-            result += indent3 + "if (_" + propertyName + "==null)";
-            result += indent3 + "{ ";
-            result += indent3 + "\t_" + propertyName + " =  new ValuesCollection<"+ className + ">(this);";
-            result += indent3 + "} ";
-
-            result += indent3 + "return _" + propertyName + ";";
-            result += indent2 + "}";
-            result += indent + "}\n";
-
-            return result;
-
-        }
-
-        public string enumMethodSigniture(string propertyName, string enumName, string ValueName)
-        {
-            string indent = "\n\t\t\t";
-
-            string result = indent + "public " + enumName + "? " + propertyName;
-            result += indent + "{";
-            result += indent + "\tget { return EnumerationStatic.GetValueFromDescription<" + enumName+"> ((ValueItems as dynamic)." + ValueName + "); }";
-            result += indent + "\tset { (ValueItems as dynamic)." + ValueName + " = value?.GetDescription(); }";
-            result += indent + "}\n";
-            return result;
-
-        }
-
-        public string ClassRename(string initialName, SchemaItem parent)
-        {
-            string result = initialName;
-
-            string parentType = string.Empty;
-
-            if (parent.CsType != "None")
-            {
-                parentType = CamelCaseEnumName(parent.CsType);
-            }
-
-            switch (initialName)
-            {
-                case "layer":
-                    result = parentType + CamelCaseEnumName(initialName);
-                    break;
-                case "xaxis":
-                case "yaxis":
-                case "zaxis":
-
-                case "imaginaryaxis":
-                case "realaxis":
-
-                case "aaxis":
-                case "baxis":
-                case "caxis":
-
-               
-                case "lataxis":
-                case "lonaxis":
-                    if (parentType.ToLower() == "rangeslider")
-                    {
-                        result = parentType + "YAxis";
-                    }
-                    else                            
-                    {
-                        result = parentType + "Axis";
-                    }
-                    break;
-                default:
-                    break;
-            }
-
-            return result;
-
-        }
-
-        public bool isEnterpriseName(string name)
-        {
-            bool result = false;
-            if (name.ToLower().EndsWith("src"))
-            {
-                // useless 
-                result = true; 
-            }
-
-            if (name.ToLower().EndsWith("chartstudio"))
-            {
-                // useless 
-                result = true; 
-            }
-
-
-            return result;
-        }
-
-
-        public void PublishClasses(SchemaItem head)
-        {
-            string result = string.Empty;
-
-            EnumerateClass(head);
-
-            
-
-
-            var query = ResultClasses.OrderBy(x => x.Name);
-
-            string lastResultName = "";
-            string indent = "\t\t";
-
-            foreach (SchemaItem item in query)
-            {
-                if (item.Enumeration != null)
-                {
-                    // skip enums if we missed any
-                    continue;
-                }
-
-                if (isEnterpriseName(item.Name))
-                {
-                    continue;
-                }
-             
-                if (item.Name != lastResultName) 
-                {
-
-                    string Info = string.Empty;
-
-                    if (!item.CsType.EndsWith("Item"))
-                    {
-                        Info = "Info";
-                    }
-
-                    result += indent + "public class " + CamelCaseEnumName( item.CsType) + Info + " : ValuesObject\n";
-                    result += indent + "{\n\n";
-
-                    result += indent + "\tpublic " + CamelCaseEnumName(item.CsType) + Info + "():base()";
-                    result += indent + "\t{";
-                    result += indent + "\t}\n";
-
-
-                    var children = item.Children.OrderBy(x => x.Name);
-
-
-
-                    foreach (SchemaItem child in children)
-                    {
-                        string childName = CamelCaseEnumName(child.Name);
-
-                        if (isEnterpriseName(childName))
-                        {
-                            continue;
-                        }
-
-                        string childClassName = CamelCaseEnumName(child.CsType);
-                        switch (child.ElementType)
-                        {
-                            case SchemaElementType.boolOption:
-                                result = result + directMethodSigniture(childName, "bool", child.Name.ToLower());
-                            break;
-                            case SchemaElementType.stringOption:
-                                result = result + directMethodSigniture(childName, "string", child.Name.ToLower());
-                                break;
-                            case SchemaElementType.angleOption:
-                            case SchemaElementType.floatOption:
-                                result = result + directMethodSigniture(childName, "float", child.Name.ToLower());
-                                break;
-                            case SchemaElementType.intOption:
-                                result = result + directMethodSigniture(childName, "int", child.Name.ToLower());
-                                break;
-                            case SchemaElementType.anyOption:
-                            case SchemaElementType.numberOption:
-                            case SchemaElementType.subplotIdOption:
-                                result = result + directMethodSigniture(childName, "object", child.Name.ToLower());
-                                break;
-                            case SchemaElementType.enumOption:
-                                string enumName = child.Name;
-
-                                if (enumName == "type" && item.Parent != null)
-                                {
-                                    enumName = item.Parent.Name + "Type";
-                                }
-
-                                result = result + enumMethodSigniture(childName, CamelCaseEnumName(enumName) +"Options", child.Name.ToLower());
-                                break;
-
-
-                            case SchemaElementType.arrayOption:
-                                result = result + itemsMethodSigniture(childName + "s", CamelCaseEnumName(childClassName));
-                                break;
-
-
-                            case SchemaElementType.colorOption:
-                            case SchemaElementType.colorListOption:
-                            case SchemaElementType.colorScaleOption:
-
-                           
-                            case SchemaElementType.dataArrayOption:
-                            case SchemaElementType.infoArrayOption:
-                            
-                           
-                            
-                            case SchemaElementType.unknownOption:
-                            case SchemaElementType.nullOption:
-                            
-                                result = result + directMethodSigniture(childName, "object", child.Name.ToLower());
-                                break;
-                           
-                            case SchemaElementType.classOption:
-                            case SchemaElementType.objectOption:
-                                result = result + fancyMethodSigniture(CamelCaseEnumName(childName), CamelCaseEnumName(childClassName) +"Info", child.Name.ToLower());
-                                break;
-                            default:
-                                result = result + directMethodSigniture(childName, "badType", child.Name.ToLower()); ;
-                                break;
-                        }
-                    }
-                    
-              
-        
-
-                    lastResultName = item.Name;
-                    result = result + "\n"+indent + "}\n\n\n";
-                }
-               
-            }
-
-
-            AreaText = result;
-            StateHasChanged();
-        }
-
-        public void GenerateSource()
-        {
-            JsonDocument doc = JsonDocument.Parse(AreaText);
-
-         
-
-
-
-
-            JsonElement root = doc.RootElement.GetProperty(SchemaNode);
-
-
-
-            SchemaItem head = new SchemaItem() { Name = CamelCaseEnumName(SchemaNode), ElementType = SchemaElementType.classOption, Parent = null, Description = "Head Element", CsType= CamelCaseEnumName(SchemaNode) };
-
-
-            DigDeeper(head, root);
-
-           // PublishEnumerations(head);
-
-            PublishClasses(head);
-
-        }
-
-
-        
     }
 }

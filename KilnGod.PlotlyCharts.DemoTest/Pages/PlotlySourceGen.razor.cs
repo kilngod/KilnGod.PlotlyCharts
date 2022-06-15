@@ -76,7 +76,7 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
             JsonDocument doc = JsonDocument.Parse(AreaText);
 
 
-            List<MapNameType> names = new List<MapNameType>();
+            List<MapNameType> mapNameItems = new List<MapNameType>();
 
             foreach (var item in doc.RootElement.EnumerateObject())
             {
@@ -85,36 +85,83 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
                 MapSchema(head, item.Value);
 
 
-                MapNames(head, names, item.Name);
+                MapNames(head, mapNameItems, item.Name);
               //  break;
             }
 
             string namelist = "";
 
-            for (int i = 0; i < names.Count; i++)
+            for (int i = 0; i < mapNameItems.Count; i++)
             {
-                MapNameType name = names[i];
-                FixClassNames(ref name);
+                MapNameType name = mapNameItems[i];
+               
                 if (name.IsEnumeration)
                 {
+                    FixEnumNames(ref name);
                     EnumList.Add(name);
                 } 
                 else if (!string.IsNullOrWhiteSpace( name.ClassTypeName) && name.HasChildren && name.Name != "traces" && name.Name != "transforms")// && name.Name != "traces" )
                 {
+                    FixClassNames(ref name);
+
                     ClassList.Add(name);
 
                 }
             }
 
 
-            names = ClassList.OrderBy(x => x.PropertyName).ThenBy(x => MapNameType.ChildCount(x)).ToList();
+
 
             string reasons = string.Empty;
 
-            for (int i = 1; i < names.Count; i++)
+            List<MapNameType> enumItems = EnumList.OrderBy(x => x.PropertyName).ThenBy(x => x.item?.Enumeration?.Count).ToList();
+
+            for (int i = 1; i < enumItems.Count; i++)
             {
-                MapNameType priorName = names[i - 1];
-                MapNameType name = names[i];
+                MapNameType priorName = enumItems[i - 1];
+                MapNameType name = enumItems[i];
+
+                bool isDifferentEnum = false;
+                string reason = string.Empty;
+                if (name.ClassTypeName == priorName.ClassTypeName)
+                {
+                    if (name.item.Enumeration.Count != priorName.item.Enumeration.Count)
+                    {
+                        isDifferentEnum = true;
+                        reason = "enum count is different";
+                    }
+                    else if (name.item.Enumeration.Count > 0)
+                    {
+                        foreach (var child in name.item.Enumeration)
+                        {
+                            var mia = priorName.item.Enumeration.Find(x => x == child);
+
+                            if (mia == null)
+                            {
+                                isDifferentEnum = true;
+                                reason = "element not found: " + child;
+                            }
+                        }
+                    }
+
+                    if (isDifferentEnum)
+                    {
+                        reasons = reasons + System.Environment.NewLine + name.PropertyName + " " + name.Name + " != " + priorName.Name + " : " + reason;
+                    }
+                }
+
+            }
+
+            AreaText = reasons;
+
+            List< MapNameType>   classItems = ClassList.OrderBy(x => x.PropertyName).ThenBy(x => MapNameType.ChildCount(x)).ToList();
+
+          
+
+            for (int i = 1; i < classItems.Count; i++)
+            {
+                MapNameType priorName = classItems[i - 1];
+                MapNameType name = classItems[i];
 
                 bool isDifferentClass = false;
                 string reason = string.Empty;
@@ -157,7 +204,7 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
             }
             
             */
-            AreaText = reasons;
+          
             
 
         }
@@ -563,8 +610,313 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 
         }
 
+
+        public void FixEnumNames(ref MapNameType node)
+        {
+            switch (node.Name)
+            {
+                case "attributes.hoverlabel.align":
+                case "alayoutAttributes.hoverlabel.align":
+                    node.ClassTypeName = "HoverLabelAlignOptions";
+                    node.FileName = "HoverLabelAlignOptions.cs";
+                    break;
+                case "items.shape.xref":
+                case "items.shape.yref":
+                    node.ClassTypeName = "ShapeRef";
+                    node.FileName = "ShapeRef.cs";
+                    break;
+                case "layoutAttributes.title.xref":
+                case "layoutAttributes.title.yref":
+                    node.ClassTypeName = "TitleRefOptions";
+                    node.FileName = "TitleRefOptions.cs";
+                    break;
+
+                case "items.annotation.xanchor":
+                case "items.annotation.yanchor":
+                    node.ClassTypeName = "AnnotationAnchorOptions";
+                    node.FileName = "AnnotationAnchorOptions.cs";
+                    break;
+
+                case "line.colorbar.xanchor":
+                case "line.colorbar.yanchor":
+                    node.ClassTypeName = "ColorbarAnchorOptions";
+                    node.FileName = "ColorbarAnchorOptions.cs";
+                    break;
+
+                case "coloraxis.colorbar.tickmode":
+                    node.ClassTypeName = "ColorbarTickModeOptions";
+                    node.FileName = "ColorbarTickModeOptions.cs";
+                    break;
+
+                case "animation.mode":
+                    node.ClassTypeName = "AnimationModeOptions";
+                    node.FileName = "AnimationModeOptions.cs";
+                    break;
+
+                case "items.rangebreak.pattern":
+                    node.ClassTypeName = "RangebreakPatternOptions";
+                    node.FileName = "RangebreakPatternOptions.cs";
+                    break;
+
+                case "items.shape.layer":
+                    node.ClassTypeName = "ShapeLayerOptions";
+                    node.FileName = "ShapeLayerOptions.cs";
+                    break;
+                case "layout.layoutAttributes.dragmode":
+                    node.ClassTypeName = "LayoutDragModeOptions";
+                    node.FileName = "LayoutDragModeOptions.cs";
+                    break;
+
+                case "attributes.cumulative.direction":
+                    node.ClassTypeName = "CumulativeDirectionOptions";
+                    node.FileName = "CumulativeDirectionOptions.cs";
+                    break;
+                case "attributes.title.align":
+                case "items.annotation.align":
+                    node.ClassTypeName = "TitleAlignOptions";
+                    node.FileName = "TitleAlignOptions.cs";
+                    break;
+
+                case "items.dimension.categoryorder":
+                    node.ClassTypeName = "DimensionCategoryOrder";
+                    node.FileName = "DimensionCategoryOrder.cs";
+                    break;
+
+                case "indicator.attributes.mode":
+                    node.ClassTypeName = "IndicatorModeOptions";
+                    node.FileName = "IndicatorModeOptions.cs";
+                    break;
+
+                case "attributes.title.position":
+                    node.ClassTypeName = "TitlePositionOptions";
+                    node.FileName = "TitlePositionOptions.cs";
+                    break;
+
+
+                case "smith.realaxis.ticks":
+                    node.ClassTypeName = "RealAxisTicksOptions";
+                    node.FileName = "RealAxisTicksOptions.cs";
+                    break;
+
+                case "attributes.gauge.shape":
+                    node.ClassTypeName = "GaugeShapeOptions";
+                    node.FileName = "GaugeShapeOptions.cs";
+                    break;
+
+                case "cone.attributes.sizemode":
+                    node.ClassTypeName = "ConeSizemodeOptions";
+                    node.FileName = "ConeSizemodeOptions.cs";
+                    break;
+
+                case "rangeslider.yaxis.rangemode":
+                    node.ClassTypeName = "SliderRangeModeOptions";
+                    node.FileName = "SliderRangeModeOptions.cs";
+                    break;
+
+                case "attributes.contours.operation":
+                    node.ClassTypeName = "ContoursOperationOptions";
+                    node.FileName = "ContoursOperationOptions.cs";
+                    break;
+                case "scattercarpet.attributes.fill":
+                case "scatterternary.attributes.fill":
+                    node.ClassTypeName = "MDFillOptions";
+                    node.FileName = "MDFillOptions.cs";
+                    break;
+
+                case "items.updatemenu.direction":
+                    node.ClassTypeName = "MenuDirectionOptions";
+                    node.FileName = "MenuDirectionOptions.cs";
+                    break;
+
+                case "animation.direction":
+                    node.ClassTypeName = "AnimationDirectionOptions";
+                    node.FileName = "AnimationDirectionOptions.cs";
+                    break;
+                case "densitymapbox.attributes.hoverinfo":
+                case "scattergeo.attributes.hoverinfo":
+                case "choroplethmapbox.attributes.hoverinfo":
+                case "choropleth.attributes.hoverinfo":
+                    node.ClassTypeName = "GeoHoverOptions";
+                    node.FileName = "GeoHoverOptions.cs";
+                    break;
+
+                case "attributes.cells.align":
+                    node.ClassTypeName = "CellsAlignOptions";
+                    node.FileName = "CellsAlignOptions.cs";
+                    break;
+
+                case "cone.attributes.anchor":
+                    node.ClassTypeName = "ConeAnchorOptions";
+                    node.FileName = "ConeAnchorOptions.cs";
+                    break;
+
+                case " polar.angularaxis.layer":
+                    node.ClassTypeName = "AngularAxisLayerOptions";
+                    node.FileName = "AngularAxisLayerOptions.cs";
+                    break;
+
+                case "marker.pattern.shape":
+                    node.ClassTypeName = "PatternShapeOptions";
+                    node.FileName = "PatternShapeOptions.cs";
+                    break;
+
+                case "legend.title.side":
+                    node.ClassTypeName = "LegendTitleSideOptions";
+                    node.FileName = "LegendTitleSideOptions.cs";
+                    break;
+                case "heatmap.attributes.zsmooth":
+                    node.ClassTypeName = "HeatmapZSmoothOptions";
+                    node.FileName = "HeatmapZSmoothOptions.cs";
+                    break;
+
+                case "items.updatemenu.type":
+                    node.ClassTypeName = "UpdateMenuTypeOptions";
+                    node.FileName = "UpdateMenuTypeOptions.cs";
+                    break;
+
+                case "items.shape.type":
+                    node.ClassTypeName = "ShapeTypeOptions";
+                    node.FileName = "ShapeTypeOptions.cs";
+                    break;
+                case "attributes.error_x.type":
+                case "attributes.error_y.type":
+                case "attributes.error_z.type":
+                    node.ClassTypeName = "ErrorTypeOptions";
+                    node.FileName = "ErrorTypeOptions.cs";
+                    break;
+                case "layoutAttributes.xaxis.type":
+                case "layoutAttributes.yaxis.type":
+                case "layoutAttributes.zaxis.type":
+                    node.ClassTypeName = "AxisTypeOptions";
+                    node.FileName = "AxisTypeOptions.cs";
+                    break;
+                case "marker.gradient.type":
+                    node.ClassTypeName = "GradientTypeOptions";
+                    node.FileName = "GradientTypeOptions.cs";
+                    break;
+
+                case "items.layer.type":
+                    node.ClassTypeName = "LayerTypeOptions";
+                    node.FileName = "LayerTypeOptions.cs";
+                    break;
+                case "polar.angularaxis.type":
+                case "polar.radialaxis.type":
+                    node.ClassTypeName = "PolarAxisTypeOptions";
+                    node.FileName = "PolarAxisTypeOptions.cs";
+                    break;
+                case "barpolar.attributes.thetaunit":
+                    node.ClassTypeName = "BarpolarThetaUnitOptions";
+                    node.FileName = "BarpolarThetaUnitOptions.cs";
+                    break;
+                case "layer.symbol.textposition":
+                    node.ClassTypeName = "SymbolTextPositionOptions";
+                    node.FileName = "SymbolTextPositionOptions.cs";
+                    break;
+                case "funnelarea.attributes.textposition":
+                    node.ClassTypeName = "FunnelAreaTextPositionOptions";
+                    node.FileName = "FunnelAreaTextPositionOptions.cs";
+                    break;
+                case "icicle.attributes.textinfo":
+                    node.ClassTypeName = "IcicleTextInfoOptions";
+                    node.FileName = "IcicleTextInfoOptions.cs";
+                    break;
+                case "waterfall.attributes.textinfo":
+                    node.ClassTypeName = "WaterfallTextInfoOptions";
+                    node.FileName = "WaterfallTextInfoOptions.cs";
+                    break;
+                case "colorbar.title.side":
+                    node.ClassTypeName = "TitleSideOptions";
+                    node.FileName = "TitleSideOptions.cs";
+                    break;
+                case "smith.realaxis.side":
+                case "layoutAttributes.xaxis.side":
+                    node.ClassTypeName = "AxisSideOptions";
+                    node.FileName = "AxisSideOptions.cs";
+                    break;
+
+                case "polar.angularaxis.layer":
+                    node.ClassTypeName = "AxisLayerOptions";
+                    node.FileName = "AxisLayerOptions.cs";
+                    break;
+
+                case "parcats.attributes.hoveron":
+                    node.ClassTypeName = "ParCatsHoverOnOptions";
+                    node.FileName = "ParCatsHoverOnOptions.cs";
+                    break;
+                case "box.attributes.hoveron":
+                    node.ClassTypeName = "BoxHoverOnOptions";
+                    node.FileName = "BoxHoverOnOptions.cs";
+                    break;
+                case "layoutAttributes.scene.hovermode":
+                    node.ClassTypeName = "SceneHoverModeOptions";
+                    node.FileName = "SceneHoverModeOptions.cs";
+                    break;
+                case "parcats.attributes.arrangement":
+                    node.ClassTypeName = "ParCatsArrangementOptions";
+                    node.FileName = "ParCatsArrangementOptions.cs";
+                    break;
+                case "barpolar.layoutAttributes.barmode":
+                    node.ClassTypeName = "BarPolarBarModeOptions";
+                    node.FileName = "BarPolarBarModeOptions.cs";
+                    break;
+
+                case "attributes.link.hoverinfo":
+                    node.ClassTypeName = "LinkHoverInfoOptions";
+                    node.FileName = "LinkHoverInfoOptions.cs";
+                    break;
+                case "scattermapbox.attributes.hoverinfo":
+                    node.ClassTypeName = "GeoHoverInfoOptions";
+                    node.FileName = "GeoHoverInfoOptions.cs";
+                    break;
+                case "cone.attributes.hoverinfo":
+                    node.ClassTypeName = "ConeHoverInfoOptions";
+                    node.FileName = "ConeHoverInfoOptions.cs";
+                    break;
+                case "image.attributes.hoverinfo":
+                    node.ClassTypeName = "ImageHoverInfoOptions";
+                    node.FileName = "ImageHoverInfoOptions.cs";
+                    break;
+                case "scatterternary.attributes.hoverinfo":
+                    node.ClassTypeName = "TernaryHoverInfoOptions";
+                    node.FileName = "TernaryHoverInfoOptions.cs";
+                    break;
+                case "funnelarea.attributes.hoverinfo":
+                case "funnel.attributes.hoverinfo":
+                    node.ClassTypeName = "FunnelHoverInfoOptions";
+                    node.FileName = "FunnelHoverInfoOptions.cs";
+                    break;
+
+                case "scattersmith.attributes.hoverinfo":
+                    node.ClassTypeName = "ScatterSmithHoverInfoOptions";
+                    node.FileName = "ScatterSmithHoverInfoOptions.cs";
+                    break;
+                case "icicle.attributes.hoverinfo":
+                    node.ClassTypeName = "IcicleHoverInfoOptions";
+                    node.FileName = "IcicleHoverInfoOptions.cs";
+                    break;
+                case "ohlc.attributes.hoverinfo":
+                    node.ClassTypeName = "FinanceHoverInfoOptions";
+                    node.FileName = "FinanceHoverInfoOptions.cs";
+                    break;
+
+                case "attributes.node.hoverinfo":
+                    node.ClassTypeName = "NodeHoverInfoOptions";
+                    node.FileName = "NodeHoverInfoOptions.cs";
+                    break;
+
+                case "pointcloud.attributes.hoverinfo":
+                    node.ClassTypeName = "PointCloudHoverInfoOptions";
+                    node.FileName = "PointCloudHoverInfoOptions.cs";
+                    break;
+
+            }
+        }
+
         public void FixClassNames(ref MapNameType node)
         {
+
+
+            // classes
             if (node.PropertyName == "Items")
             {
                 node.ClassTypeName = string.Empty;
@@ -576,15 +928,381 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
                 node.ClassTypeName = string.Empty;
                 node.FileName = string.Empty;
                 node.JsonType = node.item.ElementType.ToString(); 
-            }           
+            }
             switch (node.Name)
             {
+
+                case "traces.bar.attributes":
+                    node.ClassTypeName = "BarTrace : Trace";
+                    node.FileName = "BarTrace.cs";
+                    break;
+                case "traces.barpolar.attributes":
+                    node.ClassTypeName = "BarPolar : Trace";
+                    node.FileName = "BarPolar.cs";
+                    break;
+                case "traces.box.attributes":
+                    node.ClassTypeName = "BoxTrace : Trace";
+                    node.FileName = "BoxTrace.cs";
+                    break;
+
+                case "traces.candlestick.attributes":
+                    node.ClassTypeName = "CandlestickTrace : Trace";
+                    node.FileName = "CandlestickTrace.cs";
+                    break;
+
+                case "traces.carpet.attributes":
+                    node.ClassTypeName = "CarpetTrace : Trace";
+                    node.FileName = "CarpetTrace.cs";
+                    break;
+
+                case "traces.cone.attributes":
+                    node.ClassTypeName = "ConeTrace : Trace";
+                    node.FileName = "ConeTrace.cs";
+                    break;
+
+                case "traces.choropleth.attributes":
+                    node.ClassTypeName = "ChoroplethTrace : Trace";
+                    node.FileName = "ChoroplethTrace.cs";
+                    break;
+
+
+                case "traces.choroplethmapbox.attributes":
+                    node.ClassTypeName = "ChoroplethMapboxTrace : Trace";
+                    node.FileName = "ChoroplethMapboxTrace.cs";
+                    break;
+
+                case "traces.contour.attributes":
+                    node.ClassTypeName = "ContourTrace : Trace";
+                    node.FileName = "ContourTrace.cs";
+                    break;
+
+                case "traces.contourcarpet.attributes":
+                    node.ClassTypeName = "ContourCarpetTrace : Trace";
+                    node.FileName = "ContourCarpetTrace.cs";
+                    break;
+
+                case "traces.densitymapbox.attributes":
+                    node.ClassTypeName = "DensityMapboxTrace : Trace";
+                    node.FileName = "DensityMapboxTrace.cs";
+                    break;
+
+
+                case "traces.funnel.attributes":
+                    node.ClassTypeName = "FunnelTrace : Trace";
+                    node.FileName = "FunnelTrace.cs";
+                    break;
+
+                case "traces.funnelarea.attributes":
+                    node.ClassTypeName = "FunnelAreaTrace : Trace";
+                    node.FileName = "FunnelAreaTrace.cs";
+                    break;
+
+
+                case "traces.image.attributes":
+                    node.ClassTypeName = "ImageTrace : Trace";
+                    node.FileName = "ImageTrace.cs";
+                    break;
+
+                case "traces.icicle.attributes":
+                    node.ClassTypeName = "IcicleTrace : Trace";
+                    node.FileName = "IcicleTrace.cs";
+                    break;
+
+                case "traces.indicator.attributes":
+                    node.ClassTypeName = "IndicatorTrace : Trace";
+                    node.FileName = "IndicatorTrace.cs";
+                    break;
+
+                case "traces.isosurface.attributes":
+                    node.ClassTypeName = "IsoSurfaceTrace : Trace";
+                    node.FileName = "IsoSurfaceTrace.cs";
+                    break;
+
+                case "traces.heatmap.attributes":
+                    node.ClassTypeName = "HeatmapTrace : Trace";
+                    node.FileName = "HeatmapTrace.cs";
+                    break;
+
+                case "traces.heatmapgl.attributes":
+                    node.ClassTypeName = "HeatmapGLTrace : Trace";
+                    node.FileName = "HeatmapGLTrace.cs";
+                    break;
+
+                case "traces.histogram.attributes":
+                    node.ClassTypeName = "HistogramTrace : Trace";
+                    node.FileName = "HistogramTrace.cs";
+                    break;
+                case "traces.histogram2d.attributes":
+                    node.ClassTypeName = "Histogram2DTrace : Trace";
+                    node.FileName = "Histogram2DTrace.cs";
+                    break;
+
+
+                case "traces.histogram2dcontour.attributes":
+                    node.ClassTypeName = "Histogram2DContourTrace : Trace";
+                    node.FileName = "Histogram2DContourTrace.cs";
+                    break;
+
+
+
+                case "traces.mesh3d.attributes":
+                    node.ClassTypeName = "Mesh3DTrace : Trace";
+                    node.FileName = "Mesh3DTrace.cs";
+                    break;
+
+
+                case "traces.ohlc.attributes":
+                    node.ClassTypeName = "OhlcTrace : Trace";
+                    node.FileName = "OhlcTrace.cs";
+                    break;
+
+
+                case "traces.parcats.attributes":
+                    node.ClassTypeName = "ParallelCatsTrace : Trace";
+                    node.FileName = "ParallelCatsTrace.cs";
+                    break;
+
+                case "traces.parcoords.attributes":
+                    node.ClassTypeName = "ParallelCoordsTrace : Trace";
+                    node.FileName = "ParallelCoordsTrace.cs";
+                    break;
+
+                case "traces.pie.attributes":
+                    node.ClassTypeName = "PieTrace : Trace";
+                    node.FileName = "PieTrace.cs";
+                    break;
+
+                case "traces.pointcloud.attributes":
+                    node.ClassTypeName = "PointCloudTrace : Trace";
+                    node.FileName = "PointCloudTrace.cs";
+                    break;
+
+
+                case "traces.sankey.attributes":
+                    node.ClassTypeName = "SankeyTrace : Trace";
+                    node.FileName = "SankeyTrace.cs";
+                    break;
+
+
+                case "traces.scatter.attributes":
+                    node.ClassTypeName = "ScatterTrace : Trace";
+                    node.FileName = "ScatterTrace.cs";
+                    break;
+
+                case "traces.scattercarpet.attributes":
+                    node.ClassTypeName = "ScatterCarpetTrace : Trace";
+                    node.FileName = "ScatterCarpetTrace.cs";
+                    break;
+
+                case "traces.scattergeo.attributes":
+                    node.ClassTypeName = "ScatterGeoTrace : Trace";
+                    node.FileName = "ScatterGeoTrace.cs";
+                    break;
+
+                case "traces.scattergl.attributes":
+                    node.ClassTypeName = "ScatterGLTrace : Trace";
+                    node.FileName = "ScatterGLTrace.cs";
+                    break;
+
+
+
+
+
+                case "traces.scattermapbox.attributes":
+                    node.ClassTypeName = "ScatterMapboxTrace : Trace";
+                    node.FileName = "ScatterMapboxTrace.cs";
+                    break;
+
+
+                case "traces.scatterpolar.attributes":
+                    node.ClassTypeName = "ScatterPolarTrace : Trace";
+                    node.FileName = "ScatterPolarTrace.cs";
+                    break;
+                case "traces.scatterpolargl.attributes":
+                    node.ClassTypeName = "ScatterPolarGLTrace : Trace";
+                    node.FileName = "ScatterPolarGLTrace.cs";
+                    break;
+
+
+                case "traces.scattersmith.attributes":
+                    node.ClassTypeName = "ScatterSmithTrace : Trace";
+                    node.FileName = "ScatterSmithTrace.cs";
+                    break;
+
+
+                case "traces.scatterternary.attributes":
+                    node.ClassTypeName = "ScatterTernaryTrace : Trace";
+                    node.FileName = "ScatterTernaryTrace.cs";
+                    break;
+
+                case "traces.scatter3d.attributes":
+                    node.ClassTypeName = "Scatter3dTrace : Trace";
+                    node.FileName = "Scatter3dTrace.cs";
+                    break;
+
+
+                case "traces.splom.attributes":
+                    node.ClassTypeName = "SplomTrace : Trace";
+                    node.FileName = "SplomTrace.cs";
+                    break;
+
+
+                case "traces.streamtube.attributes":
+                    node.ClassTypeName = "StreamtubeTrace : Trace";
+                    node.FileName = "StreamtubeTrace.cs";
+                    break;
+
+
+                case "traces.sunburst.attributes":
+                    node.ClassTypeName = "SunburstTrace : Trace";
+                    node.FileName = "SunburstTrace.cs";
+                    break;
+
+
+                case "traces.surface.attributes":
+                    node.ClassTypeName = "SurfaceTrace : Trace";
+                    node.FileName = "SurfaceTrace.cs";
+                    break;
+
+
+                case "traces.treemap.attributes":
+                    node.ClassTypeName = "TreemapTrace : Trace";
+                    node.FileName = "TreemapTrace.cs";
+                    break;
+
+
+                case "traces.violin.attributes":
+                    node.ClassTypeName = "ViolinTrace : Trace";
+                    node.FileName = "ViolinTrace.cs";
+                    break;
+
+
+                case "traces.volume.attributes":
+                    node.ClassTypeName = "VolumeTrace : Trace";
+                    node.FileName = "VolumeTraceTrace.cs";
+                    break;
+
+
+                case "traces.waterfall.attributes":
+                    node.ClassTypeName = "WaterfallTrace : Trace";
+                    node.FileName = "WaterfallTrace.cs";
+                    break;
+
+
+              
+
+              
+
+
+                case "transforms.filter.attributes":
+                    node.ClassTypeName = "FilterInfo";
+                    node.FileName = "FilterInfo.cs";
+                    break;
+
+                case "traces.bar.layoutAttributes":
+                    node.ClassTypeName = "BarLayout:LayoutInfo";
+                    node.FileName = "BarLayout.cs";
+                    break;
+                case "traces.box.layoutAttributes":
+                    node.ClassTypeName = "BoxLayout:LayoutInfo";
+                    node.FileName = "BoxLayout.cs";
+                    break;
+
+                case "traces.barpolar.layoutAttributes":
+                    node.ClassTypeName = "BarpolarLyout:LayoutInfo";
+                    node.FileName = "BarpolarLyout.cs";
+                    break;
+                case "traces.funnel.layoutAttributes":
+                    node.ClassTypeName = "FunnelaLyout:LayoutInfo";
+                    node.FileName = "FunnelaLyout.cs";
+                    break;
+                case "traces.funnelarea.layoutAttributes":
+                    node.ClassTypeName = "FunnelAreaLayout:LayoutInfo";
+                    node.FileName = "FunnelAreaLayout.cs";
+                    break;
+                case "traces.icicle.layoutAttributes":
+                    node.ClassTypeName = "IcicleLayout:LayoutInfo";
+                    node.FileName = "IcicleLayout.cs";
+                    break;
+
+                case "traces.pie.layoutAttributes":
+                    node.ClassTypeName = "PieLayout:LayoutInfo";
+                    node.FileName = "PieLayout.cs";
+                    break;
+
+
+                case "traces.sunburst.layoutAttributes":
+                    node.ClassTypeName = "SunburstLayout:LayoutInfo";
+                    node.FileName = "SunburstLayout.cs";
+                    break;
+                case "traces.treemap.layoutAttributes":
+                    node.ClassTypeName = "TreemapLayout:LayoutInfo";
+                    node.FileName = "TreemapLayout.cs";
+                    break;
+                case "traces.violin.layoutAttributes":
+                    node.ClassTypeName = "ViolinLayout:LayoutInfo";
+                    node.FileName = "ViolinLayout.cs";
+                    break;
+                case "traces.waterfall.layoutAttributes":
+                    node.ClassTypeName = "WaterfallLayout:LayoutInfo";
+                    node.FileName = "WaterfallLayout.cs";
+                    break;
+            
+
+
+
+                case "layout.layoutAttributes":
+                    node.ClassTypeName = "LayoutInfo";
+                    node.FileName = "LayoutInfo.cs";
+                    break;
+
+                case "funnel.attributes.connector":
+                    node.ClassTypeName = "FunnelConnectorInfo";
+                    node.FileName = "FunnelConnectorInfo.cs";
+                    break;
+                case "waterfall.attributes.connector":
+                    node.ClassTypeName = "WaterfallConnectorInfo";
+                    node.FileName = "WaterfallConnectorInfo.cs";
+                    break;
+                case "surface.attributes.contours":
+                    node.ClassTypeName = "SurfaceContoursInfo";
+                    node.FileName = "SurfaceContoursInfo.cs";
+                    break;
+
+                case "cone.attributes.lighting":
+                    node.ClassTypeName = "ConeLightingInfo";
+                    node.FileName = "ConeLightingInfo.cs";
+                    break;
+                case "parcats.attributes.line":
+                    node.ClassTypeName = "ParCatsLineInfo";
+                    node.FileName = "ParCatsLineInfo.cs";
+                    break;
+
+                case "histogram2dcontour.attributes.line":
+                    node.ClassTypeName = "ContourLineInfo";
+                    node.FileName = "ContourLineInfo.cs";
+                    break;
+
+                case "items.layer.line":
+                    node.ClassTypeName = "LayerLineInfo";
+                    node.FileName = "LayerLineInfo.cs";
+                    break;
+
                 case "scattergeo.attributes.line":
                 case "scatterpolargl.attributes.line":
                     node.ClassTypeName = "RadialLineInfo";
                     node.FileName = "RadialLineInfo.cs";
                     break;
 
+                case "box.attributes.marker":
+                    node.ClassTypeName = "BoxMarkerInfo";
+                    node.FileName = "BoxMarkerInfo.cs";
+                    break;
+
+                case "treemap.attributes.marker":
+                    node.ClassTypeName = "TreemapMarkerInfo";
+                    node.FileName = "TreemapMarkerInfo.cs";
+                    break;
                 case "totals.marker.line":
                 case "attributes.marker.line":
                     node.ClassTypeName = "MarkerLineInfo";
@@ -594,13 +1312,24 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
                     node.ClassTypeName = "TernaryLineInfo";
                     node.FileName = "TernaryLineInfo.cs";
                     break;
+                case "scattermapbox.attributes.marker":
+                    node.ClassTypeName = "ScatterMapboxMarkerInfo";
+                    node.FileName = "ScatterMapboxMarkerInfo.cs";
+                    break;
 
                 case "ohlc.attributes.line":
                 case "candlestick.attributes.line":
                     node.ClassTypeName = "FinanceLineInfo";
                     node.FileName = "FinanceLineInfo.cs";
                     break;
-
+                case "funnel.attributes.marker":
+                    node.ClassTypeName = "FunnelMarkerInfo";
+                    node.FileName = "FunnelMarkerInfo.cs";
+                    break;
+                case "violin.attributes.marker":
+                    node.ClassTypeName = "ViolinMarkerInfo";
+                    node.FileName = "ViolinMarkerInfo.cs";
+                    break;
                 case "attributes.decreasing.marker":
                     node.ClassTypeName = "ChangeMarkerInfo";
                     node.FileName = "ChangeMarkerInfo.cs";
@@ -836,8 +1565,8 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
                 case "layout.layoutAttributes.xaxis":
                 case "layout.layoutAttributes.yaxis":
                 case "layout.layoutAttributes.zaxis":
-                    node.ClassTypeName = "LayoutAxisInfo";
-                    node.FileName = "LayoutAxisInfo.cs";
+                    node.ClassTypeName = "AxisInfo";
+                    node.FileName = "AxisInfo.cs";
                     break;
 
             }

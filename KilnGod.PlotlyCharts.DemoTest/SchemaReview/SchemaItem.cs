@@ -51,5 +51,41 @@ namespace KilnGod.PlotlyCharts.DemoTest.SchemaReview
         
         public MapNameType map { get; set; }
 
+        public string ContentSchemaName 
+        {
+            get
+            {
+                // remap all classes supporting traces to layout (likely need to rename the supporting class namespace)
+                string result = RootItemType;
+                if (result == "traces" && !Name.EndsWith("Trace"))
+                {
+                    result = "Render";
+                }
+
+                if (result == "layout" && !Name.EndsWith("Layout"))
+                {
+                    result = "Render";
+                }
+                return result;
+            }
+        }
+
+        public bool IsItemList
+        {
+            get
+            {
+                bool result = false;
+
+                if (Children != null)
+                {
+                    var items = Children.Find(x => x.map.PropertyName == "Items");
+
+                    result = items != null;
+                }
+
+                return result;
+            }
+        }
+
     }
 }

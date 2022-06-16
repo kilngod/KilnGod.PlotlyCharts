@@ -110,6 +110,8 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
             }
 
 
+            PublishEnumerations();
+
             /*
 
             string reasons = string.Empty;
@@ -204,9 +206,290 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
             }
             
             */
-          
-            
 
+
+
+        }
+
+
+
+        public void PublishEnumerations()
+        {
+
+
+            string result = string.Empty;
+            string blowup = string.Empty;
+
+            string indent = "\t\t";
+
+            string lastResultName = "";
+            int lastItemCount = 0;
+            //   SchemaItem lastItem = head;
+
+            EnumList = EnumList.OrderBy(x => x.PropertyName).ToList();
+
+            foreach (MapNameType map in EnumList)
+            {
+                SchemaItem item = map.item;
+
+            //    lastItem = item;
+                try
+                {
+
+
+                    if ((item.ElementType == SchemaElementType.enumOption) && (item.Name != lastResultName || item.Children.Count != lastItemCount))
+                    {
+
+                        string enumName = CamelCaseName( item.Name);
+/*
+                        if (enumName == "type" && item.Parent != null)
+                        {
+                            enumName = item.Parent.Name + "Type";
+                        }
+*/
+                        
+                        result = result + indent + "/******************************\n";
+                        result = result + indent + "*** Enum Name: " + enumName + "\n***\n";
+
+                        result = result + indent + "*** Description: " + item.Description + "\n***\n";
+                        result = result + indent + "*** Source: " + map.Name + "\n";
+                        result = result + indent + "******************************/\n\n";
+
+
+
+                        bool isSymbol = (item.Name == "symbol");
+
+                        string itemsList = string.Empty;
+
+                        result = result + indent + "public enum " + CamelCaseName( enumName) + System.Environment.NewLine + indent + "{" + System.Environment.NewLine;
+
+                        if (item.Enumeration != null)
+                        {
+                            if (isSymbol)
+                            {
+                                for (int i = 0; i < item.Enumeration.Count; i++)
+                                {
+                                    if (i % 3 == 0 || i % 3 == 1)
+                                    {
+                                        continue;
+                                    }
+                                    if (itemsList != string.Empty)
+                                    {
+                                        itemsList += ",\n";
+
+                                    }
+
+                                    itemsList += indent + "\t[Description(\"" + item.Enumeration[i - 1] + "\")]\n" + indent + "\t" + CamelCapEnumItem( item.Enumeration[i]);
+
+
+                                }
+                            }
+                            else
+                            {
+
+                                foreach (string enumItem in item.Enumeration)
+                                {
+
+
+
+
+                                    if (enumItem != string.Empty)
+                                    {
+
+                                        if (itemsList != string.Empty)
+                                        {
+                                            itemsList += ",\n";
+
+                                        }
+                                        if (enumItem.StartsWith("/") && enumItem.Length > 2)
+                                        {
+                                            itemsList += indent + "\t[Description(\"" + enumItem.Replace("\"", "\\\"") + "\")]\n" + indent + "\tRegEx_" + enumItem[2].ToString().ToUpper();
+                                        }
+                                        else
+                                        {
+                                            if (enumItem == "\\")
+                                            {
+                                                itemsList += indent + "\t[Description(\"" + "\\\\" + "\")]\n" + indent + "\t" + CamelCapEnumItem(enumItem);
+                                            }
+                                            else
+                                            {
+                                                itemsList += indent + "\t[Description(\"" + enumItem.Replace("True","true").Replace("False","false") + "\")]\n" + indent + "\t" + CamelCapEnumItem(enumItem);
+                                            }
+                                        }
+
+                                    }
+                                }
+                            }
+                        }
+
+                        result = result + itemsList + System.Environment.NewLine + indent + "}" + System.Environment.NewLine + System.Environment.NewLine;
+
+                        lastResultName = item.Name;
+                        lastItemCount = item.Children.Count;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    blowup = ex.Message;
+                }
+
+            //    break;
+            }
+
+
+            AreaText = result;
+            StateHasChanged();
+
+        }
+
+
+        public string CamelCapEnumItem(string enumItem)
+        {
+
+
+            enumItem = enumItem.Replace(">=", "GreaterThanEquals");
+            enumItem = enumItem.Replace(">", "GreaterThan");
+            enumItem = enumItem.Replace("<=", "LessThanEquals");
+            enumItem = enumItem.Replace("<", "LessThan");
+            enumItem = enumItem.Replace("!=", "NotEquals");
+            enumItem = enumItem.Replace("=", "Equals");
+            enumItem = enumItem.Replace("|", "Pipe");
+            enumItem = enumItem.Replace("/", "ForwardSlash");
+            enumItem = enumItem.Replace("\\", "BackSlash");
+
+            switch (enumItem)
+            {
+                case "usa":
+                    enumItem = "USA";
+                    break;
+
+                case "50":
+                    enumItem = "_50";
+                    break;
+
+                case "100":                   
+                    enumItem = "_100";
+                    break;
+
+                case "-":
+                    enumItem = "Auto";
+                    break;
+
+                case "-1":
+                    enumItem = "Neg_1";
+                    break;
+                case "1":
+                    enumItem = "Plus_1";
+                    break;
+                case "2":
+                    enumItem = "Plus_2";
+                    break;
+                case "0":
+                    enumItem = "Zero";
+                    break;
+
+                case "h":
+                    enumItem = "Horizontal";
+                    break;
+                case "v":
+                    enumItem = "Vertical";
+                    break;
+                case "e":
+                    enumItem = "Small_e";
+                    break;
+                case "E":
+                    enumItem = "Big_E";
+                    break;
+                case "x":
+                    enumItem = "X";
+                    break;
+                case "y":
+                    enumItem = "Y";
+                    break;
+                case "z":
+                    enumItem = "Z";
+                    break;
+                case "_":
+                    enumItem = "Underscore";
+                    break;
+                case "|":
+                    enumItem = "Pipe";
+                    break;
+                case "+":
+                    enumItem = "Plus";
+                    break;
+                case ".":
+                    enumItem = "Dot";
+                    break;
+                case "[]":
+                    enumItem = "LBRB";
+                    break;
+                case "][":
+                    enumItem = "RBLB";
+                    break;
+                case "()":
+                    enumItem = "LPRP";
+                    break;
+
+                case ")(":
+                    enumItem = "RPLP";
+                    break;
+                case "[)":
+                    enumItem = "RBRP";
+                    break;
+                case "(]":
+                    enumItem = "LPRB";
+                    break;
+                case "](":
+                    enumItem = "RBLP";
+                    break;
+                case ")[":
+                    enumItem = "TPLB";
+                    break;
+
+                case "{}":
+                    enumItem = "LCRC";
+                    break;
+
+                case "}{":
+                    enumItem = "RCLC";
+                    break;
+
+            }
+
+            enumItem = enumItem.Replace(" ", "_").Replace("-", "_");
+
+
+            for (int i = 1; i < enumItem.Length; i++)
+            {
+                if (enumItem[i] == '_')
+                {
+                    enumItem = enumItem.Substring(0, i) + enumItem[i + 1].ToString().ToUpper() + enumItem.Substring(i + 2);
+                }
+            }
+
+            if (enumItem.Length > 1)
+            {
+                enumItem = enumItem.Substring(0, 1).ToUpper() + enumItem.Substring(1);
+            }
+            enumItem.Replace("all", "All")
+                .Replace("size", "Size")
+                .Replace("draw", "Draw")
+                .Replace("off", "Off")
+                .Replace("out", "Out")
+                .Replace("closed", "Closed")
+                .Replace("line", "Line")
+                .Replace("rect", "Rect")
+                .Replace("circle", "Circle")
+                .Replace("json", "Json")
+                .Replace("others", "Others")
+                .Replace("odd", "Odd")
+                .Replace("zero", "Zero")
+                .Replace("dash", "Dash")
+                .Replace("dot", "Dot")
+                .Replace("only", "Only");
+
+            return (enumItem);
         }
 
 

@@ -254,9 +254,9 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 */
                         
                         result = result + indent + "/******************************\n";
-                        result = result + indent + "*** Enum Name: " + enumName + "\n***\n";
+                        result = result + indent + "*** Enum Name: " + enumName + "\n" + indent + "***\n";
 
-                        result = result + indent + "*** Description: " + item.Description + "\n***\n";
+                        result = result + indent + "*** Description: " + item.Description + "\n" + indent + "***\n";
                         result = result + indent + "*** Source: " + map.Name + "\n";
                         result = result + indent + "******************************/\n\n";
 
@@ -364,6 +364,22 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 
             switch (enumItem)
             {
+                case "evenodd":
+                    enumItem = "EvenOdd";
+                    break;
+                case "nonzero":
+                    enumItem = "NonZero";
+                    break;
+                case "toself":
+                    enumItem = "ToSelf";
+                    break;
+                case "tonext":
+                    enumItem = "ToNext";
+                    break;
+                case "geojson":
+                    enumItem = "GeoJSON";
+                    break;
+
                 case "usa":
                     enumItem = "USA";
                     break;
@@ -492,6 +508,9 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
                 .Replace("zero", "Zero")
                 .Replace("dash", "Dash")
                 .Replace("dot", "Dot")
+                .Replace("self", "Self")
+                .Replace("next", "Next")
+                .Replace("even", "Even")
                 .Replace("only", "Only");
 
             return (enumItem);
@@ -905,6 +924,12 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
             {
                 case "contourcarpet.attributes.atype":
                 case "contourcarpet.attributes.btype":
+                case "contour.attributes.xtype":
+                case "contour.attributes.ytype":
+                case "heatmap.attributes.xtype":
+                case "heatmap.attributes.ytype":
+                case "heatmapgl.attributes.ytype":
+                case "heatmapgl.attributes.xtype":
                     node.ClassTypeName = "ArrayTypeOptions";
                     node.FileName = "ArrayTypeOptions.cs";
                     break;
@@ -1044,7 +1069,7 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
                     node.FileName = "ConeAnchorOptions.cs";
                     break;
 
-                case " polar.angularaxis.layer":
+                case "polar.angularaxis.layer":
                     node.ClassTypeName = "AngularAxisLayerOptions";
                     node.FileName = "AngularAxisLayerOptions.cs";
                     break;
@@ -1127,12 +1152,12 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
                     node.ClassTypeName = "AxisSideOptions";
                     node.FileName = "AxisSideOptions.cs";
                     break;
-
+/*
                 case "polar.angularaxis.layer":
                     node.ClassTypeName = "AxisLayerOptions";
                     node.FileName = "AxisLayerOptions.cs";
                     break;
-
+*/
                 case "parcats.attributes.hoveron":
                     node.ClassTypeName = "ParCatsHoverOnOptions";
                     node.FileName = "ParCatsHoverOnOptions.cs";
@@ -1188,9 +1213,52 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
                     node.ClassTypeName = "IcicleHoverInfoOptions";
                     node.FileName = "IcicleHoverInfoOptions.cs";
                     break;
+                case "coloraxis.colorbar.showtickprefix":
+                case "coloraxis.colorbar.showticksuffix":
+                case "polar.angularaxis.showticksuffix":
+                case "polar.radialaxis.showticksuffix":
+                case "scene.xaxis.showticksuffix":
+                case "scene.xaxis.showtickprefix":
+                case "scene.yaxis.showticksuffix":
+                case "scene.yaxis.showtickprefix":
+                case "scene.zaxis.showticksuffix":
+                case "scene.zaxis.showtickprefix":
+                case "smith.realaxis.showticksuffix":
+                case "smith.realaxis.showtickprefix":
+                case "smith.imaginaryaxis.showticksuffix":
+                case "smith.imaginaryaxis.showtickprefix":
+                case "ternary.aaxis.showticksuffix":
+                case "ternary.aaxis.showtickprefix":
+                case "ternary.baxis.showticksuffix":
+                case "ternary.baxis.showtickprefix":
+                case "ternary.caxis.showticksuffix":
+                case "ternary.caxis.showtickprefix":
+                case "layoutAttributes.xaxis.showticksuffix":
+                case "layoutAttributes.xaxis.showtickprefix":
+                case "layoutAttributes.yaxis.showticksuffix":
+                case "layoutAttributes.yaxis.showtickprefix":
+                case "marker.colorbar.showticksuffix":
+                case "marker.colorbar.showtickprefix":
+                case "attributes.aaxis.showticksuffix":
+                case "attributes.aaxis.showtickprefix":
+                case "attributes.baxis.showticksuffix":
+                case "attributes.baxis.showtickprefix":
+                case "attributes.colorbar.showticksuffix":
+                case "attributes.colorbar.showtickprefix":
+                case "gauge.axis.showticksuffix":
+                case "gauge.axis.showtickprefix":
+                case "line.colorbar.showticksuffix":
+                case "line.colorbar.showtickprefix":
+                    node.ClassTypeName = "ShowTickOptions";
+                    node.FileName = "ShowTickOptions.cs";
+                    break;
+
+
+
+                case "bar.attributes.hoverinfo":
                 case "ohlc.attributes.hoverinfo":
-                    node.ClassTypeName = "FinanceHoverInfoOptions";
-                    node.FileName = "FinanceHoverInfoOptions.cs";
+                    node.ClassTypeName = "GraphHoverInfoOptions";
+                    node.FileName = "GraphHoverInfoOptions.cs";
                     break;
 
                 case "attributes.node.hoverinfo":
@@ -1201,6 +1269,26 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
                 case "pointcloud.attributes.hoverinfo":
                     node.ClassTypeName = "PointCloudHoverInfoOptions";
                     node.FileName = "PointCloudHoverInfoOptions.cs";
+                    break;
+
+                case "bar.layoutAttributes.barnorm":
+                case "scatter.attributes.groupnorm":
+                case "histogram.layoutAttributes.barnorm":
+                    node.ClassTypeName = "NormalizationOptions";
+                    node.FileName = "NormalizationOptions.cs";
+                    break;
+
+                case "attributes.colorbar.lenmode":
+                case "coloraxis.colorbar.lenmode":               
+                case "coloraxis.colorbar.thicknessmode":
+                case "items.slider.lenmode":
+                case "line.colorbar.lenmode":
+                case "line.colorbar.thicknessmode":
+                case "marker.colorbar.lenmode":
+                case "marker.colorbar.thicknessmode":
+                case "attributes.colorbar.thicknessmode":
+                    node.ClassTypeName = "MeasureModeOptions";
+                    node.FileName = "MeasureModeOptions.cs";
                     break;
 
                 case "mesh3d.attributes.zcalendar":
@@ -2137,6 +2225,8 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
                 .Replace("tick", "Tick")
                 .Replace("title", "Title")
                 .Replace("thousands", "Thousands")
+                .Replace("toself", "ToSelf")
+                .Replace("tonext", "ToNext")
                 .Replace("toshow", "ToShow")
                 .Replace("toward", "Toward")
                 .Replace("type", "Type")

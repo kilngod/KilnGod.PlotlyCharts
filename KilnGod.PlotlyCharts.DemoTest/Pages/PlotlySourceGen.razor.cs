@@ -110,7 +110,7 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
             }
 
 
-
+            /*
 
             string reasons = string.Empty;
 
@@ -193,7 +193,7 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
                 }
                 
             }
-
+            */
 
             /*
 
@@ -719,8 +719,8 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
                     break;
                 case "scattercarpet.attributes.fill":
                 case "scatterternary.attributes.fill":
-                    node.ClassTypeName = "MDFillOptions";
-                    node.FileName = "MDFillOptions.cs";
+                    node.ClassTypeName = "FillSubsetOptions";
+                    node.FileName = "FillSubsetOptions.cs";
                     break;
 
                 case "items.updatemenu.direction":

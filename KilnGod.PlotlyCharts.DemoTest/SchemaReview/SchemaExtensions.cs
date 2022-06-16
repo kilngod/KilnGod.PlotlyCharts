@@ -10,7 +10,122 @@ namespace KilnGod.PlotlyCharts.DemoTest.SchemaReview
     {
 
 
-        public static List<MapNameType> mappings = new List<MapNameType>(
+		public const string LayoutFileHeader = @"//***********************************************************************************
+// KilnGod.PlotlyCharts 
+//
+// Copyright (c) 2022 James Carpenter (KilnGod)
+//
+// File: @filename@
+//
+// This file is part of KilnGod.PlotlyCharts and is distributed under the MIT Open
+// Source License. See LICENSE.txt for details.
+//***********************************************************************************
+
+using KilnGod.PlotlyCharts.Enumerations;
+using KilnGod.PlotlyCharts.Wrappers;
+
+namespace KilnGod.PlotlyCharts.Layouts
+{
+";
+
+		public const string FramesFileHeader = @"//***********************************************************************************
+// KilnGod.PlotlyCharts 
+//
+// Copyright (c) 2022 James Carpenter (KilnGod)
+//
+// File: @filename@
+//
+// This file is part of KilnGod.PlotlyCharts and is distributed under the MIT Open
+// Source License. See LICENSE.txt for details.
+//***********************************************************************************
+
+using KilnGod.PlotlyCharts.Enumerations;
+using KilnGod.PlotlyCharts.Wrappers;
+using System.Dynamic;
+
+namespace KilnGod.PlotlyCharts.Frames
+{";
+
+		public const string ConfigFileHeader = @"//***********************************************************************************
+// KilnGod.PlotlyCharts 
+//
+// Copyright (c) 2022 James Carpenter (KilnGod)
+//
+// File: @filename@
+//
+// This file is part of KilnGod.PlotlyCharts and is distributed under the MIT Open
+// Source License. See LICENSE.txt for details.
+//***********************************************************************************
+
+using System.Dynamic;
+using KilnGod.PlotlyCharts.Wrappers;
+using KilnGod.PlotlyCharts.Enumerations;
+
+namespace KilnGod.PlotlyCharts.Configuration
+{";
+
+		public const string AnimationFileHeader = @"//***********************************************************************************
+// KilnGod.PlotlyCharts 
+//
+// Copyright (c) 2022 James Carpenter (KilnGod)
+//
+// File: @filename@
+//
+// This file is part of KilnGod.PlotlyCharts and is distributed under the MIT Open
+// Source License. See LICENSE.txt for details.
+//***********************************************************************************
+using System.Dynamic;
+using KilnGod.PlotlyCharts.Wrappers;
+using KilnGod.PlotlyCharts.Enumerations;
+
+namespace KilnGod.PlotlyCharts.Animations
+{";
+
+		public const string TransformsFileHeader =
+@"//***********************************************************************************
+// KilnGod.PlotlyCharts 
+//
+// Copyright (c) 2022 James Carpenter (KilnGod)
+//
+// File: @filename@
+//
+// This file is part of KilnGod.PlotlyCharts and is distributed under the MIT Open
+// Source License. See LICENSE.txt for details.
+//***********************************************************************************
+
+using KilnGod.PlotlyCharts.Enumerations;
+using KilnGod.PlotlyCharts.Wrappers;
+using System.Dynamic;
+
+namespace KilnGod.PlotlyCharts.Transforms
+{";
+
+		public const string TraceFileHeader =
+@"//***********************************************************************************
+// KilnGod.PlotlyCharts 
+//
+// Copyright (c) 2022 James Carpenter (KilnGod)
+//
+// File: @filename@
+//
+// This file is part of KilnGod.PlotlyCharts and is distributed under the MIT Open
+// Source License. See LICENSE.txt for details.
+//***********************************************************************************
+
+using KilnGod.PlotlyCharts.Enumerations;
+using KilnGod.PlotlyCharts.Wrappers;
+using System.Dynamic;
+
+namespace KilnGod.PlotlyCharts.Traces
+{";
+
+		public const string EnumerationsFileHeader = @"";
+
+
+
+		// this is for easy review of class information generated, not for anything useful as this is internal information for review.
+
+		public static List<MapNameType> mappings = new List<MapNameType>(
             new MapNameType[]{
 				new MapNameType(){PropertyName="AAxis", ClassTypeName="TernaryAxisInfo", OriginalName="aaxis", FileName="TernaryAxisInfo.cs", SchemaSection="layout", JsonType="objectOption", Name = "layoutAttributes.ternary.aaxis"},
 				new MapNameType(){PropertyName="AAxis", ClassTypeName="CarpetAxisInfo", OriginalName="aaxis", FileName="CarpetAxisInfo.cs", SchemaSection="traces", JsonType="objectOption", Name = "carpet.attributes.aaxis"},

@@ -224,15 +224,20 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 
             string lastResultName = "";
             int lastItemCount = 0;
-            //   SchemaItem lastItem = head;
+            string lastClassName = string.Empty;
 
-            EnumList = EnumList.OrderBy(x => x.PropertyName).ToList();
-
+            EnumList = EnumList.OrderBy(x => x.ClassTypeName).ToList();
+            int icnt = 0;
             foreach (MapNameType map in EnumList)
             {
                 SchemaItem item = map.item;
 
-            //    lastItem = item;
+                if (map.ClassTypeName == lastClassName)
+                {
+                    continue;
+                }
+                icnt += 1;
+                lastClassName = map.ClassTypeName;
                 try
                 {
 
@@ -240,7 +245,7 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
                     if ((item.ElementType == SchemaElementType.enumOption) && (item.Name != lastResultName || item.Children.Count != lastItemCount))
                     {
 
-                        string enumName = CamelCaseName( item.Name);
+                        string enumName = map.ClassTypeName;
 /*
                         if (enumName == "type" && item.Parent != null)
                         {
@@ -337,7 +342,7 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
             }
 
 
-            AreaText = result;
+            AreaText = "Total Enums:"+ icnt.ToString() + System.Environment.NewLine + result;
             StateHasChanged();
 
         }
@@ -898,6 +903,12 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
         {
             switch (node.Name)
             {
+                case "contourcarpet.attributes.atype":
+                case "contourcarpet.attributes.btype":
+                    node.ClassTypeName = "ArrayTypeOptions";
+                    node.FileName = "ArrayTypeOptions.cs";
+                    break;
+
                 case "attributes.hoverlabel.align":
                 case "alayoutAttributes.hoverlabel.align":
                     node.ClassTypeName = "HoverLabelAlignOptions";
@@ -1190,6 +1201,42 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
                 case "pointcloud.attributes.hoverinfo":
                     node.ClassTypeName = "PointCloudHoverInfoOptions";
                     node.FileName = "PointCloudHoverInfoOptions.cs";
+                    break;
+
+                case "mesh3d.attributes.zcalendar":
+                case "mesh3d.attributes.ycalendar":
+                case "mesh3d.attributes.xcalendar":
+                case "bar.attributes.ycalendar":
+                case "bar.attributes.xcalendar":
+                case "filter.attributes.valuecalendar":
+                case "filter.attributes.targetcalendar":
+                case "layout.layoutAttributes.calendar":
+                case "scatter.attributes.xcalendar":
+                case "scatter.attributes.ycalendar":
+                case "scattergl.attributes.xcalendar":
+                case "scattergl.attributes.ycalendar":
+                case "scatter3d.attributes.xcalendar":
+                case "scatter3d.attributes.ycalendar":
+                case "scatter3d.attributes.zcalendar":
+                case "surface.attributes.xcalendar":
+                case "surface.attributes.ycalendar":
+                case "box.attributes.ycalendar":
+                case "box.attributes.xcalendar":
+                case "surface.attributes.zcalendar":
+                case "contour.attributes.xcalendar":
+                case "contour.attributes.ycalendar":
+                case "candlestick.attributes.xcalendar":
+                case "heatmap.attributes.xcalendar":
+                case "heatmap.attributes.ycalendar":
+                case "histogram.attributes.xcalendar":
+                case "histogram.attributes.ycalendar":
+                case "histogram2d.attributes.xcalendar":
+                case "histogram2d.attributes.ycalendar":
+                case "histogram2dcontour.attributes.xcalendar":
+                case "histogram2dcontour.attributes.ycalendar":
+                case "ohlc.attributes.xcalendar":
+                    node.ClassTypeName = "CalendarOptions";
+                    node.FileName = "CalendarOptions.cs";
                     break;
 
             }
@@ -1852,6 +1899,7 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
                     node.FileName = "AxisInfo.cs";
                     break;
 
+             
             }
         }
 
@@ -1910,6 +1958,8 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
                 .Replace("axes", "Axes")
                 .Replace("axref", "AXRef")
                 .Replace("ayref", "AYRef")
+                .Replace("autorange", "AutoRange")
+                
                 .Replace("background", "Background")
                 .Replace("bar", "Bar")
                 .Replace("nbinsx", "NBinsX")

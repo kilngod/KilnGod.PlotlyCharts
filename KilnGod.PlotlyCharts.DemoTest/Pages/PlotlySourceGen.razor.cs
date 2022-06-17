@@ -110,13 +110,13 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
             }
 
 
-            PublishEnumerations();
+//            PublishEnumerations();
 
-            /*
+  
 
             string reasons = string.Empty;
 
-            List<MapNameType> enumItems = EnumList.OrderBy(x => x.PropertyName).ThenBy(x => x.item?.Enumeration?.Count).ToList();
+            List<MapNameType> enumItems = EnumList.OrderBy(x => x.ClassTypeName).ThenBy(x => x.PropertyName).ThenBy(x => x.item?.Enumeration?.Count).ToList();
 
             for (int i = 1; i < enumItems.Count; i++)
             {
@@ -155,7 +155,7 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
             }
 
             AreaText = reasons;
-
+            /*
             List< MapNameType>   classItems = ClassList.OrderBy(x => x.PropertyName).ThenBy(x => MapNameType.ChildCount(x)).ToList();
 
           
@@ -421,6 +421,9 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
                 case "E":
                     enumItem = "Big_E";
                     break;
+                case "r":
+                    enumItem = "R";
+                    break;
                 case "x":
                     enumItem = "X";
                     break;
@@ -493,7 +496,7 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
             {
                 enumItem = enumItem.Substring(0, 1).ToUpper() + enumItem.Substring(1);
             }
-            enumItem.Replace("all", "All")
+            enumItem =  enumItem.Replace("all", "All")
                 .Replace("size", "Size")
                 .Replace("draw", "Draw")
                 .Replace("off", "Off")
@@ -502,7 +505,7 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
                 .Replace("line", "Line")
                 .Replace("rect", "Rect")
                 .Replace("circle", "Circle")
-                .Replace("json", "Json")
+                .Replace("json", "JSON")
                 .Replace("others", "Others")
                 .Replace("odd", "Odd")
                 .Replace("zero", "Zero")
@@ -512,6 +515,7 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
                 .Replace("next", "Next")
                 .Replace("even", "Even")
                 .Replace("only", "Only");
+           
 
             return (enumItem);
         }
@@ -922,6 +926,46 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
         {
             switch (node.Name)
             {
+                case "polar.angularaxis.categoryorder":
+                case "polar.radialaxis.categoryorder":
+                    node.ClassTypeName = "PolarCategoryOrderOptions";
+                    node.FileName = "PolarCategoryOrderOptions.cs";
+                    break;
+                case "scene.xaxis.categoryorder":
+                case "scene.yaxis.categoryorder":
+                case "scene.zaxis.categoryorder":
+                case "layoutAttributes.xaxis.categoryorder":
+                case "layoutAttributes.yaxis.categoryorder":
+                    node.ClassTypeName = "CartesianCategoryOrderOptions";
+                    node.FileName = "CartesianCategoryOrderOptions.cs";
+                    break;
+
+                case "attributes.contours.type":
+                    node.ClassTypeName = "ContoursTypeOptions";
+                    node.FileName = "ContoursTypeOptions.cs";
+                    break;
+                case "camera.projection.type":
+               
+                    node.ClassTypeName = "CameraProjectionTypeOptions";
+                    node.FileName = "CameraProjectionTypeOptions.cs";
+                    break;
+                case "geo.projection.type":
+                    node.ClassTypeName = "GeoProjectionTypeOptions";
+                    node.FileName = "GeoProjectionTypeOptions.cs";
+                    break;
+                case "attributes.aaxis.type":
+                case "attributes.baxis.type":
+                    node.ClassTypeName = "ABAxisTypeOptions";
+                    node.FileName = "ABAxisTypeOptions.cs";
+                    break;
+
+                case "scene.xaxis.type":
+                case "scene.yaxis.type":
+                case "scene.zaxis.type":
+                    node.ClassTypeName = "SceneAxisTypeOptions";
+                    node.FileName = "SceneAxisTypeOptions.cs";
+                    break;
+
                 case "contourcarpet.attributes.atype":
                 case "contourcarpet.attributes.btype":
                 case "contour.attributes.xtype":
@@ -930,19 +974,76 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
                 case "heatmap.attributes.ytype":
                 case "heatmapgl.attributes.ytype":
                 case "heatmapgl.attributes.xtype":
+
                     node.ClassTypeName = "ArrayTypeOptions";
                     node.FileName = "ArrayTypeOptions.cs";
                     break;
 
+                case "layoutAttributes.hoverlabel.align":
                 case "attributes.hoverlabel.align":
-                case "alayoutAttributes.hoverlabel.align":
-                    node.ClassTypeName = "HoverLabelAlignOptions";
-                    node.FileName = "HoverLabelAlignOptions.cs";
+               
+                case "node.hoverlabel.align":
+
+
+                    node.ClassTypeName = "AutoAlignOptions";
+                    node.FileName = "AutoAlignOptions.cs";
                     break;
+
+                case "attributes.title.align":
+                    node.ClassTypeName = "TitleAlignOptions";
+                    node.FileName = "TitleAlignOptions.cs";
+                    break;
+
+                case "items.shape.layer":
+                case "items.image.layer":
+                    node.ClassTypeName = "LayerOptions";
+                    node.FileName = "LayerOptions.cs";
+                    break;
+                case "attributes.cells.align":
+               
+                    node.ClassTypeName = "CellAlignOptions";
+                    node.FileName = "CellAlignOptions.cs";
+                    break;
+                case "link.hoverlabel.align":
+                    node.ClassTypeName = "LinkAlignOptions";
+                    node.FileName = "LinkAlignOptions.cs";
+                    break;
+
+
+                case "line.colorbar.xanchor":
+                case "items.image.xanchor":
+                case "coloraxis.colorbar.xanchor":
+                    node.ClassTypeName = "XAlignOptions";
+                    node.FileName = "XAlignOptions.cs";
+                    break;
+
+                case "line.colorbar.yanchor":
+
+                    node.ClassTypeName = "YAlignOptions";
+                    node.FileName = "YAlignOptions.cs";
+                    break;
+
+                case "indicator.attributes.align":            
+              
+                case "items.annotation.align":
+               
+                    node.ClassTypeName = "AlignOptions";
+                    node.FileName = "AlignOptions.cs";
+                    break;
+
+                case "items.shape.xsizemode":
+                case "items.shape.ysizemode":
+                    node.ClassTypeName = "ShapeSizeModeOptions";
+                    node.FileName = "ShapeSizeModeOptions.cs";
+                    break;
+
                 case "items.shape.xref":
+                    node.ClassTypeName = "ShapeXRef";
+                    node.FileName = "ShapeReXf.cs";
+                    break;
                 case "items.shape.yref":
-                    node.ClassTypeName = "ShapeRef";
-                    node.FileName = "ShapeRef.cs";
+                    node.ClassTypeName = "ShapeYRef";
+                    node.FileName = "ShapeYRef.cs";
                     break;
                 case "layoutAttributes.title.xref":
                 case "layoutAttributes.title.yref":
@@ -950,18 +1051,40 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
                     node.FileName = "TitleRefOptions.cs";
                     break;
 
+
+                case "slider.currentvalue.xanchor":
+                case "attributes.colorbar.xanchor":
+                case "marker.colorbar.xanchor":
+                    node.ClassTypeName = "ColorbarXAnchorOptions";
+                    node.FileName = "ColorbarXAnchorOptions.cs";
+                    break;
+                case "marker.colorbar.yanchor":
+                case "attributes.colorbar.yanchor":
+                    node.ClassTypeName = "ColorbarYAnchorOptions";
+                    node.FileName = "ColorbarYAnchorOptions.cs";
+                    break;
+
                 case "items.annotation.xanchor":
+                case "layoutAttributes.legend.xanchor":
+              
+               
+               
+                    node.ClassTypeName = "XAnchorOptions";
+                    node.FileName = "XAnchorOptions.cs";
+                    break;
+                
                 case "items.annotation.yanchor":
-                    node.ClassTypeName = "AnnotationAnchorOptions";
-                    node.FileName = "AnnotationAnchorOptions.cs";
+                case "layoutAttributes.legend.yanchor":
+               
+                
+                    node.ClassTypeName = "YAnchorOptions";
+                    node.FileName = "YAnchorOptions.cs";
                     break;
-
-                case "line.colorbar.xanchor":
-                case "line.colorbar.yanchor":
-                    node.ClassTypeName = "ColorbarAnchorOptions";
-                    node.FileName = "ColorbarAnchorOptions.cs";
+                case "attributes.aaxis.tickmode":
+                case "attributes.baxis.tickmode":
+                    node.ClassTypeName = "ABAxisTickModeOptions";
+                    node.FileName = "ABAxisTickModeOptions.cs";
                     break;
-
                 case "coloraxis.colorbar.tickmode":
                     node.ClassTypeName = "ColorbarTickModeOptions";
                     node.FileName = "ColorbarTickModeOptions.cs";
@@ -977,10 +1100,7 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
                     node.FileName = "RangebreakPatternOptions.cs";
                     break;
 
-                case "items.shape.layer":
-                    node.ClassTypeName = "ShapeLayerOptions";
-                    node.FileName = "ShapeLayerOptions.cs";
-                    break;
+               
                 case "layout.layoutAttributes.dragmode":
                     node.ClassTypeName = "LayoutDragModeOptions";
                     node.FileName = "LayoutDragModeOptions.cs";
@@ -989,11 +1109,6 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
                 case "attributes.cumulative.direction":
                     node.ClassTypeName = "CumulativeDirectionOptions";
                     node.FileName = "CumulativeDirectionOptions.cs";
-                    break;
-                case "attributes.title.align":
-                case "items.annotation.align":
-                    node.ClassTypeName = "TitleAlignOptions";
-                    node.FileName = "TitleAlignOptions.cs";
                     break;
 
                 case "items.dimension.categoryorder":
@@ -1010,12 +1125,7 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
                     node.ClassTypeName = "TitlePositionOptions";
                     node.FileName = "TitlePositionOptions.cs";
                     break;
-
-
-                case "smith.realaxis.ticks":
-                    node.ClassTypeName = "RealAxisTicksOptions";
-                    node.FileName = "RealAxisTicksOptions.cs";
-                    break;
+               
 
                 case "attributes.gauge.shape":
                     node.ClassTypeName = "GaugeShapeOptions";
@@ -1051,18 +1161,9 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
                     node.ClassTypeName = "AnimationDirectionOptions";
                     node.FileName = "AnimationDirectionOptions.cs";
                     break;
-                case "densitymapbox.attributes.hoverinfo":
-                case "scattergeo.attributes.hoverinfo":
-                case "choroplethmapbox.attributes.hoverinfo":
-                case "choropleth.attributes.hoverinfo":
-                    node.ClassTypeName = "GeoHoverOptions";
-                    node.FileName = "GeoHoverOptions.cs";
-                    break;
+            
 
-                case "attributes.cells.align":
-                    node.ClassTypeName = "CellsAlignOptions";
-                    node.FileName = "CellsAlignOptions.cs";
-                    break;
+               
 
                 case "cone.attributes.anchor":
                     node.ClassTypeName = "ConeAnchorOptions";
@@ -1083,9 +1184,10 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
                     node.ClassTypeName = "LegendTitleSideOptions";
                     node.FileName = "LegendTitleSideOptions.cs";
                     break;
+                case "histogram2d.attributes.zsmooth":
                 case "heatmap.attributes.zsmooth":
-                    node.ClassTypeName = "HeatmapZSmoothOptions";
-                    node.FileName = "HeatmapZSmoothOptions.cs";
+                    node.ClassTypeName = "ZSmooth2DOptions";
+                    node.FileName = "ZSmooth2DOptions.cs";
                     break;
 
                 case "items.updatemenu.type":
@@ -1119,21 +1221,113 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
                     node.FileName = "LayerTypeOptions.cs";
                     break;
                 case "polar.angularaxis.type":
+                    node.ClassTypeName = "AngularAxisTypeOptions";
+                    node.FileName = "AngularAxisTypeOptions.cs";
+                    break;
                 case "polar.radialaxis.type":
-                    node.ClassTypeName = "PolarAxisTypeOptions";
-                    node.FileName = "PolarAxisTypeOptions.cs";
+                    node.ClassTypeName = "RadialAxisTypeOptions";
+                    node.FileName = "RadialAxisTypeOptions.cs";
                     break;
                 case "barpolar.attributes.thetaunit":
                     node.ClassTypeName = "BarpolarThetaUnitOptions";
                     node.FileName = "BarpolarThetaUnitOptions.cs";
                     break;
+
+
                 case "layer.symbol.textposition":
                     node.ClassTypeName = "SymbolTextPositionOptions";
                     node.FileName = "SymbolTextPositionOptions.cs";
                     break;
-                case "funnelarea.attributes.textposition":
+                 case "funnelarea.attributes.textposition":
+               
                     node.ClassTypeName = "FunnelAreaTextPositionOptions";
                     node.FileName = "FunnelAreaTextPositionOptions.cs";
+                    break;
+                case "waterfall.attributes.textposition":
+                    node.ClassTypeName = "WaterfallTextPositionOptions";
+                    node.FileName = "WaterfallTextPositionOptions.cs";
+                    break;
+                case "pie.attributes.textposition":
+                    node.ClassTypeName = "PieTextPositionOptions";
+                    node.FileName = "PieTextPositionOptions.cs";
+                    break;
+                case "treemap.attributes.textposition":
+                    node.ClassTypeName = "TreemapTextPositionOptions";
+                    node.FileName = "TreemapTextPositionOptions.cs";
+                    break;
+                case "scatterternary.attributes.textposition":
+                case "scattersmith.attributes.textposition":
+                case "scatterpolargl.attributes.textposition":
+                case "scatterpolar.attributes.textposition":
+                case "scattermapbox.attributes.textposition":
+                case "scattergl.attributes.textposition":
+                case "scattergeo.attributes.textposition":
+                case "scattercarpet.attributes.textposition":
+                case "scatter3d.attributes.textposition":
+                case "scatter.attributes.textposition":
+                    node.ClassTypeName = "ScatterTextPositionOptions";
+                    node.FileName = "ScatterTextPositionOptions.cs";
+                    break;
+                case "attributes.fillpattern.shape":
+                    node.ClassTypeName = "FillPatternShapeOptions";
+                    node.FileName = "FillPatternShapeOptions.cs";
+                    break;
+                case "ternary.aaxis.layer":
+                case "ternary.baxis.layer":
+                case "ternary.caxis.layer":
+                case "layoutAttributes.xaxis.layer":
+                case "layoutAttributes.yaxis.layer":
+                case "polar.radialaxis.layer":
+                case "smith.imaginaryaxis.layer":
+                case "smith.realaxis.layer":
+                    node.ClassTypeName = "AxisLayerOptions";
+                    node.FileName = "AxisLayerOptions.cs";
+                    break;
+                case "attributes.surface.pattern":
+                    node.ClassTypeName = "SurfacePatternOptions";
+                    node.FileName = "SurfacePatternOptions.cs";
+                    break;
+                case "layoutAttributes.grid.pattern":
+                    node.ClassTypeName = "GridPatternOptions";
+                    node.FileName = "GridPatternOptions.cs";
+                    break;
+                case "layoutAttributes.uniformtext.mode":
+                    node.ClassTypeName = "UniformTextModeOptions";
+                    node.FileName = "UniformTextModeOptions.cs";
+                    break;
+                case "attributes.connector.mode":
+                    node.ClassTypeName = "ConnectorModeOptions";
+                    node.FileName = "ConnectorModeOptions.cs";
+                    break;
+                case "violin.attributes.side":
+                    node.ClassTypeName = "ViolinSideOptions";
+                    node.FileName = "ViolinSideOptions.cs";
+                    break;
+                case "attributes.pathbar.side":
+                    node.ClassTypeName = "PathbarSideOptions";
+                    node.FileName = "PathbarSideOptions.cs";
+                    break;
+                case "smith.realaxis.side":
+                    node.ClassTypeName = "RealAxisSideOptions";
+                    node.FileName = "RealAxisSideOptions.cs";
+                    break;
+                case "polar.radialaxis.side":
+                    node.ClassTypeName = "RadialAxisSideOptions";
+                    node.FileName = "RadialAxisSideOptions.cs";
+                    break;
+                case "icicle.attributes.textposition":
+                    node.ClassTypeName = "IcicleTextPositionOptions";
+                    node.FileName = "IcicleTextPositionOptions.cs";
+                    break;
+                case "treemap.attributes.textinfo":
+                case "sunburst.attributes.textinfo":
+                    node.ClassTypeName = "SunburstTextInfoOptions";
+                    node.FileName = "SunburstTextInfoOptions.cs";
+                    break;
+
+                case "funnel.attributes.textinfo":
+                    node.ClassTypeName = "FunnelTextInfoOptions";
+                    node.FileName = "FunnelTextInfoOptions.cs";
                     break;
                 case "icicle.attributes.textinfo":
                     node.ClassTypeName = "IcicleTextInfoOptions";
@@ -1147,17 +1341,28 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
                     node.ClassTypeName = "TitleSideOptions";
                     node.FileName = "TitleSideOptions.cs";
                     break;
-                case "smith.realaxis.side":
-                case "layoutAttributes.xaxis.side":
-                    node.ClassTypeName = "AxisSideOptions";
-                    node.FileName = "AxisSideOptions.cs";
+            //    case "smith.realaxis.side":
+            //    case "smith.realaxis.ticks":
+            //    case "layoutAttributes.xaxis.side":
+                case "parcoords.attributes.labelside":
+                    node.ClassTypeName = "TopBottomOptions";
+                    node.FileName = "TopBottomOptions.cs";
                     break;
-/*
-                case "polar.angularaxis.layer":
-                    node.ClassTypeName = "AxisLayerOptions";
-                    node.FileName = "AxisLayerOptions.cs";
+
+
+                case "coloraxis.colorbar.yanchor":
+                case "items.annotation.valign":
+                case "items.image.yanchor":
+                case "layoutAttributes.legend.valign":
+
+
+                    node.ClassTypeName = "TopMiddleBottomOptions";
+                    node.FileName = "TopMiddleBottomOptions.cs";
                     break;
-*/
+                case "violin.attributes.hoveron":
+                    node.ClassTypeName = "ViolinHoverOnOptions";
+                    node.FileName = "ViolinHoverOnOptions.cs";
+                    break;
                 case "parcats.attributes.hoveron":
                     node.ClassTypeName = "ParCatsHoverOnOptions";
                     node.FileName = "ParCatsHoverOnOptions.cs";
@@ -1180,38 +1385,122 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
                     break;
 
                 case "attributes.link.hoverinfo":
-                    node.ClassTypeName = "LinkHoverInfoOptions";
-                    node.FileName = "LinkHoverInfoOptions.cs";
+                    node.ClassTypeName = "LinkHoverOptions";
+                    node.FileName = "LinkHoverOptions.cs";
+                    break;
+
+                case "densitymapbox.attributes.hoverinfo":
+                
+                    node.ClassTypeName = "DensityMapboxHoverOptions";
+                    node.FileName = "DensityMapboxHoverOptions.cs";
+                    break;
+                case "funnel.attributes.hoverinfo":
+                    node.ClassTypeName = "FunnelHoverOptions";
+                    node.FileName = "FunnelHoverOptions.cs";
+                    break;
+                case "pie.attributes.hoverinfo":
+                    node.ClassTypeName = "PieHoverOptions";
+                    node.FileName = "PieHoverOptions.cs";
                     break;
                 case "scattermapbox.attributes.hoverinfo":
-                    node.ClassTypeName = "GeoHoverInfoOptions";
-                    node.FileName = "GeoHoverInfoOptions.cs";
+                    node.ClassTypeName = "MapboxHoverOptions";
+                    node.FileName = "MapboxHoverOptions.cs";
                     break;
+                case "scattergeo.attributes.hoverinfo":
+                
+                    node.ClassTypeName = "GeoHoverOptions";
+                    node.FileName = "GeoHoverOptions.cs";
+                    break;
+                case "choropleth.attributes.hoverinfo":
+                case "choroplethmapbox.attributes.hoverinfo":
+                    node.ClassTypeName = "ChoroplethHoverOptions";
+                    node.FileName = "ChoroplethHoverOptions.cs";
+                    break;
+              
                 case "cone.attributes.hoverinfo":
-                    node.ClassTypeName = "ConeHoverInfoOptions";
-                    node.FileName = "ConeHoverInfoOptions.cs";
+
+                    node.ClassTypeName = "ConeHoverOptions";
+                    node.FileName = "ConeHoverOptions.cs";
+                    break;
+                case "volume.attributes.hoverinfo":
+                    node.ClassTypeName = "VolumeHoverOptions";
+                    node.FileName = "VolumeHoverOptions.cs";
+                    break;
+
+                case "surface.attributes.hoverinfo":
+                
+                    node.ClassTypeName = "SurfaceHoverOptions";
+                    node.FileName = "SurfaceHoverOptions.cs";
+                    break;
+                case "streamtube.attributes.hoverinfo":
+                    node.ClassTypeName = "StreamTubeHoverOptions";
+                    node.FileName = "StreamTubeHoverOptions.cs";
+                    break;
+
+                case "parcats.attributes.hoverinfo":
+                    node.ClassTypeName = "ParallelCatsHoverOptions";
+                    node.FileName = "ParallelCatsHoverOptions.cs";
+                    break;
+                case "treemap.attributes.hoverinfo":
+                case "sunburst.attributes.hoverinfo":
+                    node.ClassTypeName = "SunburstHoverOptions";
+                    node.FileName = "SunburstHoverOptions.cs";
                     break;
                 case "image.attributes.hoverinfo":
-                    node.ClassTypeName = "ImageHoverInfoOptions";
-                    node.FileName = "ImageHoverInfoOptions.cs";
+                    node.ClassTypeName = "ImageHoverOptions";
+                    node.FileName = "ImageHoverOptions.cs";
                     break;
+             
+                
+
+                case "scatter.attributes.hoverinfo":
+                case "scatter3d.attributes.hoverinfo":
+                case "box.attributes.hoverinfo":
+                
+                case "violin.attributes.hoverinfo":
+                case "candlestick.attributes.hoverinfo":
+                case "contour.attributes.hoverinfo":
+                case "splom.attributes.hoverinfo":
+                case "table.attributes.hoverinfo":
+
+                    node.ClassTypeName = "HoverOptions";
+                    node.FileName = "HoverOptions.cs";
+                    break;
+                case "scatterpolargl.attributes.hoverinfo":
+                case "scatterpolar.attributes.hoverinfo":
+                    node.ClassTypeName = "PolarHoverOptions";
+                    node.FileName = "PolarHoverOptions.cs";
+                    break;
+                case "scattercarpet.attributes.hoverinfo":
+                    node.ClassTypeName = "CarpetHoverOptions";
+                    node.FileName = "CarpetHoverOptions.cs";
+                    break;
+
                 case "scatterternary.attributes.hoverinfo":
-                    node.ClassTypeName = "TernaryHoverInfoOptions";
-                    node.FileName = "TernaryHoverInfoOptions.cs";
+                    node.ClassTypeName = "TernaryHoverOptions";
+                    node.FileName = "TernaryHoverOptions.cs";
                     break;
                 case "funnelarea.attributes.hoverinfo":
-                case "funnel.attributes.hoverinfo":
-                    node.ClassTypeName = "FunnelHoverInfoOptions";
-                    node.FileName = "FunnelHoverInfoOptions.cs";
+              
+                    node.ClassTypeName = "FunnelAreaHoverOptions";
+                    node.FileName = "FunnelAreaHoverOptions.cs";
                     break;
 
                 case "scattersmith.attributes.hoverinfo":
-                    node.ClassTypeName = "ScatterSmithHoverInfoOptions";
-                    node.FileName = "ScatterSmithHoverInfoOptions.cs";
+                    node.ClassTypeName = "ScatterSmithHoverOptions";
+                    node.FileName = "ScatterSmithHoverOptions.cs";
                     break;
                 case "icicle.attributes.hoverinfo":
-                    node.ClassTypeName = "IcicleHoverInfoOptions";
-                    node.FileName = "IcicleHoverInfoOptions.cs";
+                    node.ClassTypeName = "IcicleHoverOptions";
+                    node.FileName = "IcicleHoverOptions.cs";
+                    break;
+                case "barpolar.attributes.hoverinfo":
+                    node.ClassTypeName = "BarpolarHoverOptions";
+                    node.FileName = "BarpolarHoverOptions.cs";
+                    break;
+                case "waterfall.attributes.hoverinfo":
+                    node.ClassTypeName = "WaterfallHoverOptions";
+                    node.FileName = "WaterfallHoverOptions.cs";
                     break;
                 case "coloraxis.colorbar.showtickprefix":
                 case "coloraxis.colorbar.showticksuffix":
@@ -1252,8 +1541,16 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
                     node.ClassTypeName = "ShowTickOptions";
                     node.FileName = "ShowTickOptions.cs";
                     break;
-
-
+                case "scatterpolar.attributes.thetaunit":
+                case "scatterpolargl.attributes.thetaunit":
+                    node.ClassTypeName = "PolarThetaUnitOptions";
+                    node.FileName = "PolarThetaUnitOptions.cs";
+                    break;
+                case "polar.angularaxis.thetaunit":
+               
+                    node.ClassTypeName = "AngularThetaUnitOptions";
+                    node.FileName = "AngularThetaUnitOptions.cs";
+                    break;
 
                 case "bar.attributes.hoverinfo":
                 case "ohlc.attributes.hoverinfo":
@@ -1264,6 +1561,23 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
                 case "attributes.node.hoverinfo":
                     node.ClassTypeName = "NodeHoverInfoOptions";
                     node.FileName = "NodeHoverInfoOptions.cs";
+                    break;
+
+                case "ternary.aaxis.ticks":
+                case "ternary.baxis.ticks":
+                case "ternary.caxis.ticks":
+                    node.ClassTypeName = "TernaryAxisTicksOptions";
+                    node.FileName = "TernaryAxisTicksOptions.cs";
+                    break;
+                case "smith.realaxis.ticks":
+                    node.ClassTypeName = "RealAxisTicksOptions";
+                    node.FileName = "RealAxisTicksOptions.cs";
+                    break;
+
+                case "layoutAttributes.xaxis.ticks":
+                case "layoutAttributes.yaxis.ticks":
+                    node.ClassTypeName = "CartesianAxisTicksOptions";
+                    node.FileName = "CartesianAxisTicksOptions.cs";
                     break;
 
                 case "pointcloud.attributes.hoverinfo":
@@ -1853,6 +2167,26 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
                 case "attributes.cells.fill":
                     node.ClassTypeName = "CellFillInfo";
                     node.FileName = "CellFillInfo.cs";
+                    break;
+
+                case "scattermapbox.attributes.fill":
+                    node.ClassTypeName = "MapboxFillInfo";
+                    node.FileName = "MapboxFillInfo.cs";
+                    break;
+               
+
+                case "scatter.attributes.fill":
+                    node.ClassTypeName = "ScatterFillInfo";
+                    node.FileName = "ScatterFillInfo.cs";
+                    break;
+                case "scatterpolar.attributes.fill":
+              
+                    node.ClassTypeName = "PolarFillInfo";
+                    node.FileName = "PolarFillInfo.cs";
+                    break;
+                case "scattersmith.attributes.fill":
+                    node.ClassTypeName = "SmithFillInfo";
+                    node.FileName = "SmithFillInfo.cs";
                     break;
 
                 case "layoutAttributes.geo.domain":

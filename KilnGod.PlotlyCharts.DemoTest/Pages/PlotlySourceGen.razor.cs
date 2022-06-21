@@ -298,7 +298,7 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 
                                     }
 
-                                    itemsList += indent + "\t[Description(\"" + item.Enumeration[i - 1] + "\")]\n" + indent + "\t" + CamelCapEnumItem( item.Enumeration[i]);
+                                    itemsList += indent + "\t[Description(\"" + item.Enumeration[i - 1] + "\")]\n" + indent + "\t" + CamelCapEnumItem( item.Enumeration[i], enumName);
 
 
                                 }
@@ -332,11 +332,11 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
                                     {
                                         if (enumItem == "\\")
                                         {
-                                            itemsList += indent + "\t[Description(\"" + "\\\\" + "\")]\n" + indent + "\t" + CamelCapEnumItem(enumItem);
+                                            itemsList += indent + "\t[Description(\"" + "\\\\" + "\")]\n" + indent + "\t" + CamelCapEnumItem(enumItem, enumName);
                                         }
                                         else
                                         {
-                                            itemsList += indent + "\t[Description(\"" + enumItem.Replace("True", "true").Replace("False", "false") + "\")]\n" + indent + "\t" + CamelCapEnumItem(enumItem);
+                                            itemsList += indent + "\t[Description(\"" + enumItem.Replace("True", "true").Replace("False", "false") + "\")]\n" + indent + "\t" + CamelCapEnumItem(enumItem, enumName);
                                         }
                                     }
 
@@ -366,7 +366,7 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
         }
 
 
-        public string CamelCapEnumItem(string enumItem)
+        public string CamelCapEnumItem(string enumItem, string enumName)
         {
 
 
@@ -403,9 +403,16 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
                 case "relayout":
                     enumItem = "RelayOut";
                     break;
+                case "afterall":
+                    enumItem = "AfterAll";
+                    break;
+                case "freeform":
+                    enumItem = "FreeForm";
+                    break;
                 case "all":
                     enumItem = "All";
                     break;
+                
                 case "a":
                     enumItem = "A";
                     break;
@@ -463,14 +470,21 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
                     break;
 
                 case "h":
-                    enumItem = "H";
+                    enumItem = "Horizontal";
                     break;
                 case "u":
                     enumItem = "U";
                     break;
 
                 case "v":
-                    enumItem = "V";
+                    if (enumName.ToLower().Contains("direction") || enumName.ToLower().Contains("orientation"))
+                    {
+                        enumItem = "Vertical";
+                    }
+                    else
+                    {
+                        enumItem = "V";
+                    }
                     break;
                 case "w":
                     enumItem = "W";

@@ -14,6 +14,7 @@ using KilnGod.PlotlyCharts.DemoTest.SchemaReview;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using System.Linq;
+using System.IO;
 using KilnGod.PlotlyCharts.Services;
 using KilnGod.PlotlyCharts.Enumerations;
 using KilnGod.PlotlyCharts.Enumerations.TracesEnums;
@@ -218,6 +219,13 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
         }
 
 
+        public async void SaveTextFile (string fileName, string fileText)
+        {
+            using (StreamWriter file = new StreamWriter(fileName, new FileStreamOptions() { Access= FileAccess.Write, Mode= FileMode.OpenOrCreate, Options= FileOptions.Asynchronous}))
+            {
+                await file.WriteAsync (fileText);
+            }
+        }
 
         public void PublishEnumerations()
         {
@@ -377,6 +385,36 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
                 case "":
                     enumItem = "Blank";
                     break;
+                case "axrange":
+                    enumItem = "AXRange";
+                    break;
+                case "colorbars":
+                    enumItem = "ColorBars";
+                    break;
+                case "modebar":
+                    enumItem = "ModeBar";
+                    break;
+                case "todate":
+                    enumItem = "ToDate";
+                    break;
+                case "onout":
+                    enumItem = "OnOut";
+                    break;
+                case "relayout":
+                    enumItem = "RelayOut";
+                    break;
+                case "all":
+                    enumItem = "All";
+                    break;
+                case "a":
+                    enumItem = "A";
+                    break;
+                case "b":
+                    enumItem = "B";
+                    break;
+                case "c":
+                    enumItem = "C";
+                    break;
                 case "evenodd":
                     enumItem = "EvenOdd";
                     break;
@@ -392,7 +430,9 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
                 case "geojson":
                     enumItem = "GeoJSON";
                     break;
-
+                case "stddev":
+                    enumItem = "StdDev";
+                    break;
                 case "usa":
                     enumItem = "USA";
                     break;
@@ -423,11 +463,19 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
                     break;
 
                 case "h":
-                    enumItem = "Horizontal";
+                    enumItem = "H";
                     break;
+                case "u":
+                    enumItem = "U";
+                    break;
+
                 case "v":
-                    enumItem = "Vertical";
+                    enumItem = "V";
                     break;
+                case "w":
+                    enumItem = "W";
+                    break;
+
                 case "e":
                     enumItem = "Small_e";
                     break;
@@ -494,6 +542,9 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 
             }
 
+            enumItem = enumItem
+               .Replace("-out", "-Out");
+
             enumItem = enumItem.Replace(" ", "_").Replace("-", "_");
 
 
@@ -505,29 +556,40 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
                 }
             }
 
+
+            enumItem = enumItem
+               .Replace("size", "Size")
+               .Replace("draw", "Draw")
+               .Replace("off", "Off")
+               
+               .Replace("closed", "Closed")
+               .Replace("open", "Open")
+               .Replace("path", "Path")
+               .Replace("line", "Line")
+               .Replace("rect", "Rect")
+               .Replace("circle", "Circle")
+               .Replace("json", "JSON")
+               .Replace("others", "Others")
+               .Replace("odd", "Odd")
+               .Replace("zero", "Zero")
+               .Replace("dash", "Dash")
+               .Replace("dot", "Dot")
+               .Replace("hsla", "HSLA")
+               .Replace("hsl", "HSL")
+               .Replace("rgba", "RGBA")
+               .Replace("rgb", "RGB")
+               .Replace("self", "Self")
+               .Replace("next", "Next")
+               .Replace("even", "Even")
+               .Replace("only", "Only")
+               .Replace("ticks", "Ticks");
+
+
             if (enumItem.Length > 1)
             {
                 enumItem = enumItem.Substring(0, 1).ToUpper() + enumItem.Substring(1);
             }
-            enumItem =  enumItem.Replace("all", "All")
-                .Replace("size", "Size")
-                .Replace("draw", "Draw")
-                .Replace("off", "Off")
-                .Replace("out", "Out")
-                .Replace("closed", "Closed")
-                .Replace("line", "Line")
-                .Replace("rect", "Rect")
-                .Replace("circle", "Circle")
-                .Replace("json", "JSON")
-                .Replace("others", "Others")
-                .Replace("odd", "Odd")
-                .Replace("zero", "Zero")
-                .Replace("dash", "Dash")
-                .Replace("dot", "Dot")
-                .Replace("self", "Self")
-                .Replace("next", "Next")
-                .Replace("even", "Even")
-                .Replace("only", "Only");
+           
            
 
             return (enumItem);
@@ -968,13 +1030,13 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
                     break;
                 case "attributes.aaxis.type":
                 case "attributes.baxis.type":
-                    node.ClassTypeName = "ABAxisTypeOptions";
-                    node.FileName = "ABAxisTypeOptions.cs";
+                    node.ClassTypeName = "AutoDateCategoryLinearTypeOptions";
+                    node.FileName = "AutoDateCategoryLinearTypeOptions.cs";
                     break;
 
                 case "dimension.axis.type":
-                    node.ClassTypeName = "DimensionAxisTypeOptions";
-                    node.FileName = "DimensionAxisTypeOptions.cs";
+                    node.ClassTypeName = "CategoryDateLinearLogAxisTypeOptions";
+                    node.FileName = "CategoryDateLinearLogAxisTypeOptions.cs";
                     break;
 
                 case "scene.xaxis.type":
@@ -1000,12 +1062,12 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 
                 case "layoutAttributes.hoverlabel.align":
                 case "attributes.hoverlabel.align":
-
+                case "link.hoverlabel.align":
                 case "node.hoverlabel.align":
 
 
-                    node.ClassTypeName = "AutoAlignOptions";
-                    node.FileName = "AutoAlignOptions.cs";
+                    node.ClassTypeName = "HoverLabelAlignOptions";
+                    node.FileName = "HoverLabelAlignOptions.cs";
                     break;
 
          
@@ -1016,10 +1078,7 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
                     break;
              
 
-                case "link.hoverlabel.align":
-                    node.ClassTypeName = "LinkAlignOptions";
-                    node.FileName = "LinkAlignOptions.cs";
-                    break;
+           
 
                 case "attributes.header.align":
                 case "attributes.cells.align":
@@ -1116,12 +1175,27 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 
                 case "attributes.aaxis.tickmode":
                 case "attributes.baxis.tickmode":
-                    node.ClassTypeName = "ABAxisTickModeOptions";
-                    node.FileName = "ABAxisTickModeOptions.cs";
+                    node.ClassTypeName = "LinearArrayOptions";
+                    node.FileName = "LinearArrayOptions.cs";
                     break;
+                case "polar.angularaxis.tickmode":
+                case "polar.radialaxis.tickmode":
+                case "marker.colorbar.tickmode":
+                case "scene.xaxis.tickmode":
+                case "scene.yaxis.tickmode":
+                case "scene.zaxis.tickmode":
+                case "ternary.aaxis.tickmode":
+                case "ternary.baxis.tickmode":
+                case "ternary.caxis.tickmode":
+                case "line.colorbar.tickmode":
                 case "coloraxis.colorbar.tickmode":
-                    node.ClassTypeName = "ColorbarTickModeOptions";
-                    node.FileName = "ColorbarTickModeOptions.cs";
+                case "attributes.colorbar.tickmode":
+                case "gauge.axis.tickmode":
+                case "layoutAttributes.xaxis.tickmode":
+                case "layoutAttributes.yaxis.tickmode":
+
+                    node.ClassTypeName = "AutoLinearArraryTickModeOptions";
+                    node.FileName = "AutoLinearArraryTickModeOptions.cs";
                     break;
 
                 case "animation.mode":
@@ -1284,8 +1358,8 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
                     break;
 
                 case "polar.angularaxis.type":
-                    node.ClassTypeName = "AngularAxisTypeOptions";
-                    node.FileName = "AngularAxisTypeOptions.cs";
+                    node.ClassTypeName = "AutoCategoryLinearAxisTypeOptions";
+                    node.FileName = "AutoCategpryLinearAxisTypeOptions.cs";
                     break;
              
                 case "barpolar.attributes.thetaunit":
@@ -1311,12 +1385,10 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
                     node.FileName = "FunnelAreaTextPositionOptions.cs";
                     break;
                 case "waterfall.attributes.textposition":
-                    node.ClassTypeName = "WaterfallTextPositionOptions";
-                    node.FileName = "WaterfallTextPositionOptions.cs";
-                    break;
+                case "bar.attributes.textposition":
                 case "pie.attributes.textposition":
-                    node.ClassTypeName = "PieTextPositionOptions";
-                    node.FileName = "PieTextPositionOptions.cs";
+                    node.ClassTypeName = "TextPositionOptions";
+                    node.FileName = "TextPositionOptions.cs";
                     break;
                 case "treemap.attributes.textposition":
                     node.ClassTypeName = "TreemapTextPositionOptions";
@@ -1370,14 +1442,6 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
                     node.ClassTypeName = "ViolinSideOptions";
                     node.FileName = "ViolinSideOptions.cs";
                     break;
-
-                    /*
-                case "smith.realaxis.ticks":
-                    node.ClassTypeName = "RealAxisTicksOptions";
-                    node.FileName = "PathbarSideOptions.cs";
-                    break;
-                    */
-
                 
                
                 case "smith.realaxis.ticks":
@@ -1417,6 +1481,12 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
                     node.FileName = "TitleSideOptions.cs";
                     break;
 
+                case "layoutAttributes.legend.itemclick":
+                case "layoutAttributes.legend.itemdoubleclick":
+                    node.ClassTypeName = "ItemClickOptions";
+                    node.FileName = "ItemClickOptions.cs";
+                    break;
+
                 case "attributes.pathbar.side":
                 case "parcoords.attributes.labelside":
                 case "smith.realaxis.side":
@@ -1436,11 +1506,6 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
                     break;
 
 
-                case "attributes.colorbar.ticks":
-      
-                    node.ClassTypeName = "ColorBarTicksOptions";
-                    node.FileName = "ColorBarTicksOptions.cs";
-                    break;
 
                 case "coloraxis.colorbar.yanchor":
                 case "items.annotation.valign":
@@ -1492,9 +1557,10 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
                     node.ClassTypeName = "FunnelHoverOptions";
                     node.FileName = "FunnelHoverOptions.cs";
                     break;
+                case "funnelarea.attributes.hoverinfo":
                 case "pie.attributes.hoverinfo":
-                    node.ClassTypeName = "PieHoverOptions";
-                    node.FileName = "PieHoverOptions.cs";
+                    node.ClassTypeName = "AreaHoverOptions";
+                    node.FileName = "AreaHoverOptions.cs";
                     break;
                 case "scattermapbox.attributes.hoverinfo":
                     node.ClassTypeName = "MapboxHoverOptions";
@@ -1516,16 +1582,8 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
                     node.ClassTypeName = "ConeHoverOptions";
                     node.FileName = "ConeHoverOptions.cs";
                     break;
-                case "volume.attributes.hoverinfo":
-                    node.ClassTypeName = "VolumeHoverOptions";
-                    node.FileName = "VolumeHoverOptions.cs";
-                    break;
-
-                case "surface.attributes.hoverinfo":
-
-                    node.ClassTypeName = "SurfaceHoverOptions";
-                    node.FileName = "SurfaceHoverOptions.cs";
-                    break;
+           
+            
                 case "streamtube.attributes.hoverinfo":
                     node.ClassTypeName = "StreamTubeHoverOptions";
                     node.FileName = "StreamTubeHoverOptions.cs";
@@ -1549,13 +1607,19 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 
                 case "scatter.attributes.hoverinfo":
                 case "scatter3d.attributes.hoverinfo":
+                case "bar.attributes.hoverinfo":
                 case "box.attributes.hoverinfo":
-
+                case "heatmap.attributes.hoverinfo":
                 case "violin.attributes.hoverinfo":
                 case "candlestick.attributes.hoverinfo":
                 case "contour.attributes.hoverinfo":
                 case "splom.attributes.hoverinfo":
                 case "table.attributes.hoverinfo":
+                case "pointcloud.attributes.hoverinfo":
+                case "surface.attributes.hoverinfo":
+                case "volume.attributes.hoverinfo":
+
+
 
                     node.ClassTypeName = "HoverOptions";
                     node.FileName = "HoverOptions.cs";
@@ -1574,11 +1638,7 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
                     node.ClassTypeName = "TernaryHoverOptions";
                     node.FileName = "TernaryHoverOptions.cs";
                     break;
-                case "funnelarea.attributes.hoverinfo":
-
-                    node.ClassTypeName = "FunnelAreaHoverOptions";
-                    node.FileName = "FunnelAreaHoverOptions.cs";
-                    break;
+             
 
                 case "scattersmith.attributes.hoverinfo":
                     node.ClassTypeName = "ScatterSmithHoverOptions";
@@ -1646,10 +1706,10 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
                     node.FileName = "AngularThetaUnitOptions.cs";
                     break;
 
-                case "bar.attributes.hoverinfo":
+                
                 case "ohlc.attributes.hoverinfo":
-                    node.ClassTypeName = "GraphHoverInfoOptions";
-                    node.FileName = "GraphHoverInfoOptions.cs";
+                    node.ClassTypeName = "FinanceHoverInfoOptions";
+                    node.FileName = "FinanceHoverInfoOptions.cs";
                     break;
 
                 case "attributes.node.hoverinfo":
@@ -1657,23 +1717,17 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
                     node.FileName = "NodeHoverInfoOptions.cs";
                     break;
 
+                case "coloraxis.colorbar.ticks":
                 case "ternary.aaxis.ticks":
                 case "ternary.baxis.ticks":
                 case "ternary.caxis.ticks":
-                    node.ClassTypeName = "TernaryAxisTicksOptions";
-                    node.FileName = "TernaryAxisTicksOptions.cs";
-                    break;
-               
                 case "layoutAttributes.xaxis.ticks":
                 case "layoutAttributes.yaxis.ticks":
-                    node.ClassTypeName = "CartesianAxisTicksOptions";
-                    node.FileName = "CartesianAxisTicksOptions.cs";
+                case "attributes.colorbar.ticks":
+                    node.ClassTypeName = "TicksOptions";
+                    node.FileName = "TicksOptions.cs";
                     break;
 
-                case "pointcloud.attributes.hoverinfo":
-                    node.ClassTypeName = "PointCloudHoverInfoOptions";
-                    node.FileName = "PointCloudHoverInfoOptions.cs";
-                    break;
 
                 case "bar.layoutAttributes.barnorm":
                 case "scatter.attributes.groupnorm":
@@ -2447,12 +2501,13 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
                 .Replace("aspectratio", "AspectRatio")
 
                 .Replace("attribution", "Attribution")
+                .Replace("autorange", "AutoRange")
                 .Replace("auto", "Auto")
                 .Replace("axis", "Axis")
                 .Replace("axes", "Axes")
                 .Replace("axref", "AXRef")
                 .Replace("ayref", "AYRef")
-                .Replace("autorange", "AutoRange")
+              
                 
                 .Replace("background", "Background")
                 .Replace("bar", "Bar")

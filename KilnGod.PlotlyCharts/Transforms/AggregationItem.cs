@@ -10,13 +10,12 @@
 //***********************************************************************************
 
 using KilnGod.PlotlyCharts.Enumerations.TransformsEnums;
-using KilnGod.PlotlyCharts.Enumerations;
 using KilnGod.PlotlyCharts.Wrappers;
 using System.Dynamic;
 
 namespace KilnGod.PlotlyCharts.Transforms
 {
-	public class AggregationItem : ValuesObject
+    public class AggregationItem : ValuesObject
 	{
 
 		public AggregationItem() : base() { }

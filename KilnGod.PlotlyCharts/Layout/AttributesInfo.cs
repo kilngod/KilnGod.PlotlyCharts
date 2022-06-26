@@ -10,7 +10,6 @@
 //***********************************************************************************
 
 using KilnGod.PlotlyCharts.Enumerations.LayoutEnums;
-using KilnGod.PlotlyCharts.Enumerations;
 using KilnGod.PlotlyCharts.Wrappers;
 using System.Dynamic;
 using KilnGod.PlotlyCharts.Enumerations.TracesEnums;

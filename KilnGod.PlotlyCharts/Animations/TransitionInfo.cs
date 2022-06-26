@@ -11,13 +11,12 @@
 
 using System.Dynamic;
 using KilnGod.PlotlyCharts.Wrappers;
-using KilnGod.PlotlyCharts.Enumerations;
 using KilnGod.PlotlyCharts.Enumerations.AnimationEnums;
 
 namespace KilnGod.PlotlyCharts.Animations
 {
 
-	public class TransitionInfo : ValuesObject
+    public class TransitionInfo : ValuesObject
 	{
 
 		public TransitionInfo() : base() { }

@@ -21,7 +21,7 @@ namespace KilnGod.PlotlyCharts.Traces
 
     public class OHLCTrace : Trace
     {
-        public OHLCTrace() : base(Enumerations.TraceTypeOptions.Finance_Ohlc)
+        public OHLCTrace() : base(TraceTypeOptions.Finance_Ohlc)
         {
 
         }

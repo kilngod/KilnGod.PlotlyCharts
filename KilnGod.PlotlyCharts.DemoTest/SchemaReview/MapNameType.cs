@@ -6,23 +6,26 @@ using System.Threading.Tasks;
 
 namespace KilnGod.PlotlyCharts.DemoTest.SchemaReview
 {
-    public struct MapNameType
+    public class MapNameType
     {
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
 
-        public string PropertyName { get; set; }
+        public string PropertyName { get; set; } = string.Empty;
 
-        public string OriginalName { get; set; }
-        public string ClassTypeName { get; set; }
-        public string JsonType { get; set; }
+        public string LocationName { get; set; } = string.Empty;
+        public string OriginalName { get; set; } = string.Empty;
+        public string ClassTypeName { get; set; } = string.Empty;
+        public string JsonType { get; set; } = string.Empty;
 
-        public string FileName { get; set; }
+        public string FileName { get; set; } = string.Empty;
 
-        public string SchemaSection { get; set; }
-        public bool HasChildren { get; set; }
-        public bool IsEnumeration { get; set; }
+        public string SchemaSection { get; set; } = string.Empty;
+        public bool HasChildren { get; set; } = false;
+        public bool IsEnumeration { get; set; } = false;
 
+#nullable disable
         public SchemaItem item { get; set; }
+#nullable enable
 
         public static int ChildCount(MapNameType map)
         {

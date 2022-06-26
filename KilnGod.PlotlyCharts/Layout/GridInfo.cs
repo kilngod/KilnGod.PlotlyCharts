@@ -9,13 +9,12 @@
 // Source License. See LICENSE.txt for details.
 //***********************************************************************************
 
-using KilnGod.PlotlyCharts.Enumerations;
 using KilnGod.PlotlyCharts.Enumerations.LayoutEnums;
 using KilnGod.PlotlyCharts.Wrappers;
 
 namespace KilnGod.PlotlyCharts.Layout
 {
-	public class GridInfo : ValuesObject
+    public class GridInfo : ValuesObject
 	{
 
 		public GridInfo() : base() { }

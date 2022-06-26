@@ -16,9 +16,9 @@ using Microsoft.JSInterop;
 using System.Linq;
 using System.IO;
 using KilnGod.PlotlyCharts.Services;
-using KilnGod.PlotlyCharts.Enumerations;
 using KilnGod.PlotlyCharts.Enumerations.TracesEnums;
 using KilnGod.PlotlyCharts.Enumerations.TransformsEnums;
+using KilnGod.PlotlyCharts.Wrappers;
 
 namespace KilnGod.PlotlyCharts.DemoTest.Pages
 {
@@ -69,7 +69,8 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 
         public List<MapNameType> EnumList = new List<MapNameType>();
 
-        public void GenerateSource()
+     
+        public async void GenerateSource()
         {
 
 
@@ -90,7 +91,7 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
               //  break;
             }
 
-            string namelist = "";
+         
 
             for (int i = 0; i < mapNameItems.Count; i++)
             {
@@ -98,13 +99,12 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
                
                 if (name.IsEnumeration)
                 {
-                    FixEnumNames(ref name);
+                
                     EnumList.Add(name);
                 } 
                 else if (!string.IsNullOrWhiteSpace( name.ClassTypeName) && name.HasChildren && name.Name != "traces" && name.Name != "transforms")// && name.Name != "traces" )
                 {
-                    FixClassNames(ref name);
-
+                
                     ClassList.Add(name);
 
                 }
@@ -141,8 +141,11 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 
                             if (mia == null)
                             {
-                                isDifferentEnum = true;
-                                reason = "element not found: " + child;
+                                isDifferentEnum = !child.Contains("^"); // skip regex
+                                if (isDifferentEnum)
+                                {
+                                    reason = "element not found: " + child;
+                                }
                             }
                         }
                     }
@@ -156,14 +159,17 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
             }
             if (string.IsNullOrWhiteSpace(reasons))
             {
-                PublishEnumerations();
+                await PublishEnumerations();
             }
             else
             {
                 AreaText = reasons;
+                StateHasChanged();
+
+                return;
             }
-            /*
-            List< MapNameType>   classItems = ClassList.OrderBy(x => x.PropertyName).ThenBy(x => MapNameType.ChildCount(x)).ToList();
+        
+            List< MapNameType>   classItems = ClassList.OrderBy(x => x.ClassTypeName).ThenBy(x => MapNameType.ChildCount(x)).ToList();
 
           
 
@@ -202,32 +208,57 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
                 }
                 
             }
-            */
+
+            
 
             /*
 
-            for (int i = 0; i < names.Count; i++)
+            for (int i = 0; i < classItems.Count; i++)
             {
-                MapNameType name = names[i];
-                namelist += "\t\t\t\tnew MapNameType(){PropertyName=\""+name.PropertyName+ "\", ClassTypeName=\"" + name.ClassTypeName + "\", OriginalName=\"" + name.OriginalName + "\", FileName=\""+name.FileName+ "\", SchemaSection=\"" + name.SchemaSection + "\", JsonType=\"" + name.JsonType + "\", Name = \"" + name.Name + "\"}," + System.Environment.NewLine;
+                MapNameType name = classItems[i];
+                //    namelist += "\t\t\t\tnew MapNameType(){PropertyName=\""+name.PropertyName+ "\", ClassTypeName=\"" + name.ClassTypeName + "\", OriginalName=\"" + name.OriginalName + "\", FileName=\""+name.FileName+ "\", SchemaSection=\"" + name.SchemaSection + "\", JsonType=\"" + name.JsonType + "\", Name = \"" + name.Name + "\"}," + System.Environment.NewLine;
+                namelist += "PropertyName =\"" + name.PropertyName + "\", ClassTypeName=\"" + name.ClassTypeName + "\", Location=\"" + name.Name + "\"\n";
             }
-            
             */
+           
+        
 
-
-
-        }
-
-
-        public async void SaveTextFile (string fileName, string fileText)
-        {
-            using (StreamWriter file = new StreamWriter(fileName, new FileStreamOptions() { Access= FileAccess.Write, Mode= FileMode.OpenOrCreate, Options= FileOptions.Asynchronous}))
+            foreach (var head in SchemaTree)
             {
-                await file.WriteAsync (fileText);
+                if (head.Name== "defs")
+                {
+                    continue;
+                }
+                PrintSchema(head, 0);
             }
+
+            AreaText = schemaOutline;
+            StateHasChanged();
+
+            await PublishClasses();
+
         }
 
-        public void PublishEnumerations()
+        List<string> filesSaved = new List<string>();
+        public async Task<bool> SaveTextFile (string fileName, string fileText)
+        {
+            bool result = false;
+            if (!filesSaved.Contains(fileName))
+            {
+                using (StreamWriter file = new StreamWriter(fileName, new FileStreamOptions() { Access = FileAccess.Write, Mode = FileMode.OpenOrCreate, Options = FileOptions.Asynchronous }))
+                {
+                    await file.WriteAsync(fileText);
+                    await file.FlushAsync();
+                    file.Close();
+                }
+                filesSaved.Add(fileName);
+                result = true;
+            }
+            return result;
+           
+        }
+
+        public async Task PublishEnumerations()
         {
 
 
@@ -242,31 +273,40 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 
             EnumList = EnumList.OrderBy(x => x.ClassTypeName).ToList();
             int icnt = 0;
+
             foreach (MapNameType map in EnumList)
             {
                 SchemaItem item = map.item;
+
+                if (string.IsNullOrEmpty(map.ClassTypeName))
+                {
+                    continue;
+                }
 
                 if (map.ClassTypeName == lastClassName)
                 {
                     continue;
                 }
+
+            
+
                 icnt += 1;
-                lastClassName = map.ClassTypeName;
+               
                 try
                 {
 
 
-                    if ((item.ElementType == SchemaElementType.enumOption) && (item.Name != lastResultName || item.Children.Count != lastItemCount))
+                    if ((item.ElementType == SchemaElementType.enumOption || item.ElementType== SchemaElementType.flagListOption) && (map.ClassTypeName != lastClassName || item.Children.Count != lastItemCount))
                     {
 
                         string enumName = map.ClassTypeName;
-/*
-                        if (enumName == "type" && item.Parent != null)
-                        {
-                            enumName = item.Parent.Name + "Type";
-                        }
-*/
-                        
+                        /*
+                                                if (enumName == "type" && item.Parent != null)
+                                                {
+                                                    enumName = item.Parent.Name + "Type";
+                                                }
+                        */
+
                         result = result + indent + "/******************************\n";
                         result = result + indent + "*** Enum Name: " + enumName + "\n" + indent + "***\n";
 
@@ -280,7 +320,7 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 
                         string itemsList = string.Empty;
 
-                        result = result + indent + "public enum " + CamelCaseName( enumName) + System.Environment.NewLine + indent + "{" + System.Environment.NewLine;
+                        result = result + indent + "public enum " + CamelCaseName(enumName) + System.Environment.NewLine + indent + "{" + System.Environment.NewLine;
 
                         if (item.Enumeration != null)
                         {
@@ -298,7 +338,7 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 
                                     }
 
-                                    itemsList += indent + "\t[Description(\"" + item.Enumeration[i - 1] + "\")]\n" + indent + "\t" + CamelCapEnumItem( item.Enumeration[i], enumName);
+                                    itemsList += indent + "\t[Description(\"" + item.Enumeration[i - 1] + "\")]\n" + indent + "\t" + CamelCapEnumItem(item.Enumeration[i], enumName);
 
 
                                 }
@@ -316,7 +356,7 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 
                                     if (itemsList != string.Empty)
                                     {
-                                        itemsList += ","+ System.Environment.NewLine;
+                                        itemsList += "," + System.Environment.NewLine;
 
                                     }
 
@@ -347,7 +387,7 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 
                         result = result + itemsList + System.Environment.NewLine + indent + "}" + System.Environment.NewLine + System.Environment.NewLine;
 
-                        lastResultName = item.Name;
+                        lastClassName = map.ClassTypeName;
                         lastItemCount = item.Children.Count;
                     }
                 }
@@ -356,13 +396,517 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
                     blowup = ex.Message;
                 }
 
-            //    break;
+                //    break;
             }
 
 
-            AreaText = "Total Enums:"+ icnt.ToString() + System.Environment.NewLine + result;
-            StateHasChanged();
+            string filename = "PlotlyEnums.cs";
 
+            string output = SchemaExtensions.EnumerationsFileHeader.Replace("@filename@", filename) + result + "\n\n}";
+
+            await SaveTextFile("C:\\!PlotlyCode\\Enumerations\\" + filename, output);
+
+
+
+
+        }
+
+
+
+
+        public async Task PublishClasses()
+        {
+
+
+            List<MapNameType> classItems = ClassList.OrderBy(x => x.ClassTypeName).ThenBy(x => MapNameType.ChildCount(x)).ToList();
+
+            string skippedClasses = string.Empty;
+
+            string lastResultName = "";
+            string indent = "\t";
+            int icnt = 0;
+            for (int i = 1; i < classItems.Count; i++)
+            {
+
+                string result = result = SchemaExtensions.CommonFileHeader;
+                string folder = "C:\\!PlotlyCode\\Common\\";
+
+                MapNameType map = classItems[i];
+
+
+                bool isItems = map.item.Children.Find(x => x.map.PropertyName == "Items") != null;
+
+                if (map.ClassTypeName == "NoPublish" || isItems || map.ClassTypeName == string.Empty || map.SchemaSection == "defs")
+                {
+                    if (map.item.Children.Count > 0)
+                    {
+                        skippedClasses += map.Name + "\t" + map.ClassTypeName + "t" + map.PropertyName + "\n";
+                    }
+
+                    continue;
+                }
+
+                switch (map.SchemaSection)
+                {
+                    case "animation":
+                        result = SchemaExtensions.AnimationFileHeader;
+                        folder = "C:\\!PlotlyCode\\Animation\\";
+                        break;
+                    case "config":
+                        result = SchemaExtensions.ConfigFileHeader;
+                        folder = "C:\\!PlotlyCode\\Config\\";
+                        break;
+                    case "frames":
+                        result = SchemaExtensions.FramesFileHeader;
+                        folder = "C:\\!PlotlyCode\\Frames\\";
+                        break;
+                    case "layout":
+                        result = SchemaExtensions.LayoutFileHeader;
+                        folder = "C:\\!PlotlyCode\\Layout\\";
+                        if (!map.ClassTypeName.Contains(": Layout"))
+                        {
+                            result = SchemaExtensions.CommonFileHeader;
+                            folder = "C:\\!PlotlyCode\\Common\\";
+                        }
+                        break;
+                    case "traces":
+                        result = SchemaExtensions.TracesFileHeader;
+                        folder = "C:\\!PlotlyCode\\Traces\\";
+
+                        if (map.ClassTypeName.Contains(": Layout"))
+                        {
+                            result = SchemaExtensions.LayoutFileHeader;
+                            folder = "C:\\!PlotlyCode\\Layout\\";
+                        }
+                        else if (!map.ClassTypeName.Contains(": Trace"))
+                        {
+                            result = SchemaExtensions.CommonFileHeader;
+                            folder = "C:\\!PlotlyCode\\Common\\";
+                        }
+
+                        break;
+                    case "transforms":
+                        result = SchemaExtensions.TransformsFileHeader;
+                        folder = "C:\\!PlotlyCode\\Transforms\\";
+                        break;
+
+                }
+
+                string fileName = map.FileName;
+
+                if (string.IsNullOrEmpty(fileName))
+                {
+                    fileName = map.ClassTypeName + ".cs";
+                }
+                if (string.IsNullOrEmpty(map.ClassTypeName))
+                {
+                    fileName = map.PropertyName + ".cs";
+                }
+
+                result = result.Replace("@filename@", map.FileName);
+
+
+
+                SchemaItem item = map.item;
+                if (item.Enumeration != null)
+                {
+                    // skip enums if we missed any
+                    continue;
+                }
+
+                if (isEnterpriseName(item.Name))
+                {
+                    continue;
+                }
+
+                if (item.Name != lastResultName)
+                {
+
+                    string Info = string.Empty;
+
+                    if (!item.CsType.EndsWith("Item"))
+                    {
+                        Info = "Info";
+                    }
+
+                    if (map.ClassTypeName.Contains(":"))
+                    {
+                        result += indent + "public class " + map.ClassTypeName + "\n";
+                        result += indent + "{\n\n";
+
+                        result += indent + "\tpublic " + map.ClassTypeName.Substring(0, map.ClassTypeName.IndexOf(":") - 1) + "():base()";
+
+                    }
+                    else
+                    {
+                        result += indent + "public class " + map.ClassTypeName + " : ValuesObject\n";
+                        result += indent + "{\n\n";
+
+                        result += indent + "\tpublic " + map.ClassTypeName + "():base()";
+
+                    }
+
+                    result += indent + "\t{";
+                    result += indent + "\t}\n";
+
+
+                    var children = item.Children.OrderBy(x => x.Name);
+
+
+                    foreach (SchemaItem child in children)
+                    {
+
+
+
+                        MapNameType childMap = child.map;
+
+                        string childName = childMap.PropertyName;
+
+                        if (childName == String.Empty)
+                        {
+                            childName = CamelCaseName(childMap.item.Name);
+                        }
+
+                        if (isEnterpriseName(childName))
+                        {
+                            continue;
+                        }
+
+                        if (childMap.IsEnumeration)
+                        {
+                            FixEnumNames(childMap);
+                            if (!FixEnumNames(childMap))
+                            {
+                                string enumIssue = childMap.LocationName + "\t" + childMap.Name;
+
+                                if (unmappedEnums.Find(x => x == enumIssue) == null)
+                                {
+                                    unmappedEnums.Add(enumIssue);
+                                }
+                            }
+                        }
+
+                        string childClassName = childMap.ClassTypeName;
+                        if (childMap.ClassTypeName == String.Empty)
+                        {
+                            childClassName = CamelCaseName(childMap.item.Name);
+                        }
+
+                        if (childMap.item.IsItemList)
+                        {
+                            SchemaItem itemList = childMap.item.Children[0];
+
+
+                            if (itemList.Children.Count > 0)
+                            {
+                                SchemaItem childItem = itemList.Children[0];
+                                MapNameType childItemMap = childItem.map;
+
+                                if (string.IsNullOrEmpty(childItemMap.ClassTypeName))
+                                {
+                                    FixClassNames(childItemMap);
+                                }
+
+                                string itemClassName = childItemMap.ClassTypeName;
+
+                                if (string.IsNullOrEmpty(itemClassName))
+                                {
+                                    itemClassName = childItemMap.PropertyName + "Item";
+                                }
+
+
+
+                                result = result + itemsMethodSigniture(childMap.PropertyName, itemClassName, childMap.item.Name);
+                            }
+
+                        }
+                        else
+                            switch (child.ElementType)
+                            {
+                                case SchemaElementType.boolOption:
+                                    result = result + directMethodSigniture(childName, "bool", child.Name.ToLower());
+                                    break;
+                                case SchemaElementType.stringOption:
+                                    result = result + directMethodSigniture(childName, "string", child.Name.ToLower());
+                                    break;
+                                case SchemaElementType.angleOption:
+                                case SchemaElementType.doubleOption:
+                                    result = result + directMethodSigniture(childName, "double", child.Name.ToLower());
+                                    break;
+                                case SchemaElementType.intOption:
+                                    result = result + directMethodSigniture(childName, "int", child.Name.ToLower());
+                                    break;
+                                case SchemaElementType.anyOption:
+                                case SchemaElementType.numberOption:
+                                case SchemaElementType.subplotIdOption:
+                                    result = result + directMethodSigniture(childName, "object", child.Name.ToLower());
+                                    break;
+                                case SchemaElementType.flagListOption:
+
+                                    string flagClassName = childMap.ClassTypeName;
+
+
+
+                                    if (string.IsNullOrEmpty(childMap.ClassTypeName))
+                                    {
+                                        flagClassName = childMap.PropertyName + "Options";
+                                    }
+                                    result = result + flaglistMethodSigniture(childName, flagClassName, child.Name.ToLower());
+                                    break;
+
+                                case SchemaElementType.enumOption:
+                                    string enumName = child.Name;
+
+                                    if (enumName == "type" && item.Parent != null)
+                                    {
+                                        enumName = item.Parent.Name + "Type";
+                                    }
+
+
+                                    string enumClassName = childMap.ClassTypeName;
+
+
+
+                                    if (string.IsNullOrEmpty(childMap.ClassTypeName))
+                                    {
+                                        enumClassName = childMap.PropertyName + "Options";
+                                    }
+
+                                    result = result + enumMethodSigniture(childName, enumClassName, child.Name.ToLower());
+                                    break;
+
+
+
+
+                                case SchemaElementType.colorOption:
+                                case SchemaElementType.colorListOption:
+                                case SchemaElementType.colorScaleOption:
+
+                                case SchemaElementType.arrayOption:
+                                case SchemaElementType.dataArrayOption:
+                                case SchemaElementType.infoArrayOption:
+
+
+
+                                case SchemaElementType.unknownOption:
+                                case SchemaElementType.nullOption:
+
+                                    result = result + directMethodSigniture(childName, "object", child.Name.ToLower());
+                                    break;
+
+                                case SchemaElementType.classOption:
+                                case SchemaElementType.objectOption:
+
+                                    string className = childMap.ClassTypeName;
+
+
+                                    if (childMap.HasChildren && childMap.item.Children.Count == 1 && className == "noPublish" && !string.IsNullOrEmpty(childMap.item.Children[0].map.ClassTypeName))
+                                    {
+                                        className = childMap.item.Children[0].map.ClassTypeName;
+
+                                        result = result + fancyMethodSigniture(CamelCaseName(childName), className, child.Name.ToLower());
+                                    }
+                                    else if (childMap.HasChildren)
+                                    {
+                                        if (string.IsNullOrEmpty(className))
+                                        {
+                                            className = CamelCaseName(childName) + "Info";
+                                        }
+                                        result = result + fancyMethodSigniture(CamelCaseName(childName), className, child.Name.ToLower());
+                                    }
+                                    else
+                                    {
+                                        result = result + directMethodSigniture(childName, "object", child.Name.ToLower());
+                                    }
+
+                                    break;
+                                default:
+                                    result = result + directMethodSigniture(childName, "badType", child.Name.ToLower()); ;
+                                    break;
+                            }
+                    }
+
+
+
+
+                    lastResultName = item.Name;
+                    result = result + "\n" + indent + "}\n}\n\n";
+                    bool savedAFile = await SaveTextFile(folder + fileName, result);
+                    if (savedAFile)
+                    {
+                        icnt += 1;
+                    }
+
+                }
+
+            }
+
+            string badEnums = string.Empty;
+            foreach (string item in unmappedEnums)
+            {
+                badEnums += item + "\n";
+            }
+
+            AreaText = "Generated " + icnt.ToString() + " Classes\n\nUnmapped Enums:\n"
+                + badEnums + "\n\nSkipped Classes:\n"
+                + skippedClasses+"\n\nOther:\n"
+                + AreaText;
+            StateHasChanged();
+        }
+
+        /*
+         public object? Base
+		{
+			get { return (ValueItems as IDictionary<string, Object?>)["base"]; }
+			set { (ValueItems as IDictionary<string, Object?>)["base"] = value; }
+		}
+ 
+         * */
+
+        public static string[] reservedKeywords = new string[] { "base" };
+        public string directMethodSigniture(string propertyName, string propertyType, string ValueName)
+        {
+            string indent = "\n\t\t";
+
+            string result = indent + "public " + propertyType + "? " + propertyName;
+
+            if (reservedKeywords.Contains(ValueName)) 
+            {
+                result += indent + "{";
+                result += indent + "\tget { return (ValueItems as IDictionary<string, Object?>)[\"" + ValueName + "\"]; }";
+                result += indent + "\tset { (ValueItems as IDictionary<string, Object?>)[\"" + ValueName + "\"] = value; }";
+                result += indent + "}\n";
+            }
+            else
+            {
+                result += indent + "{";
+                result += indent + "\tget { return (ValueItems as dynamic)." + ValueName + "; }";
+                result += indent + "\tset { (ValueItems as dynamic)." + ValueName + " = value; }";
+                result += indent + "}\n";
+
+            }
+
+            return result;
+        }
+
+        public string fancyMethodSigniture(string propertyName, string className, string ValueName)
+        {
+            string indent = "\n\t\t";
+            string indent2 = "\n\t\t\t";
+            string indent3 = "\n\t\t\t\t";
+
+            string result = indent + className + "? _" + propertyName + " = null;";
+            result += indent + "public " + className + "? " + propertyName;
+            result += indent + "{";
+            result += indent2 + "get { return _" + propertyName + "; }";
+            result += indent2 + "set";
+            result += indent2 + "{";
+            result += indent3 + "_" + propertyName + " = value;";
+            result += indent3 + "(ValueItems as dynamic)." + ValueName + " = _" + propertyName + "?.ValueItems;";
+            result += indent2 + "}";
+            result += indent + "}\n";
+
+            return result;
+
+        }
+
+
+
+        public string itemsMethodSigniture(string propertyName, string className, string ValueName)
+        {
+            string indent = "\n\t\t";
+            string indent2 = "\n\t\t\t";
+            string indent3 = "\n\t\t\t\t";
+
+            string result = indent + "ItemList<" + className + ">? _" + propertyName + " = null;";
+            result += indent + "public ItemList<" + className + ">? " + propertyName;
+            result += indent + "{";
+            result += indent2 + "get";
+            result += indent2 + "{ ";
+            result += indent3 + "return _" + propertyName + ";";
+            result += indent2 + "}";
+            result += indent2 + "set";
+            result += indent2 + "{ ";
+            result += indent3 + "_" + propertyName + " = value;";
+            result += indent3 + "(ValueItems as dynamic)." + ValueName + " = _" + propertyName + "?.Values;";
+            result += indent2 + "}";
+            result += indent + "}\n";
+
+            return result;
+
+            /*
+             * 
+        ItemList<ButtonsItem>? _ButtonsItems = null;
+		public ItemList<ButtonsItem>? Buttons
+		{
+			get
+			{
+				return _ButtonsItems;
+			}
+			set
+			{
+				_ButtonsItems = value;
+				if (value != null)
+				{
+					(ValueItems as dynamic).buttons = _ButtonsItems?.Values;
+				}
+			}
+		}
+            */
+
+        }
+
+        public string enumMethodSigniture(string propertyName, string enumName, string ValueName)
+        {
+            string indent = "\n\t\t";
+
+            string result = indent + "public " + enumName + "? " + propertyName;
+            result += indent + "{";
+            result += indent + "\tget { return EnumerationStatic.GetValueFromDescription<" + enumName + "> ((ValueItems as dynamic)." + ValueName + "); }";
+            result += indent + "\tset { (ValueItems as dynamic)." + ValueName + " = value?.GetDescription(); }";
+            result += indent + "}\n";
+            return result;
+
+        }
+
+        public string flaglistMethodSigniture(string propertyName, string enumName, string ValueName)
+        {
+            string indent = "\n\t\t";
+
+            string result = indent+ enumName + "[]? _" + propertyName+" = null;";
+            result += indent + "public " + enumName + "[]? " + propertyName ;
+            result += indent + "{";
+            result += indent + "\tget { return _" + propertyName+"; }";
+            result += indent + "\tset";
+            result += indent + "\t{";
+            result += indent + "\t\t_" + propertyName + " = value;";
+            result += indent + "\t\tif (value != null)";
+            result += indent + "\t\t{";
+            result += indent + "\t\t\t(ValueItems as dynamic)." + ValueName + " = EnumerationStatic.MakeFlagList(value);";
+            result += indent + "\t\t}";
+            result += indent + "\t}";
+            result += indent + "}\n";
+            return result;
+
+        }
+
+        public bool isEnterpriseName(string name)
+        {
+            bool result = false;
+            if (name.ToLower().EndsWith("src"))
+            {
+                // useless 
+                result = true;
+            }
+
+            if (name.ToLower().EndsWith("chartstudio"))
+            {
+                // useless 
+                result = true;
+            }
+
+
+            return result;
         }
 
 
@@ -448,8 +992,8 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
                     enumItem = "_50";
                     break;
 
-                case "100":                   
-                    enumItem = "_100";
+                case "110":                   
+                    enumItem = "_110";
                     break;
 
                 case "-":
@@ -575,7 +1119,7 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
                .Replace("size", "Size")
                .Replace("draw", "Draw")
                .Replace("off", "Off")
-               
+               .Replace("+auto","_Auto")
                .Replace("closed", "Closed")
                .Replace("open", "Open")
                .Replace("path", "Path")
@@ -609,12 +1153,31 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
             return (enumItem);
         }
 
+        public List<string> unmappedEnums = new List<string>();
 
         public void MapNames(SchemaItem node, List<MapNameType> names, string schemaSection)
         {
             if (node.Name.IndexOf("src")>0)
             {
                 return;
+            }
+
+            string locationName = string.Empty;
+
+            if (node.Parent != null)
+            {
+                if (node.Parent.Parent != null)
+                {
+                    locationName = node.Parent.Parent.Name+"."+ node.Parent.Name + "." +node.Name;
+                }
+                else
+                {
+                    locationName = node.Parent.Name +"." + node.Name;
+                }
+            }
+            else
+            {
+                locationName = node.Name;
             }
 
             MapNameType name = new MapNameType()
@@ -632,6 +1195,8 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
                 HasChildren = node.Children.Count > 0,
 
                 IsEnumeration = node.Enumeration != null && node.Enumeration.Count > 0 ? true : false,
+
+                LocationName = locationName,
                 
                 item = node
 
@@ -642,7 +1207,10 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
             if (name.IsEnumeration)
             {
                 name.ClassTypeName = name.PropertyName + "Options";
-            } else if (name.HasChildren)
+
+                FixEnumNames(name);
+            } 
+            else if (name.HasChildren)
             {
                 if (node.Parent != null && node.Parent.Name == "traces")
                 {
@@ -652,22 +1220,16 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
                 {
                     name.ClassTypeName = name.PropertyName + "Info";
                 }
+                FixClassNames(name);
             }
-            if (!string.IsNullOrEmpty(name.ClassTypeName))
+
+            if (!string.IsNullOrEmpty(name.ClassTypeName) && string.IsNullOrEmpty(name.FileName))
             {
                 name.FileName = name.ClassTypeName + ".cs";
             }
 
-            if (node.Parent != null)// && node.Parent.Name != "attributes")
-            {
-                name.Name = node.Parent.Name +"." + name.Name;
 
-                if (node.Parent.Parent != null)// && node.Parent.Parent.Name != "attributes")
-                {
-                    name.Name = node.Parent.Parent.Name + "." + name.Name;
-                }
-            }
-
+            /*
             if (name.JsonType == "infoArrayOption" && !string.IsNullOrEmpty(name.ClassTypeName))
             {
                 name.ClassTypeName = string.Empty;
@@ -679,25 +1241,61 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
                 name.JsonType = SchemaElementType.objectOption.ToString();
 
             }
-
-            if (names.FindIndex(x => x.Name == name.Name) <0)
+             */
+            if (names.FindIndex(x => x.LocationName == name.LocationName) <0)
             {
                 names.Add(name);
             }
+           
 
-            foreach(SchemaItem child in node.Children)
+
+            foreach (SchemaItem child in node.Children)
             {
                 MapNames(child, names, schemaSection);
             }
         }
 
+        public string schemaOutline = string.Empty;
+        public void PrintSchema(SchemaItem node, int indent)
+        {
+            if (indent == 0)
+            {
+                schemaOutline += "\n\n\n";
+            }
 
+            string nodeText = string.Empty;
+            string indenttabs = "\t";
+            for(int i=0; i< indent; i++)
+            {
+                indenttabs += "\t";
+            }
+
+            if (string.IsNullOrEmpty(node.map.ClassTypeName))
+            {
+                FixClassNames(node.map);
+            }
+
+            nodeText +=  node.ElementType.ToString()+ "\t" + node.map.LocationName + "\t" + node.map.ClassTypeName+ "\t" + node.map.FileName+indenttabs+ node.map.PropertyName + "\n";
+
+            schemaOutline += nodeText;
+
+            foreach(SchemaItem child in node.Children)
+            {
+                PrintSchema(child, indent + 1);
+            }
+
+        }
         public void MapSchema(SchemaItem node, JsonElement root)
         {
             bool isItems = node.Name == "items";
             JsonElement valType;
             bool isArray = false;
             bool useParent = false;
+            if (node.Name.ToLower()== "dflt")
+            {
+                // to be ignored
+                return;
+            }
             if (root.ValueKind != JsonValueKind.String)
             {
                 if (root.TryGetProperty("valType", out valType))
@@ -851,7 +1449,7 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
                             {
                                 objectValue = prop.Value;
 
-                                if (objectValue.HasValue && prop.Name != "impliedEdits")
+                                if (objectValue.HasValue && prop.Name.ToLower() != "impliededits" && prop.Name.ToLower()!= "dflt")
                                 {
 
 
@@ -995,7 +1593,7 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
                         break;
                 }
 
-                if (node.Enumeration != null && node.Enumeration.Count > 0 && node.ElementType != SchemaElementType.enumOption)
+                if (node.Enumeration != null && node.Enumeration.Count > 0 && !(node.ElementType == SchemaElementType.enumOption || node.ElementType == SchemaElementType.flagListOption))
                 {
                     node.ElementType = SchemaElementType.enumOption;
                 }
@@ -1004,16 +1602,13 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 
             }
 
-
-
-
-
         }
 
 
-        public void FixEnumNames(ref MapNameType node)
+        public bool FixEnumNames(MapNameType node)
         {
-            switch (node.Name)
+            bool result = true;
+            switch (node.LocationName)
             {
                 case "polar.angularaxis.categoryorder":
                 case "polar.radialaxis.categoryorder":
@@ -1189,8 +1784,8 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 
                 case "attributes.aaxis.tickmode":
                 case "attributes.baxis.tickmode":
-                    node.ClassTypeName = "LinearArrayOptions";
-                    node.FileName = "LinearArrayOptions.cs";
+                    node.ClassTypeName = "LinearArrayTickModeOptions";
+                    node.FileName = "LinearArrayTickModeOptions.cs";
                     break;
                 case "polar.angularaxis.tickmode":
                 case "polar.radialaxis.tickmode":
@@ -1208,8 +1803,8 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
                 case "layoutAttributes.xaxis.tickmode":
                 case "layoutAttributes.yaxis.tickmode":
 
-                    node.ClassTypeName = "AutoLinearArraryTickModeOptions";
-                    node.FileName = "AutoLinearArraryTickModeOptions.cs";
+                    node.ClassTypeName = "AutoLinearArrayTickModeOptions";
+                    node.FileName = "AutoLinearArrayTickModeOptions.cs";
                     break;
 
                 case "animation.mode":
@@ -1218,8 +1813,8 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
                     break;
 
                 case "items.rangebreak.pattern":
-                    node.ClassTypeName = "RangebreakPatternOptions";
-                    node.FileName = "RangebreakPatternOptions.cs";
+                    node.ClassTypeName = "RangeBreakPatternOptions";
+                    node.FileName = "RangeBreakPatternOptions.cs";
                     break;
 
 
@@ -1255,8 +1850,8 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
                     break;
 
                 case "cone.attributes.sizemode":
-                    node.ClassTypeName = "ConeSizemodeOptions";
-                    node.FileName = "ConeSizemodeOptions.cs";
+                    node.ClassTypeName = "ConeSizeModeOptions";
+                    node.FileName = "ConeSizeModeOptions.cs";
                     break;
 
                 case "rangeslider.yaxis.rangemode":
@@ -1313,7 +1908,11 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
                     break;
 
 
-
+                case "layoutAttributes.xaxis.anchor":
+                case "layoutAttributes.yaxis.anchor":
+                    node.ClassTypeName = "AxisAnchorOptions";
+                    node.FileName = "AxisAnchorOptions.cs";
+                    break;
 
                 case "cone.attributes.anchor":
                     node.ClassTypeName = "ConeAnchorOptions";
@@ -1377,8 +1976,8 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
                     break;
              
                 case "barpolar.attributes.thetaunit":
-                    node.ClassTypeName = "BarpolarThetaUnitOptions";
-                    node.FileName = "BarpolarThetaUnitOptions.cs";
+                    node.ClassTypeName = "BarPolarThetaUnitOptions";
+                    node.FileName = "BarPolarThetaUnitOptions.cs";
                     break;
 
                 case "attributes.delta.position":
@@ -1544,9 +2143,14 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
                     node.ClassTypeName = "BoxHoverOnOptions";
                     node.FileName = "BoxHoverOnOptions.cs";
                     break;
+
                 case "layoutAttributes.scene.hovermode":
                     node.ClassTypeName = "SceneHoverModeOptions";
                     node.FileName = "SceneHoverModeOptions.cs";
+                    break;
+                case "sankey.attributes.arrangement":
+                    node.ClassTypeName = "SankeyArrangementOptions";
+                    node.FileName = "SankeyArrangementOptions.cs";
                     break;
                 case "parcats.attributes.arrangement":
                     node.ClassTypeName = "ParCatsArrangementOptions";
@@ -1632,6 +2236,9 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
                 case "pointcloud.attributes.hoverinfo":
                 case "surface.attributes.hoverinfo":
                 case "volume.attributes.hoverinfo":
+                case "heatmapgl.attributes.hoverinfo":
+                case "isosurface.attributes.hoverinfo":
+                case "mesh3d.attributes.hoverinfo":
 
 
 
@@ -1663,8 +2270,8 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
                     node.FileName = "IcicleHoverOptions.cs";
                     break;
                 case "barpolar.attributes.hoverinfo":
-                    node.ClassTypeName = "BarpolarHoverOptions";
-                    node.FileName = "BarpolarHoverOptions.cs";
+                    node.ClassTypeName = "BarPolarHoverOptions";
+                    node.FileName = "BarPolarHoverOptions.cs";
                     break;
                 case "waterfall.attributes.hoverinfo":
                     node.ClassTypeName = "WaterfallHoverOptions";
@@ -1798,19 +2405,22 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
                     node.ClassTypeName = "CalendarOptions";
                     node.FileName = "CalendarOptions.cs";
                     break;
-
+                default:
+                    result = false;
+                    break;
             }
+            return result;
         }
 
-        public void FixClassNames(ref MapNameType node)
+        public void FixClassNames(MapNameType node)
         {
 
 
             // classes
             if (node.PropertyName == "Items")
             {
-                node.ClassTypeName = string.Empty;
-                node.FileName = string.Empty;
+                node.ClassTypeName = "NoPublish";
+                node.FileName = "NoPublish.cs";
                 node.JsonType = "ItemsList";
             }
             else if (node.item != null && (node.item.ElementType == SchemaElementType.doubleOption || node.item.ElementType == SchemaElementType.stringOption || node.item.ElementType == SchemaElementType.anyOption))
@@ -1819,128 +2429,195 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
                 node.FileName = string.Empty;
                 node.JsonType = node.item.ElementType.ToString(); 
             }
-            switch (node.Name)
+            switch (node.LocationName)
             {
+                case "layout":
+                case "layout.layoutAttributes":
+                case "traces.bar":
+                case "traces.barpolar":
+                case "traces.box":
+                case "traces.candlestick":
+                case "traces.carpet":
+                case "traces.cone":
+                case "traces.choropleth":
+                case "traces.choroplethmapbox":
+                case "traces.contour":
+                case "traces.contourcarpet":
+                case "traces.densitymapbox":
+                case "traces.funnel":
+                case "traces.funnelarea":
+                case "traces.image":
+                case "traces.icicle":
+                case "traces.indicator":
+                case "traces.isosurface":
+                case "traces.heatmap":
+                case "traces.heatmapgl":
+                case "traces.histogram":
+                case "traces.histogram2d":
+                case "traces.histogram2dcontour":
+                case "traces.mesh3d":
+                case "traces.ohlc":
+                case "traces.parcats":
+                case "traces.parcoords":
+                case "traces.pie":
+                case "traces.pointcloud":
+                case "traces.sankey":
+                case "traces.scatter":
+                case "traces.scattercarpet":
+                case "traces.scattergeo":
+                case "traces.scattergl":
+                case "traces.scattermapbox":
+                case "traces.scatterpolar":
+                case "traces.scatterpolargl":
+                case "traces.scattersmith":
+                case "traces.scatterternary":
+                case "traces.scatter3d":
+                case "traces.splom":
+                case "traces.streamtube":
+                case "traces.sunburst":
+                case "traces.surface":
+                case "traces.table":
+                case "traces.treemap":
+                case "traces.violin":
+                case "traces.volume":
+                case "traces.waterfall":
 
+                  node.ClassTypeName = "NoPublish";
+                  node.FileName = "NoPublish.cs";
+                  break;
+
+               
                 case "traces.bar.attributes":
                     node.ClassTypeName = "BarTrace : Trace";
                     node.FileName = "BarTrace.cs";
                     break;
+               
                 case "traces.barpolar.attributes":
-                    node.ClassTypeName = "BarPolar : Trace";
-                    node.FileName = "BarPolar.cs";
+                    node.ClassTypeName = "BarPolarTrace : Trace";
+                    node.FileName = "BarPolarTrace.cs";
                     break;
+                
                 case "traces.box.attributes":
                     node.ClassTypeName = "BoxTrace : Trace";
                     node.FileName = "BoxTrace.cs";
                     break;
-
+                
                 case "traces.candlestick.attributes":
                     node.ClassTypeName = "CandlestickTrace : Trace";
                     node.FileName = "CandlestickTrace.cs";
                     break;
-
+               
                 case "traces.carpet.attributes":
                     node.ClassTypeName = "CarpetTrace : Trace";
                     node.FileName = "CarpetTrace.cs";
                     break;
-
+               
                 case "traces.cone.attributes":
                     node.ClassTypeName = "ConeTrace : Trace";
                     node.FileName = "ConeTrace.cs";
                     break;
+
 
                 case "traces.choropleth.attributes":
                     node.ClassTypeName = "ChoroplethTrace : Trace";
                     node.FileName = "ChoroplethTrace.cs";
                     break;
 
-
+                
                 case "traces.choroplethmapbox.attributes":
                     node.ClassTypeName = "ChoroplethMapboxTrace : Trace";
                     node.FileName = "ChoroplethMapboxTrace.cs";
                     break;
-
+               
                 case "traces.contour.attributes":
                     node.ClassTypeName = "ContourTrace : Trace";
                     node.FileName = "ContourTrace.cs";
                     break;
-
+                
                 case "traces.contourcarpet.attributes":
                     node.ClassTypeName = "ContourCarpetTrace : Trace";
                     node.FileName = "ContourCarpetTrace.cs";
                     break;
-
+                
                 case "traces.densitymapbox.attributes":
                     node.ClassTypeName = "DensityMapboxTrace : Trace";
                     node.FileName = "DensityMapboxTrace.cs";
                     break;
 
-
+                
                 case "traces.funnel.attributes":
                     node.ClassTypeName = "FunnelTrace : Trace";
                     node.FileName = "FunnelTrace.cs";
                     break;
+
 
                 case "traces.funnelarea.attributes":
                     node.ClassTypeName = "FunnelAreaTrace : Trace";
                     node.FileName = "FunnelAreaTrace.cs";
                     break;
 
-
+               
                 case "traces.image.attributes":
                     node.ClassTypeName = "ImageTrace : Trace";
                     node.FileName = "ImageTrace.cs";
                     break;
 
+               
                 case "traces.icicle.attributes":
                     node.ClassTypeName = "IcicleTrace : Trace";
                     node.FileName = "IcicleTrace.cs";
                     break;
 
+               
                 case "traces.indicator.attributes":
                     node.ClassTypeName = "IndicatorTrace : Trace";
                     node.FileName = "IndicatorTrace.cs";
                     break;
 
+               
                 case "traces.isosurface.attributes":
                     node.ClassTypeName = "IsoSurfaceTrace : Trace";
                     node.FileName = "IsoSurfaceTrace.cs";
                     break;
 
+               
                 case "traces.heatmap.attributes":
                     node.ClassTypeName = "HeatmapTrace : Trace";
                     node.FileName = "HeatmapTrace.cs";
                     break;
 
+                
                 case "traces.heatmapgl.attributes":
                     node.ClassTypeName = "HeatmapGLTrace : Trace";
                     node.FileName = "HeatmapGLTrace.cs";
                     break;
 
+                
                 case "traces.histogram.attributes":
                     node.ClassTypeName = "HistogramTrace : Trace";
                     node.FileName = "HistogramTrace.cs";
                     break;
+
+               
                 case "traces.histogram2d.attributes":
                     node.ClassTypeName = "Histogram2DTrace : Trace";
                     node.FileName = "Histogram2DTrace.cs";
                     break;
 
-
+                
                 case "traces.histogram2dcontour.attributes":
                     node.ClassTypeName = "Histogram2DContourTrace : Trace";
                     node.FileName = "Histogram2DContourTrace.cs";
                     break;
 
 
-
+               
                 case "traces.mesh3d.attributes":
                     node.ClassTypeName = "Mesh3DTrace : Trace";
                     node.FileName = "Mesh3DTrace.cs";
                     break;
 
-
+               
                 case "traces.ohlc.attributes":
                     node.ClassTypeName = "OhlcTrace : Trace";
                     node.FileName = "OhlcTrace.cs";
@@ -1952,106 +2629,116 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
                     node.FileName = "ParallelCatsTrace.cs";
                     break;
 
+               
                 case "traces.parcoords.attributes":
                     node.ClassTypeName = "ParallelCoordsTrace : Trace";
                     node.FileName = "ParallelCoordsTrace.cs";
                     break;
 
+              
                 case "traces.pie.attributes":
                     node.ClassTypeName = "PieTrace : Trace";
                     node.FileName = "PieTrace.cs";
                     break;
 
+              
                 case "traces.pointcloud.attributes":
                     node.ClassTypeName = "PointCloudTrace : Trace";
                     node.FileName = "PointCloudTrace.cs";
                     break;
 
-
+            
                 case "traces.sankey.attributes":
                     node.ClassTypeName = "SankeyTrace : Trace";
                     node.FileName = "SankeyTrace.cs";
                     break;
 
-
+              
                 case "traces.scatter.attributes":
                     node.ClassTypeName = "ScatterTrace : Trace";
                     node.FileName = "ScatterTrace.cs";
                     break;
 
+              
                 case "traces.scattercarpet.attributes":
                     node.ClassTypeName = "ScatterCarpetTrace : Trace";
                     node.FileName = "ScatterCarpetTrace.cs";
                     break;
 
+              
                 case "traces.scattergeo.attributes":
                     node.ClassTypeName = "ScatterGeoTrace : Trace";
                     node.FileName = "ScatterGeoTrace.cs";
                     break;
 
+            
                 case "traces.scattergl.attributes":
                     node.ClassTypeName = "ScatterGLTrace : Trace";
                     node.FileName = "ScatterGLTrace.cs";
                     break;
-
-
-
-
 
                 case "traces.scattermapbox.attributes":
                     node.ClassTypeName = "ScatterMapboxTrace : Trace";
                     node.FileName = "ScatterMapboxTrace.cs";
                     break;
 
-
+              
                 case "traces.scatterpolar.attributes":
                     node.ClassTypeName = "ScatterPolarTrace : Trace";
                     node.FileName = "ScatterPolarTrace.cs";
                     break;
+
+              
                 case "traces.scatterpolargl.attributes":
                     node.ClassTypeName = "ScatterPolarGLTrace : Trace";
                     node.FileName = "ScatterPolarGLTrace.cs";
                     break;
 
-
+             
                 case "traces.scattersmith.attributes":
                     node.ClassTypeName = "ScatterSmithTrace : Trace";
                     node.FileName = "ScatterSmithTrace.cs";
                     break;
 
-
+               
                 case "traces.scatterternary.attributes":
                     node.ClassTypeName = "ScatterTernaryTrace : Trace";
                     node.FileName = "ScatterTernaryTrace.cs";
                     break;
-
+              
                 case "traces.scatter3d.attributes":
                     node.ClassTypeName = "Scatter3dTrace : Trace";
                     node.FileName = "Scatter3dTrace.cs";
                     break;
 
-
+              
                 case "traces.splom.attributes":
                     node.ClassTypeName = "SplomTrace : Trace";
                     node.FileName = "SplomTrace.cs";
                     break;
 
-
+             
                 case "traces.streamtube.attributes":
                     node.ClassTypeName = "StreamtubeTrace : Trace";
                     node.FileName = "StreamtubeTrace.cs";
                     break;
 
-
+              
                 case "traces.sunburst.attributes":
                     node.ClassTypeName = "SunburstTrace : Trace";
                     node.FileName = "SunburstTrace.cs";
                     break;
 
-
+             
                 case "traces.surface.attributes":
                     node.ClassTypeName = "SurfaceTrace : Trace";
                     node.FileName = "SurfaceTrace.cs";
+                    break;
+
+
+                case "traces.table.attributes":
+                    node.ClassTypeName = "TableTrace : Trace";
+                    node.FileName = "TableTrace.cs";
                     break;
 
 
@@ -2065,7 +2752,6 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
                     node.ClassTypeName = "ViolinTrace : Trace";
                     node.FileName = "ViolinTrace.cs";
                     break;
-
 
                 case "traces.volume.attributes":
                     node.ClassTypeName = "VolumeTrace : Trace";
@@ -2090,62 +2776,58 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
                     break;
 
                 case "traces.bar.layoutAttributes":
-                    node.ClassTypeName = "BarLayout:LayoutInfo";
+                    node.ClassTypeName = "BarLayout : LayoutInfo";
                     node.FileName = "BarLayout.cs";
                     break;
                 case "traces.box.layoutAttributes":
-                    node.ClassTypeName = "BoxLayout:LayoutInfo";
+                    node.ClassTypeName = "BoxLayout : LayoutInfo";
                     node.FileName = "BoxLayout.cs";
                     break;
 
                 case "traces.barpolar.layoutAttributes":
-                    node.ClassTypeName = "BarpolarLyout:LayoutInfo";
-                    node.FileName = "BarpolarLyout.cs";
+                    node.ClassTypeName = "BarPolarLyout : LayoutInfo";
+                    node.FileName = "BarPolarLyout.cs";
                     break;
                 case "traces.funnel.layoutAttributes":
-                    node.ClassTypeName = "FunnelaLyout:LayoutInfo";
-                    node.FileName = "FunnelaLyout.cs";
+                    node.ClassTypeName = "FunnelLayout : LayoutInfo";
+                    node.FileName = "FunnelLayout.cs";
                     break;
                 case "traces.funnelarea.layoutAttributes":
-                    node.ClassTypeName = "FunnelAreaLayout:LayoutInfo";
+                    node.ClassTypeName = "FunnelAreaLayout : LayoutInfo";
                     node.FileName = "FunnelAreaLayout.cs";
                     break;
                 case "traces.icicle.layoutAttributes":
-                    node.ClassTypeName = "IcicleLayout:LayoutInfo";
+                    node.ClassTypeName = "IcicleLayout : LayoutInfo";
                     node.FileName = "IcicleLayout.cs";
                     break;
 
                 case "traces.pie.layoutAttributes":
-                    node.ClassTypeName = "PieLayout:LayoutInfo";
+                    node.ClassTypeName = "PieLayout : LayoutInfo";
                     node.FileName = "PieLayout.cs";
                     break;
 
 
                 case "traces.sunburst.layoutAttributes":
-                    node.ClassTypeName = "SunburstLayout:LayoutInfo";
+                    node.ClassTypeName = "SunburstLayout : LayoutInfo";
                     node.FileName = "SunburstLayout.cs";
                     break;
                 case "traces.treemap.layoutAttributes":
-                    node.ClassTypeName = "TreemapLayout:LayoutInfo";
+                    node.ClassTypeName = "TreemapLayout : LayoutInfo";
                     node.FileName = "TreemapLayout.cs";
                     break;
                 case "traces.violin.layoutAttributes":
-                    node.ClassTypeName = "ViolinLayout:LayoutInfo";
+                    node.ClassTypeName = "ViolinLayout : LayoutInfo";
                     node.FileName = "ViolinLayout.cs";
                     break;
                 case "traces.waterfall.layoutAttributes":
-                    node.ClassTypeName = "WaterfallLayout:LayoutInfo";
+                    node.ClassTypeName = "WaterfallLayout : LayoutInfo";
                     node.FileName = "WaterfallLayout.cs";
                     break;
             
 
 
 
-                case "layout.layoutAttributes":
-                    node.ClassTypeName = "LayoutInfo";
-                    node.FileName = "LayoutInfo.cs";
-                    break;
-
+             
                 case "funnel.attributes.connector":
                     node.ClassTypeName = "FunnelConnectorInfo";
                     node.FileName = "FunnelConnectorInfo.cs";
@@ -2280,8 +2962,8 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 
                 case "waterfall.attributes.decreasing":
                 case "waterfall.attributes.increasing":
-                    node.ClassTypeName = "WaterfallChangeInfo";
-                    node.FileName = "WaterfallChangeInfo.cs";
+                    node.ClassTypeName = "MarkerChangeInfo";
+                    node.FileName = "MarkerChangeInfo.cs";
                     break;
 
                 case "attributes.delta.decreasing":
@@ -2460,8 +3142,79 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
                     node.ClassTypeName = "AxisInfo";
                     node.FileName = "AxisInfo.cs";
                     break;
+                case "aggregations.items.aggregation":
+                    node.ClassTypeName = "AggregationItem";
+                    node.FileName = "AggregationItem.cs";
+                    break;
+                case "transforms.items.transform":
+                    node.ClassTypeName = "TransformItem";
+                    node.FileName = "TransformItem.cs";
+                    break;
+                case "annotations.items.annotation":
+                    node.ClassTypeName = "AnnotationItem";
+                    node.FileName = "AnnotationItem.cs";
+                    break;
+                case "buttons.items.button":
+                    node.ClassTypeName = "ButtonItem";
+                    node.FileName = "ButtonItem.cs";
+                    break;
+                case "colorscales.items.concentrationscales":
+                    node.ClassTypeName = "ConcentrationScalesItem";
+                    node.FileName = "ConcentrationScalesItem.cs";
+                    break;
+                case "dimensions.items.dimension":
+                    node.ClassTypeName = "DimensionItem";
+                    node.FileName = "DimensionItem.cs";
+                    break;
+                case "frames.items.frames_entry":
+                    node.ClassTypeName = "FrameEntryItem";
+                    node.FileName = "FrameEntryItem.cs";
+                    break;
+                case "images.items.image":
+                    node.ClassTypeName = "ImageItem";
+                    node.FileName = "ImageItem.cs";
+                    break;
+                case "layers.items.layer":
+                    node.ClassTypeName = "LayerItem";
+                    node.FileName = "LayerItem.cs";
+                    break;
+                case "rangebreaks.items.rangebreak":
+                    node.ClassTypeName = "RangeBreakItem";
+                    node.FileName = "RangeBreakItem.cs";
+                    break;
+                case "shapes.items.shape":
+                    node.ClassTypeName = "ShapeItem";
+                    node.FileName = "ShapeItem.cs";
+                    break;
+                case "sliders.items.slider":
+                    node.ClassTypeName = "SliderItem";
+                    node.FileName = "SliderItem.cs";
+                    break;
+                case "steps.items.step":
+                    node.ClassTypeName = "StepItem";
+                    node.FileName = "StepItem.cs";
+                    break;
+                case "styles.items.style":
+                    node.ClassTypeName = "StyleItem";
+                    node.FileName = "StyleItem.cs";
+                    break;
+                case "tickformatstops.items.tickformatstop":
+                    node.ClassTypeName = "TickFormatStopItem";
+                    node.FileName = "TickFormatStopItem.cs";
+                    break;
+                case "attributes.transforms.items":
+                    node.ClassTypeName = "TransformItem";
+                    node.FileName = "TransformItem.cs";
+                    break;
+   
+                case "updatemenus.items.updatemenu":
+                    node.ClassTypeName = "UpdateMenuItem";
+                    node.FileName = "UpdateMenuItem.cs";
+                    break;
+           
+       
+     
 
-             
             }
         }
 

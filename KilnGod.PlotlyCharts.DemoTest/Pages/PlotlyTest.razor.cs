@@ -21,7 +21,6 @@ using KilnGod.PlotlyCharts.Enumerations.LayoutEnums;
 using KilnGod.PlotlyCharts.Wrappers;
 using KilnGod.PlotlyCharts.DemoTest.Models;
 using KilnGod.PlotlyCharts.Enumerations.TransformsEnums;
-using KilnGod.PlotlyCharts.Enumerations;
 
 
 namespace KilnGod.PlotlyCharts.DemoTest.Pages

@@ -20,7 +20,7 @@ namespace KilnGod.PlotlyCharts.Traces
 {
     public class FunnelAreaTrace : Trace
     {
-        public FunnelAreaTrace() : base(Enumerations.TraceTypeOptions.Finance_FunnelArea) { }
+        public FunnelAreaTrace() : base(TraceTypeOptions.Finance_FunnelArea) { }
 
 
         public object? Values

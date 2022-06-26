@@ -9,7 +9,6 @@
 // Source License. See LICENSE.txt for details.
 //***********************************************************************************
 
-using KilnGod.PlotlyCharts.Enumerations;
 using KilnGod.PlotlyCharts.Enumerations.LayoutEnums;
 using KilnGod.PlotlyCharts.Enumerations.TracesEnums;
 using KilnGod.PlotlyCharts.Wrappers;
@@ -18,7 +17,7 @@ namespace KilnGod.PlotlyCharts.Layout
 {
 
 
-	public class ColorBarInfo : ValuesObject
+    public class ColorBarInfo : ValuesObject
 	{
 
 		public ColorBarInfo() : base() { }

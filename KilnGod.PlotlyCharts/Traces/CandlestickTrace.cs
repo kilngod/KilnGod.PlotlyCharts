@@ -20,7 +20,7 @@ namespace KilnGod.PlotlyCharts.Traces
 {
     public class CandlestickTrace : Trace
     {
-        public CandlestickTrace():base(Enumerations.TraceTypeOptions.Finance_Candlestick)
+        public CandlestickTrace():base(TraceTypeOptions.Finance_Candlestick)
         {
 
         }

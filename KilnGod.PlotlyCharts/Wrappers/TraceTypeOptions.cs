@@ -11,7 +11,7 @@
 
 using System.ComponentModel;
 
-namespace KilnGod.PlotlyCharts.Enumerations
+namespace KilnGod.PlotlyCharts.Wrappers
 {
     public enum TraceTypeOptions
     {
@@ -23,7 +23,7 @@ namespace KilnGod.PlotlyCharts.Enumerations
         Specialized_BarPolar,
         [Description("box")]
         Distribution_Box,
-        
+
         [Description("carpet")]
         Specialized_Carpet,
         [Description("choropleth")]
@@ -63,7 +63,7 @@ namespace KilnGod.PlotlyCharts.Enumerations
         [Description("isosurface")]
         ThreeD_IsoSurface,
         [Description("mesh3d")]
-        ThreeD_Mesh,      
+        ThreeD_Mesh,
         [Description("parcats")]
         Specialized_ParCats,
         [Description("parcoords")]
@@ -119,7 +119,7 @@ namespace KilnGod.PlotlyCharts.Enumerations
 
         Distribution_Violin,
         [Description("volume")]
-        ThreeD_Volume, 
+        ThreeD_Volume,
         [Description("waterfall")]
         Finance_Waterfall,
         [Description("ohlc")]
@@ -129,6 +129,6 @@ namespace KilnGod.PlotlyCharts.Enumerations
     }
 
 
-    
+
 
 }

@@ -11,9 +11,8 @@
 
 using System.Text.Json.Nodes;
 using KilnGod.PlotlyCharts.Enumerations;
-using KilnGod.PlotlyCharts.Layout;
-using KilnGod.PlotlyCharts.Traces;
 using KilnGod.PlotlyCharts.Configuration;
+using KilnGod.PlotlyCharts.Wrappers;
 
 namespace KilnGod.PlotlyCharts
 {

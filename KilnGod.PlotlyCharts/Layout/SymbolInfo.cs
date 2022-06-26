@@ -9,7 +9,6 @@
 // Source License. See LICENSE.txt for details.
 //***********************************************************************************
 
-using KilnGod.PlotlyCharts.Enumerations;
 using KilnGod.PlotlyCharts.Enumerations.LayoutEnums;
 using KilnGod.PlotlyCharts.Wrappers;
 
@@ -17,7 +16,7 @@ namespace KilnGod.PlotlyCharts.Layout
 {
 
 
-	public class SymbolInfo : ValuesObject
+    public class SymbolInfo : ValuesObject
 	{
 
 		public SymbolInfo() : base() { }

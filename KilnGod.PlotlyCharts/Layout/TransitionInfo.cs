@@ -9,14 +9,13 @@
 // Source License. See LICENSE.txt for details.
 //***********************************************************************************
 
-using KilnGod.PlotlyCharts.Enumerations;
 using KilnGod.PlotlyCharts.Enumerations.LayoutEnums;
 using KilnGod.PlotlyCharts.Wrappers;
 
 namespace KilnGod.PlotlyCharts.Layout
 {
 
-	public class TransitionInfo : ValuesObject
+    public class TransitionInfo : ValuesObject
 	{
 
 		public TransitionInfo() : base() { }

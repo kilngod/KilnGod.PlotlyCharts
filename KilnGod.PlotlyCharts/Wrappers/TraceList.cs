@@ -9,9 +9,7 @@
 // Source License. See LICENSE.txt for details.
 //***********************************************************************************
 
-using KilnGod.PlotlyCharts.Wrappers;
-
-namespace KilnGod.PlotlyCharts.Traces
+namespace KilnGod.PlotlyCharts.Wrappers
 {
     public class TraceList
     {
@@ -22,14 +20,14 @@ namespace KilnGod.PlotlyCharts.Traces
         {
             if (trace != null)
             {
-                AddTrace(trace);                
+                AddTrace(trace);
             }
         }
 
         public TraceList(Trace[] traces)
         {
             _traces.AddRange(traces);
-            foreach(Trace trace in _traces)
+            foreach (Trace trace in _traces)
             {
                 _traceValues.Add(trace.ValueItems);
             }
@@ -53,10 +51,10 @@ namespace KilnGod.PlotlyCharts.Traces
             return _traces.IndexOf(trace);
         }
 
-        public object Values 
-        { 
-            get{ return _traceValues; }
+        public object Values
+        {
+            get { return _traceValues; }
         }
-      
+
     }
 }

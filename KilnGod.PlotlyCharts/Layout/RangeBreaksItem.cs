@@ -9,7 +9,6 @@
 // Source License. See LICENSE.txt for details.
 //***********************************************************************************
 
-using KilnGod.PlotlyCharts.Enumerations;
 using KilnGod.PlotlyCharts.Enumerations.LayoutEnums;
 using KilnGod.PlotlyCharts.Wrappers;
 
@@ -19,7 +18,7 @@ namespace KilnGod.PlotlyCharts.Layout
 {
 
 
-	public class RangeBreaksItem : ValuesObject
+    public class RangeBreaksItem : ValuesObject
 	{
 
 		public RangeBreaksItem() : base() { }

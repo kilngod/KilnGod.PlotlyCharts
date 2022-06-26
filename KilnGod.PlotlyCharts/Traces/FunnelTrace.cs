@@ -10,7 +10,6 @@
 //***********************************************************************************
 
 using KilnGod.PlotlyCharts.Enumerations.TracesEnums;
-using KilnGod.PlotlyCharts.Enumerations;
 using System.Dynamic;
 using KilnGod.PlotlyCharts.Wrappers;
 
@@ -18,7 +17,7 @@ namespace KilnGod.PlotlyCharts.Traces
 {
     public class FunnelTrace : Trace
     {
-        public FunnelTrace() : base(Enumerations.TraceTypeOptions.Finance_Funnel) { }
+        public FunnelTrace() : base(TraceTypeOptions.Finance_Funnel) { }
 
 
         public object? X

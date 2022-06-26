@@ -11,13 +11,12 @@
 
 using System.Dynamic;
 using KilnGod.PlotlyCharts.Wrappers;
-using KilnGod.PlotlyCharts.Enumerations;
 using KilnGod.PlotlyCharts.Enumerations.ConfigEnums;
 
 namespace KilnGod.PlotlyCharts.Configuration
 {
 
-	public class ConfigInfo : ValuesObject
+    public class ConfigInfo : ValuesObject
 	{
 
 		public ConfigInfo() : base() { }

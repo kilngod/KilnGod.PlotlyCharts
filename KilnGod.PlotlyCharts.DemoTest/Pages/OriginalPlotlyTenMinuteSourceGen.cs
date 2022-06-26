@@ -636,7 +636,7 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
                                     propType = SchemaElementType.enumOption;
                                     break;
                                 case "flaglist":
-                                    propType = SchemaElementType.enumOption;
+                                    propType = SchemaElementType.flagListOption;
                                     break;
                                 case "integer":
                                     propType = SchemaElementType.intOption;
@@ -715,7 +715,7 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 
                     }
 
-                    if (currentRoot.Enumeration != null && currentRoot.Enumeration.Count > 0 && currentRoot.ElementType != SchemaElementType.enumOption)
+                    if (currentRoot.Enumeration != null && currentRoot.Enumeration.Count > 0 && !(currentRoot.ElementType == SchemaElementType.enumOption || currentRoot.ElementType== SchemaElementType.flagListOption))
                     {
                         currentRoot.ElementType = SchemaElementType.enumOption;
                     }

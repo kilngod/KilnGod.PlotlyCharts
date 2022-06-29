@@ -9771,7 +9771,7 @@
      "editType": "ticks",
      "valType": "color"
     },
-    "gridwidth": {
+    "layoutattributes.xaxis": {
      "description": "Sets the width (in px) of the grid lines.",
      "dflt": 1,
      "editType": "ticks",

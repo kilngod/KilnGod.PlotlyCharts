@@ -10,6 +10,7 @@
 //***********************************************************************************
 
 using KilnGod.PlotlyCharts.Enumerations.LayoutEnums;
+using KilnGod.PlotlyCharts.Layouts;
 using KilnGod.PlotlyCharts.Wrappers;
 
 
@@ -45,19 +46,19 @@ namespace KilnGod.PlotlyCharts.Layout
 			set { (ValueItems as dynamic).borderwidth = value; }
 		}
 
-		ItemList<ButtonsItem>? _ButtonsItems = null;
+		ItemList<ButtonsItem>? _ButtonItems = null;
 		public ItemList<ButtonsItem>? Buttons
 		{
 			get
 			{
-				return _ButtonsItems;
+				return _ButtonItems;
 			}
 			set
 			{
-				_ButtonsItems = value;
+				_ButtonItems = value;
 				if (value != null)
 				{
-					(ValueItems as dynamic).buttons = _ButtonsItems?.Values;
+					(ValueItems as dynamic).buttons = _ButtonItems?.Values;
 				}
 			}
 		}

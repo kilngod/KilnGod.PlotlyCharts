@@ -12,7 +12,7 @@
 using KilnGod.PlotlyCharts.Enumerations.LayoutEnums;
 using KilnGod.PlotlyCharts.Wrappers;
 
-namespace KilnGod.PlotlyCharts.Layout
+namespace KilnGod.PlotlyCharts.Layouts
 {
 
     public class ButtonsItem : ValuesObject

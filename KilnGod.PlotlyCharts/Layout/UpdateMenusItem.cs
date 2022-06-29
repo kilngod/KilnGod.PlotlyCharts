@@ -10,6 +10,7 @@
 //***********************************************************************************
 
 using KilnGod.PlotlyCharts.Enumerations.LayoutEnums;
+using KilnGod.PlotlyCharts.Layouts;
 using KilnGod.PlotlyCharts.Wrappers;
 
 namespace KilnGod.PlotlyCharts.Layout

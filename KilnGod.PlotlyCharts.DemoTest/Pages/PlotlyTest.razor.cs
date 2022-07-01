@@ -2143,7 +2143,7 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 					ZeroLine = true,
 					DTick = 5,
 					GridColor = "rgb(255, 255, 255)",
-					Gridwidth = 1,
+					GridWidth = 1,
 					ZeroLineColor = "rgb(255, 255, 255)",
 					ZeroLinewidth = 2
 				},

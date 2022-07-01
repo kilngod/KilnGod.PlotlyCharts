@@ -92,7 +92,7 @@ namespace KilnGod.PlotlyCharts.Layout
 			set { (ValueItems as dynamic).gridcolor = value; }
 		}
 
-		public double? Gridwidth
+		public double? GridWidth
 		{
 			get { return (ValueItems as dynamic).gridwidth; }
 			set { (ValueItems as dynamic).gridwidth = value; }

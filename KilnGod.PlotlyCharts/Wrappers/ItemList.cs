@@ -9,10 +9,9 @@
 // Source License. See LICENSE.txt for details.
 //***********************************************************************************
 
-using KilnGod.PlotlyCharts.Enumerations.TracesEnums;
 using KilnGod.PlotlyCharts.Enumerations;
 using System.Dynamic;
-using KilnGod.PlotlyCharts.Layout;
+
 using System.Collections;
 
 namespace KilnGod.PlotlyCharts.Wrappers

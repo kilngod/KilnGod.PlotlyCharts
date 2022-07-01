@@ -13,15 +13,15 @@ using Microsoft.AspNetCore.Components;
 using System.Dynamic;
 using System.Text.Json;
 using KilnGod.PlotlyCharts.Configuration;
-using KilnGod.PlotlyCharts.Layout;
 using KilnGod.PlotlyCharts.Services;
 using KilnGod.PlotlyCharts.Traces;
-using KilnGod.PlotlyCharts.Enumerations.TracesEnums;
-using KilnGod.PlotlyCharts.Enumerations.LayoutEnums;
+using KilnGod.PlotlyCharts.Enumerations;
+
 using KilnGod.PlotlyCharts.Wrappers;
 using KilnGod.PlotlyCharts.DemoTest.Models;
-using KilnGod.PlotlyCharts.Enumerations.TransformsEnums;
 using KilnGod.PlotlyCharts.Layouts;
+using KilnGod.PlotlyCharts.Common;
+using KilnGod.PlotlyCharts.Transforms;
 
 namespace KilnGod.PlotlyCharts.DemoTest.Pages
 {
@@ -40,13 +40,13 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 		static int plotWidth = 800;
 		static int plotHeight = 800;
 
-		LayoutInfo commonLayout = new LayoutInfo() {
+		Layout commonLayout = new Layout() {
 			Margin = new MarginInfo()
 			{
-				Left = 0,
-				Right = 0,
-				Bottom = 0,
-				Top = 0
+				L = 0,
+				R = 0,
+				B = 0,
+				T = 0
 			},
 			Height = plotHeight,
 			Width = plotWidth
@@ -80,11 +80,11 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 
 			TraceList dataTraces = new TraceList(trace);
 
-			LayoutInfo layout = new LayoutInfo
+			Layout layout = new Layout
 			{
-				Title = new TitleInfo() { Text = "Scatter Chart" },
-				XAxis = new AxisInfo() { Title = new TitleInfo() { Text = "X Axis" } },
-				YAxis = new AxisInfo() { Title = new TitleInfo() { Text = "Y Axis" } },
+				Title = new TitleLayoutInfo() { Text = "Scatter Chart" },
+				XAxis = new LayoutAxisInfo() { Title = new TitleFontStandoffInfo() { Text = "X Axis" } },
+				YAxis = new LayoutYAxisInfo() { Title = new TitleFontStandoffInfo() { Text = "Y Axis" } },
 				Height = plotHeight,
 				Width = plotWidth
 			};
@@ -114,11 +114,11 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 
 
 
-			LayoutInfo layout = new LayoutInfo
+			Layout layout = new Layout
 			{
-				Title = new TitleInfo() { Text = "Scatter Chart" },
-				XAxis = new AxisInfo() { Title = new TitleInfo() { Text = "X Axis" }, AutoRange = AutoRangeOptions.True, AxisType = AxisTypeOptions.Log },
-				YAxis = new AxisInfo() { Title = new TitleInfo() { Text = "Y Axis" }, AutoRange = AutoRangeOptions.True, AxisType = AxisTypeOptions.Log },
+				Title = new TitleLayoutInfo() { Text = "Scatter Chart" },
+				XAxis = new LayoutAxisInfo() { Title = new TitleFontStandoffInfo() { Text = "X Axis" }, AutoRange = AutoRangeOptions.True, Type = AxisTypeOptions.Log },
+				YAxis = new LayoutYAxisInfo() { Title = new TitleFontStandoffInfo() { Text = "Y Axis" }, AutoRange = AutoRangeOptions.True, Type = AxisTypeOptions.Log },
 				Height = plotHeight,
 				Width = plotWidth,
 				ShowLegend = false
@@ -149,11 +149,11 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 
 			dataTraces.AddTrace(trace2);
 
-			LayoutInfo layout = new LayoutInfo()
+			Layout layout = new Layout()
 			{
-				Title = new TitleInfo() { Text = "Bar Chart" },
-				XAxis = new AxisInfo() { Title = new TitleInfo() { Text = "Beast(s)" }, TickAngle = -45 },
-				YAxis = new AxisInfo() { Title = new TitleInfo { Text = "Inventory" } },
+				Title = new TitleLayoutInfo() { Text = "Bar Chart" },
+				XAxis = new LayoutAxisInfo() { Title = new TitleFontStandoffInfo() { Text = "Beast(s)" }, TickAngle = -45 },
+				YAxis = new LayoutYAxisInfo() { Title = new TitleFontStandoffInfo { Text = "Inventory" } },
 				Height = plotHeight,
 				Width = plotWidth
 			};
@@ -168,20 +168,22 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 		{
 			//https://plotly.com/javascript/pie-charts/
 
-			PieTrace trace = new PieTrace();
+			PieTrace trace = new PieTrace()
+			{
 
-			trace.Values = new int[] { 2, 3, 4, 4 };
-			trace.Labels = new string[] { "Wages", "Operating expenses", "Cost of sales", "Insurance" };
-			trace.TextInfo = TextInfoOptions.Text;
-			trace.TextPosition = TextPositionOptions.Outside;
-			trace.AutoMargin = true;
-
+				Values = new int[] { 2, 3, 4, 4 },
+				Labels = new string[] { "Wages", "Operating expenses", "Cost of sales", "Insurance" },
+				TextInfo = new[] { TextInfoOptions.Text },
+				TextPosition = TextPositionOptions.Outside,
+				
+				AutoMargin = true
+			};
 
 			TraceList dataTraces = new TraceList(trace);
 
 
 
-			LayoutInfo layout = new LayoutInfo() { Title = new TitleInfo() { Text = "Pie Chart" }, ShowLegend = false, Height = plotHeight, Width = plotWidth };
+			PieLayout layout = new PieLayout() { Title = new TitleLayoutInfo() { Text = "Pie Chart" }, ShowLegend = false, Height = plotHeight, Width = plotWidth };
 			
 
 			await Chart1.newPlot(dataTraces, layout, commonConfig);
@@ -191,28 +193,29 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 		public async void BubbleChart()
 		{
 
-			ScatterTrace trace = new ScatterTrace();
-
-			trace.X = new int[] { 1, 2, 3, 4 };
-			trace.Y = new int[] { 10, 11, 12, 13 };
-			trace.Mode = ModeOptions.Number;
-			trace.Marker = new MarkerInfo()
+			ScatterTrace trace = new ScatterTrace()
 			{
-				Size = new int[] { 400, 600, 800, 100 },
-				SizeMode = SizeModeOptions.Absolute,
-				Color = new string[] { "rgb(93,164,214)", "rgb(255,144,14)", "rgb(44,160101)", "rgb(255,65,54)" },
-				Opacity = new float[] { 1, 0.8f, 0.6f, 0.4f }
 
+				X = new int[] { 1, 2, 3, 4 },
+				Y = new int[] { 10, 11, 12, 13 },
+				Mode = new ModeScatterOptions[] { ModeScatterOptions.Markers },
+				Marker = new MarkerScatterInfo()
+				{
+					Size = new int[] { 400, 600, 800, 100 },
+					SizeMode = SizeModeOptions.Diameter,
+					Color = new string[] { "rgb(93,164,214)", "rgb(255,144,14)", "rgb(44,160101)", "rgb(255,65,54)" },
+					Opacity = new float[] { 1, 0.8f, 0.6f, 0.4f }
+
+				},
+				Text = new string[] { "A<br>size: 40", "B<br>size: 60", "C<br>size: 80", "D<br>size: 100" }
 			};
-			trace.Text = new string[] { "A<br>size: 40", "B<br>size: 60", "C<br>size: 80", "D<br>size: 100" };
-
 			TraceList dataTraces = new TraceList(trace);
 
 
-			LayoutInfo layout = new LayoutInfo()
+			Layout layout = new Layout()
 			{
-				Title = new TitleInfo() { Text = "Bubble Chart" },
-				XAxis = new AxisInfo() { Title = new TitleInfo { Text = "X Axis" } },
+				Title = new TitleLayoutInfo() { Text = "Bubble Chart" },
+				XAxis = new LayoutAxisInfo() { Title = new TitleFontStandoffInfo { Text = "X Axis" } },
 				Height = plotHeight,
 				Width = plotWidth
 			};
@@ -225,23 +228,35 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 		public async void TimeSeriesChart()
 		{
 
-			ScatterTrace trace = new ScatterTrace();
+			ScatterTrace trace = new ScatterTrace()
+			{
 
-			trace.X = new string[] { "2017-01-04", "2017-01-05", "2017-01-06", "2017-01-09", "2017-01-10", "2017-01-11", "2017-01-12", "2017-01-13", "2017-01-17", "2017-01-18", "2017-01-19", "2017-01-20", "2017-01-23", "2017-01-24", "2017-01-25", "2017-01-26", "2017-01-27", "2017-01-30", "2017-01-31", "2017-02-01", "2017-02-02", "2017-02-03", "2017-02-06", "2017-02-07", "2017-02-08", "2017-02-09", "2017-02-10", "2017-02-13", "2017-02-14", "2017-02-15" };
+				X = new string[] { "2017-01-04", "2017-01-05", "2017-01-06", "2017-01-09", "2017-01-10", "2017-01-11", "2017-01-12", "2017-01-13", "2017-01-17", "2017-01-18", "2017-01-19", "2017-01-20", "2017-01-23", "2017-01-24", "2017-01-25", "2017-01-26", "2017-01-27", "2017-01-30", "2017-01-31", "2017-02-01", "2017-02-02", "2017-02-03", "2017-02-06", "2017-02-07", "2017-02-08", "2017-02-09", "2017-02-10", "2017-02-13", "2017-02-14", "2017-02-15" },
 
-			trace.Y = new double[] { 116.019997, 116.610001, 117.910004, 118.989998, 119.110001, 119.75, 119.25, 119.040001, 120, 119.989998, 119.779999, 120, 120.080002, 119.970001, 121.879997, 121.940002, 121.949997, 121.629997, 121.349998, 128.75, 128.529999, 129.080002, 130.289993, 131.529999, 132.039993, 132.419998, 132.119995, 133.289993, 135.020004, 135.509995 };
-			trace.Mode = ModeOptions.Number;
-			trace.Line = new LineInfo() { Color = "#17BECF" };
-
+				Y = new double[] { 116.019997, 116.610001, 117.910004, 118.989998, 119.110001, 119.75, 119.25, 119.040001, 120, 119.989998, 119.779999, 120, 120.080002, 119.970001, 121.879997, 121.940002, 121.949997, 121.629997, 121.349998, 128.75, 128.529999, 129.080002, 130.289993, 131.529999, 132.039993, 132.419998, 132.119995, 133.289993, 135.020004, 135.509995 },
+				Mode = new ModeScatterOptions[] { ModeScatterOptions.Lines },
+				Line = new LineScatterInfo() { Color = "#17BECF" }
+			};
 
 			TraceList dataTraces = new TraceList(trace);
 
 
-			LayoutInfo layout = new LayoutInfo()
+			Layout layout = new Layout()
 			{
-				Title = new TitleInfo() { Text = "Time Series Chart" },
-				XAxis = new AxisInfo() { Title = new TitleInfo() { Text = "Date" }, Range = new string[] { "2017-01-04", "2017-02-15" }, AxisType = AxisTypeOptions.Date },
-				YAxis = new AxisInfo() { Title = new TitleInfo() { Text = "Range" }, AutoRange = Enumerations.LayoutEnums.AutoRangeOptions.True, Range = new double[] { 86.8700008333, 138.870004167 }, AxisType = AxisTypeOptions.Linear },
+				Title = new TitleLayoutInfo() { Text = "Time Series Chart" },
+				XAxis = new LayoutAxisInfo()
+				{
+					Title = new TitleFontStandoffInfo() { Text = "Date" },
+					Range = new string[] { "2017-01-04", "2017-02-15" },
+					Type = AxisTypeOptions.Date
+				},
+				YAxis = new LayoutYAxisInfo()
+				{
+					Title = new TitleFontStandoffInfo() { Text = "Range" },
+					AutoRange = AutoRangeOptions.True,
+					Range = new double[] { 86.8700008333, 138.870004167 },
+					Type = AxisTypeOptions.Linear
+				},
 				Height = plotHeight,
 				Width = plotWidth
 			};
@@ -260,44 +275,44 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 				R = new double[] { 77.5, 72.5, 70.0, 45.0, 22.5, 42.5, 40.0, 62.5 },
 				Theta = new string[] { "North", "N-E", "East", "S-E", "South", "S-W", "West", "N-W" },
 				Name = "11-14 m/s",
-				Marker = new MarkerInfo() { Color = "rgb(106,81,163)" }
+				Marker = new MarkerBarPolarInfo() { Color = "rgb(106,81,163)" }
 			},
 			new BarPolarTrace()
 			{
 				R = new double[] { 57.5, 50.0, 45.0, 35.0, 20.0, 22.5, 37.5, 55.0 },
 				Theta = new string[] { "North", "N-E", "East", "S-E", "South", "S-W", "West", "N-W" },
 				Name = "8-11 m/s",
-				Marker = new MarkerInfo() { Color = "rgb(158,154,200)" }
+				Marker = new MarkerBarPolarInfo() { Color = "rgb(158,154,200)" }
 			},
 			new BarPolarTrace()
 			{
 				R = new double[] { 40.0, 30.0, 30.0, 35.0, 7.5, 7.5, 32.5, 40.0 },
 				Theta = new string[] { "North", "N-E", "East", "S-E", "South", "S-W", "West", "N-W" },
 				Name = "5-8 m/s",
-				Marker = new MarkerInfo() { Color = "rgb(203,201,226)" }
+				Marker = new MarkerBarPolarInfo() { Color = "rgb(203,201,226)" }
 			},
 			new BarPolarTrace()
 			{
 				R = new double[] { 20.0, 7.5, 15.0, 22.5, 2.5, 2.5, 12.5, 22.5 },
 				Theta = new string[] { "North", "N-E", "East", "S-E", "South", "S-W", "West", "N-W" },
 				Name = "< 5 m/s",
-				Marker = new MarkerInfo() { Color = "rgb(242,240,247)" }
+				Marker = new MarkerBarPolarInfo() { Color = "rgb(242,240,247)" }
 			}
 				}
 			);
 
 
-			LayoutInfo layout = new LayoutInfo()
+			BarPolarLayout layout = new BarPolarLayout()
 			{
-				Title = new TitleInfo() { Text= "Wind Speed Distribution in Laurel, NE" },
+				Title = new TitleLayoutInfo() { Text= "Wind Speed Distribution in Laurel, NE" },
 				Font = new FontInfo() { Size=16},
 				Legend = new LegendInfo() { Font = new FontInfo() { Size=16} },
+				BarMode = BarPolarBarModeOptions.Overlay,
+				BarGap = 0,
 				Polar = new PolarInfo()
 				{
-					BarMode = BarModeOptions.Overlay,
-					BarGap = 0,
 					RadialAxis = new RadialAxisInfo() { TickSuffix = "%", Angle = 45, DTick = 20 },
-					AngularAxis = new AngularAxisInfo() { Direction= Enumerations.LayoutEnums.DirectionOptions.Clockwise}
+					AngularAxis = new AngularAxisInfo() { Direction= DirectionOptions.Clockwise}
 				},
 				Height = plotHeight,
 				Width = plotWidth
@@ -365,15 +380,15 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 					for(int i=0; i< soilList.Count; i++)
                     {
 						Soil soil = soilList[i];
-						ScatterTernyTrace trace = new ScatterTernyTrace
+						ScatterTernaryTrace trace = new ScatterTernaryTrace
 						{
-							Mode = ModeOptions.Lines,
+							Mode = new ModeScatterOptions[] { ModeScatterOptions.Lines },
 							Name = soil.Name,
 							A = soil.Mixes.Select(item => item.Clay).ToArray(),
 							B = soil.Mixes.Select(item => item.Sand).ToArray(),
 							C = soil.Mixes.Select(item => item.Silt).ToArray(),
-							Line = new LineInfo() { Color = "#444" },
-							Fill = FillOptions.ToSelf,
+							Line = new LineColorDashShapeSmoothingWidthInfo() { Color = "#444" },
+							Fill = FillSubsetOptions.ToSelf,
 							FillColor = colors[i]
 						};
 						dataTraces.AddTrace(trace);
@@ -388,14 +403,14 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 							X = 0.15, Y = 1.1
 						});
 
-					LayoutInfo layout = new LayoutInfo()
+					Layout layout = new Layout()
 					{
 						Ternary = new TernaryInfo()
 						{
 							Sum = 100,
 							AAxis = new TernaryAxisInfo
 							{
-								Title = new TitleInfo() { Text = "Clay" },
+								Title = new TitleTernaryAxisInfo() { Text = "Clay" },
 								TickSuffix = "%",
 								Min = 0.01,
 								LineWidth = 2,
@@ -405,7 +420,7 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 							},
 							BAxis = new TernaryAxisInfo
 							{
-								Title = new TitleInfo() { Text = "Sand" },
+								Title = new TitleTernaryAxisInfo() { Text = "Sand" },
 								TickSuffix = "%",
 								Min = 0.01,
 								LineWidth = 2,
@@ -415,7 +430,7 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 							},
 							CAxis = new TernaryAxisInfo
 							{
-								Title = new TitleInfo() { Text = "Silt" },
+								Title = new TitleTernaryAxisInfo() { Text = "Silt" },
 								TickSuffix = "%",
 								Min = 0.01,
 								LineWidth = 2,
@@ -472,24 +487,24 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 
 					SunburstTrace trace = new SunburstTrace()
 					{
-						Ids = coffeeList.Select(coffee => coffee.Ids).ToArray(),
+						IDs = coffeeList.Select(coffee => coffee.Ids).ToArray(),
 						Labels = coffeeList.Select(coffee => coffee.Labels).ToArray(),
 						Parents = coffeeList.Select(coffee => coffee.Parents).ToArray(),
 						MaxDepth =2,
-						TextPosition= TextPositionOptions.Inside,
+						
 						InsideTextOrientation = InsideTextOrientationOptions.Radial
 					};
 
 					TraceList dataTraces = new TraceList(trace);
 
-					LayoutInfo layout = new LayoutInfo()
+					SunburstLayout layout = new SunburstLayout()
 					{
 						Margin = new MarginInfo()
 						{
-							Left = 0,
-							Right = 0,
-							Bottom = 0,
-							Top = 0
+							L = 0,
+							R = 0,
+							B = 0,
+							T = 0
 
 						},
 						Height = plotHeight,
@@ -532,23 +547,23 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 					}
 
 					IcicleTrace trace = new IcicleTrace()
-					{
-						Ids = coffeeList.Select(coffee => coffee.Ids).ToArray(),
+					{ 
+						IDs = coffeeList.Select(coffee => coffee.Ids).ToArray(),
 						Labels = coffeeList.Select(coffee => coffee.Labels).ToArray(),
 						Parents = coffeeList.Select(coffee => coffee.Parents).ToArray(),
-						Tiling = new TilingInfo() { Orientation = OrientationOptions.Horizontal}
+						Tiling = new IcicleTilingInfo() { Orientation = OrientationOptions.Horizontal}
 					};
 
 					TraceList dataTraces = new TraceList(trace);
 
-					LayoutInfo layout = new LayoutInfo()
+					IcicleLayout layout = new IcicleLayout()
 					{
 						Margin = new MarginInfo()
 						{
-							Left = 25,
-							Right = 25,
-							Bottom = 25,
-							Top = 50
+							L = 25,
+							R = 25,
+							B = 25,
+							T = 50
 
 						},
 						Height = plotHeight,
@@ -571,10 +586,11 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 
 						X = new double[]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9},
 						Y = new double[]{9, 8, 7, 6, 5, 4, 3, 2, 1, 0 },
-						Mode = ModeOptions.Markers,
-						Marker = new MarkerInfo()
+						
+				//		Mode = new ModeOptions[] { ModeOptions.Markers },
+						Marker = new MarkerPointCloudInfo()
 						{
-							AreaRatio=0,
+							Border = new BorderInfo(){AreaRatio=0 },
 							SizeMin=0.5,
 							SizeMax=100,
 							Color = "rgba(255, 0, 0, 0.6)"
@@ -585,12 +601,13 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 					},
 					new PointCloudTrace()
 					{
+						
 						X = new double[]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9},
 						Y = new double[]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-						Mode = ModeOptions.Markers,
-						Marker = new MarkerInfo()
+						//Mode = ModeOptions.Markers,
+						Marker = new MarkerPointCloudInfo()
 						{
-							AreaRatio=0,
+					//		AreaRatio=0,
 							Blend = true,
 							SizeMin=0.5,
 							SizeMax=100,
@@ -604,8 +621,8 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 					{
 						X = new double[]{3, 4.5, 6},
 						Y = new double[]{9, 9, 9},
-						Mode = ModeOptions.Markers,
-						Marker = new MarkerInfo()
+					//	Mode = ModeOptions.Markers,
+						Marker = new MarkerPointCloudInfo()
 						{							
 							Blend = true,
 							Border = new BorderInfo()
@@ -625,22 +642,22 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 				}
 				);
 
-			LayoutInfo layout = new LayoutInfo()
+			Layout layout = new Layout()
 			{
 				AutoSize = true,
 				ShowLegend = false,
-				Title = new TitleInfo() { Text = "Basic Point Cloud" },
+				Title = new TitleLayoutInfo() { Text = "Basic Point Cloud" },
 				Height = plotHeight,
 				Width = plotWidth,
-				XAxis = new AxisInfo()
+				XAxis = new LayoutAxisInfo()
 				{
-					AxisType = AxisTypeOptions.Linear,
+					Type = AxisTypeOptions.Linear,
 					Range = new object[] { -1,10 },
 					AutoRange = AutoRangeOptions.True
 				},
-				YAxis = new AxisInfo()
+				YAxis = new LayoutYAxisInfo()
 				{
-					AxisType = AxisTypeOptions.Linear,
+					Type = AxisTypeOptions.Linear,
 					Range = new object[] { -1,10 },
 					AutoRange = AutoRangeOptions.True
 				}
@@ -656,7 +673,7 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 				new Trace[] { new SankeyTrace()
 				{
 
-					Arrangement = ArrangementOptions.Snap,
+					Arrangement = SankeyArrangementOptions.Snap,
 					Node = new NodeInfo()
                     {
 						Label = new string[]{"A", "B", "C", "D", "E", "F"},
@@ -673,9 +690,9 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 				}
 				});
 
-			LayoutInfo layout = new LayoutInfo()
+			Layout layout = new Layout()
 			{
-				Title = new TitleInfo() { Text = "Sankey with manually positioned node" },
+				Title = new TitleLayoutInfo() { Text = "Sankey with manually positioned node" },
 				Height = plotHeight,
 				Width = plotWidth
 			};
@@ -692,17 +709,17 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 					R = new double[] { 39, 28, 8, 7, 28, 39},
 					Theta = new string[] { "A","B","C", "D", "E", "A" },
 					Name = "Group A",
-					Fill = FillOptions.ToSelf
+					Fill = FillPolarOptions.ToSelf
 				},
 				new ScatterPolarTrace()
 				{
 					R = new double[] {1.5, 10, 39, 31, 15, 1.5},
 					Theta = new string[] {"A","B","C", "D", "E", "A" },
 					Name = "Group B",
-					Fill = FillOptions.ToSelf
+					Fill = FillPolarOptions.ToSelf
 				}				
 				});
-			LayoutInfo layout = new LayoutInfo()
+			Layout layout = new Layout()
 			{
 				Polar = new PolarInfo()
 				{
@@ -770,21 +787,21 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 						Header = new HeaderInfo()
 						{
 							Values = header,
-							Align = Enumerations.LayoutEnums.AlignOptions.Center,
-							Line = new LineInfo() { Width = 1, Color = "rgb(50, 50, 50)" },
-							Fill = new FillInfo() { Color = new object[] { "rgb(235, 100, 230)" } },
-							Font = new FontInfo() { Family = "Arial", Size = 8, Color = "white" }
+							Align = XAlignOptions.Center,
+							Line = new LineColorWidthsInfo() { Width = 1, Color = "rgb(50, 50, 50)" },
+							Fill = new FillColorInfo() { Color = new object[] { "rgb(235, 100, 230)" } },
+							Font = new FontLabelInfo() { Family = "Arial", Size = 8, Color = "white" }
 						},
 						Cells = new CellsInfo()
 						{
 							Values = cellValues,
-							Align = new object[] { "center", "center" },
-							Line = new LineInfo() { Color = "black", Width = 1 },
-							Fill = new FillInfo()
+							Align =  XAlignOptions.Center,
+							Line = new LineColorWidthsInfo() { Color = "black", Width = 1 },
+							Fill = new FillColorInfo()
 							{
 								Color = new object[] { "rgba(228, 222, 249, 0.65)", "rgb(235, 193, 238)", "rgba(228, 222, 249, 0.65)" }
 							},
-							Font = new FontInfo() { Family = "Arial", Size = 9, Color = new object[] { "black" } }
+							Font = new FontLabelInfo() { Family = "Arial", Size = 9, Color = new object[] { "black" } }
 							
 
 						}
@@ -792,9 +809,9 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 
 
 					TraceList dataTraces = new TraceList(trace);
-					LayoutInfo layout = new LayoutInfo()
+					Layout layout = new Layout()
 					{
-						Title = new TitleInfo() { Text = "Bitcoin mining stats for 180 days" },
+						Title = new TitleLayoutInfo() { Text = "Bitcoin mining stats for 180 days" },
 						Height = plotHeight,
 						Width = plotWidth
 					};
@@ -835,9 +852,9 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 						coffeeList.Add(coffee);
 					}
 
-					TreeMapTrace trace = new TreeMapTrace()
+					TreemapTrace trace = new TreemapTrace()
 					{
-						Ids = coffeeList.Select(coffee => coffee.Ids).ToArray(),
+						IDs = coffeeList.Select(coffee => coffee.Ids).ToArray(),
 						Labels = coffeeList.Select(coffee => coffee.Labels).ToArray(),
 						Parents = coffeeList.Select(coffee => coffee.Parents).ToArray()
 					};
@@ -871,26 +888,26 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 
 
 
-			LayoutInfo layout = new LayoutInfo()
+			Layout layout = new Layout()
 			{
-				Title = new TitleInfo() { Text = "Finance Candlestick Chart" },
-				XAxis = new AxisInfo()
+				Title = new TitleLayoutInfo() { Text = "Finance Candlestick Chart" },
+				XAxis = new LayoutAxisInfo()
 				{
-					AutoRange = Enumerations.LayoutEnums.AutoRangeOptions.True,
+					AutoRange = AutoRangeOptions.True,
 
-					AxisType = AxisTypeOptions.Date,
+					Type = AxisTypeOptions.Date,
 					Domain = new int[] { 0, 1 },
 					Range = new string[] { "2017-01-03 12:00", "2017-02-15 12:00" },
-					Title = new TitleInfo() { Text = "Date" }
+					Title = new TitleFontStandoffInfo() { Text = "Date" }
 				},
 
-				YAxis = new AxisInfo()
+				YAxis = new LayoutYAxisInfo()
 				{
-					AutoRange = Enumerations.LayoutEnums.AutoRangeOptions.True,
-					AxisType = AxisTypeOptions.Linear,
+					AutoRange = AutoRangeOptions.True,
+					Type = AxisTypeOptions.Linear,
 					Domain = new int[] { 0, 1 },
 					Range = new double[] { 114.609999778, 137.410004222 },
-					Title = new TitleInfo() { Text = "Price" }
+					Title = new TitleFontStandoffInfo() { Text = "Price" }
 				},
 				ShowLegend = false,
 				Height = plotHeight,
@@ -909,7 +926,7 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 		{
 			//https://plotly.com/javascript/ohlc-charts/
 
-			OHLCTrace trace = new OHLCTrace();
+			OhlcTrace trace = new OhlcTrace();
 
 
 			trace.X = new string[] { "2017-01-04", "2017-01-05", "2017-01-06", "2017-01-09", "2017-01-10", "2017-01-11", "2017-01-12", "2017-01-13", "2017-01-17", "2017-01-18", "2017-01-19", "2017-01-20", "2017-01-23", "2017-01-24", "2017-01-25", "2017-01-26", "2017-01-27", "2017-01-30", "2017-01-31", "2017-02-01", "2017-02-02", "2017-02-03", "2017-02-06", "2017-02-07", "2017-02-08", "2017-02-09", "2017-02-10", "2017-02-13", "2017-02-14", "2017-02-15" };
@@ -926,25 +943,25 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 
 
 
-			LayoutInfo layout = new LayoutInfo()
+			Layout layout = new Layout()
 			{
-				Title = new TitleInfo() { Text = "Finance OHLC Chart" },
-				XAxis = new AxisInfo()
+				Title = new TitleLayoutInfo() { Text = "Finance OHLC Chart" },
+				XAxis = new LayoutAxisInfo()
 				{
-					AutoRange = Enumerations.LayoutEnums.AutoRangeOptions.True,
-					AxisType = AxisTypeOptions.Date,
+					AutoRange = AutoRangeOptions.True,
+					Type = AxisTypeOptions.Date,
 					Domain = new int[] { 0, 1 },
 					Range = new string[] { "2017-01-03 12:00", "2017-02-15 12:00" },
-					Title = new TitleInfo() { Text = "Date" }
+					Title = new TitleFontStandoffInfo() { Text = "Date" }
 				},
 
-				YAxis = new AxisInfo()
+				YAxis = new LayoutYAxisInfo()
 				{
-					AutoRange = Enumerations.LayoutEnums.AutoRangeOptions.True,
-					AxisType = AxisTypeOptions.Linear,
+					AutoRange = AutoRangeOptions.True,
+					Type = AxisTypeOptions.Linear,
 					Domain = new int[] { 0, 1 },
 					Range = new double[] { 114.609999778, 137.410004222 },
-					Title = new TitleInfo() { Text = "Price" }
+					Title = new TitleFontStandoffInfo() { Text = "Price" }
 				},
 				ShowLegend = false,
 				Height = plotHeight,
@@ -1019,19 +1036,23 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 				-45,
 				0
 				},
-				Connector = new ConnectorInfo() { Mode = ConnectorModeOptions.Between, Line = new LineInfo() { Width = 4, Color = "rgb(0, 0, 0)" } }
+				Connector = new WaterfallConnectorInfo()
+				{
+					Mode = ModeConnectorOptions.Between,
+					Line = new LineInfo() { Width = 4, Color = "rgb(0, 0, 0)" }
+				}
 
 			};
 
 			TraceList dataTraces = new TraceList(waterfallTrace);
 
 
-			LayoutInfo layout = new LayoutInfo()
+			WaterfallLayout layout = new WaterfallLayout()
 			{
-				Title = new TitleInfo() { Text = "Profit and loss statement 2018<br>waterfall chart displaying positive and negative" },
-				YAxis = new AxisInfo() { AxisType = AxisTypeOptions.Category, AutoRange = Enumerations.LayoutEnums.AutoRangeOptions.Reversed },
-				XAxis = new AxisInfo() { AxisType = AxisTypeOptions.Linear },
-				Margin = new MarginInfo() { Left = 150 },
+				Title = new TitleLayoutInfo() { Text = "Profit and loss statement 2018<br>waterfall chart displaying positive and negative" },
+				YAxis = new LayoutYAxisInfo() { Type = AxisTypeOptions.Category, AutoRange = AutoRangeOptions.Reversed },
+				XAxis = new LayoutAxisInfo() { Type = AxisTypeOptions.Linear },
+				Margin = new MarginInfo() { L = 150 },
 				ShowLegend = true,
 				Height = plotHeight,
 				Width = plotWidth
@@ -1047,21 +1068,20 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 
 			FunnelTrace funnel = new FunnelTrace()
 			{
-				Connector = new ConnectorInfo() { Line = new LineInfo() { Color = "royalblue", Dash = DashOptions.Dot, Width = 3 } },
+				Connector = new FunnelConnectorInfo() { Line = new LineInfo() { Color = "royalblue", Dash = SpikeDashOptions.Dot, Width = 3 } },
 				X = new double[] { 1200, 909.4, 600.6, 300, 80 },
 				Y = new string[] { "Sales person A", "Sales person B", "Sales person C", "Sales person D", "Sales person E" },
 				TextPosition = TextPositionOptions.Inside,
-				TextInfo = TextInfoOptions.Value_PercentInitial,
+				TextInfo = new FunnelTextInfoOptions[] { FunnelTextInfoOptions.Value, FunnelTextInfoOptions.PercentInitial },
 				Opacity = 0.65,
-				Marker = new MarkerInfo() { Color = new object[] { "59D4E8", "DDB6C6", "A696C8", "67EACA", "94D2E6" } },
-				Line = new LineInfo() { Width = new int[] { 4, 2, 2, 3, 1, 1 }, Color = new object[] { "3E4E88", "606470", "3E4E88", "606470", "3E4E88" } }
-
+				Marker = new MarkerFunnelInfo() { Color = new object[] { "59D4E8", "DDB6C6", "A696C8", "67EACA", "94D2E6" } }
+			
 			};
 			TraceList dataTraces = new TraceList(funnel);
-			LayoutInfo layout = new LayoutInfo()
+			FunnelLayout layout = new FunnelLayout()
 			{
-				Title = new TitleInfo() { Text = "Sales Activity" },
-				Margin = new MarginInfo() { Left = 100 },
+				Title = new TitleLayoutInfo() { Text = "Sales Activity" },
+				Margin = new MarginInfo() { L = 100 },
 				Width = plotWidth,
 				Height = plotHeight
 			};
@@ -1077,21 +1097,21 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 				Name = "Montreal",
 				X = new double[] { 120, 60, 30, 20 },
 				Y = new string[] { "Website visit", "Downloads", "Potential customers", "Requested price" },
-				TextInfo = TextInfoOptions.Value_PercentInitial,
+				TextInfo = new FunnelTextInfoOptions[] { FunnelTextInfoOptions.Value, FunnelTextInfoOptions.PercentInitial },
 			};
 			FunnelTrace TorontoFunnel = new FunnelTrace()
 			{
 				Name = "Toronto",
 				X = new double[] { 100, 60, 40, 30, 20 },
 				Y = new string[] { "Website visit", "Downloads", "Potential customers", "Requested price", "invoice sent" },
-				TextInfo = TextInfoOptions.Value_PercentInitial,
+				TextInfo = new FunnelTextInfoOptions[] { FunnelTextInfoOptions.Value, FunnelTextInfoOptions.PercentInitial },
 			};
 			FunnelTrace VancouverFunnel = new FunnelTrace()
 			{
 				Name = "Vancouver",
 				X = new double[] { 90, 70, 50, 30, 10, 5 },
 				Y = new string[] { "Website visit", "Downloads", "Potential customers", "Requested price", "invoice sent", "closed deals" },
-				TextInfo = TextInfoOptions.Value_PercentInitial,
+				TextInfo = new FunnelTextInfoOptions[] { FunnelTextInfoOptions.Value, FunnelTextInfoOptions.PercentInitial },
 			};
 
 
@@ -1099,11 +1119,11 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 			dataTraces.AddTrace(TorontoFunnel);
 			dataTraces.AddTrace(VancouverFunnel);
 
-			LayoutInfo layout = new LayoutInfo()
+			FunnelLayout layout = new FunnelLayout()
 			{
 				FunnelMode = FunnelModeOptions.Stack,
-				Title = new TitleInfo() { Text = "Sales Funnel" },
-				Margin = new MarginInfo() { Left = 100, Right = 0 },
+				Title = new TitleLayoutInfo() { Text = "Sales Funnel" },
+				Margin = new MarginInfo() { L = 100, R = 0 },
 				Height = plotHeight,
 				Width = plotWidth,
 				ShowLegend = true
@@ -1120,26 +1140,26 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 				Values = new int[] { 5, 4, 3, 2, 1 },
 				Text = new string[] { "The 1st", "The 2nd", "The 3rd", "The 4th", "The 5th" },
 
-				Marker = new MarkerInfo()
+				Marker = new MarkerFunnelAreaInfo()
 				{
-					Color = new object[] { "59D4E8", "DDB6C6", "A696C8", "67EACA", "94D2E6" },
-					Line = new LineInfo()
+					Colors = new object[] { "59D4E8", "DDB6C6", "A696C8", "67EACA", "94D2E6" },
+					Line = new LineColorWidthsInfo()
 					{
 						Width = new int[] { 2, 1, 5, 0, 3 },
 						Color = new object[] { "3E4E88", "606470", "3E4E88", "606470", "3E4E88" }
 					}
 				},
 				Opacity = 0.65,
-				TextFont = new FontInfo() { Family = "Old Standard TT", Color = "black", Size = 13 }
+				TextFont = new TextFontInfo() { Family = "Old Standard TT", Color = "black", Size = 13 }
 
 
 			};
 
 			TraceList dataTraces = new TraceList(funnel);
-			LayoutInfo layout = new LayoutInfo()
+			FunnelAreaLayout layout = new FunnelAreaLayout()
 			{
-				Title = new TitleInfo() { Text = "Activity" },
-				Margin = new MarginInfo() { Left = 100, Right = 200 },
+				Title = new TitleLayoutInfo() { Text = "Activity" },
+				Margin = new MarginInfo() { L = 100, R = 200 },
 				Height = plotHeight,
 				Width = plotWidth,
 			};
@@ -1156,8 +1176,8 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 			IndicatorTrace guage = new IndicatorTrace()
 			{
 				Value = 420,
-				Mode = ModeOptions.Number_Gauge_Delta,
-				Title = new TitleInfo() { Text = "Speed", Font = new FontInfo() { Size = 24 } },
+				Mode = new ModeIndicatorOptions[] { ModeIndicatorOptions.Number, ModeIndicatorOptions.Gauge, ModeIndicatorOptions.Delta },
+				Title = new TitleAlignFontInfo() { Text = "Speed", Font = new FontTitleInfo() { Size = 24 } },
 				Delta = new DeltaInfo() { Reference = 400, Increasing = new AreaChangeInfo() { Color = "RebeccaPurple" } },
 				Gauge = new GaugeInfo()
 				{
@@ -1173,10 +1193,10 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 						new GaugeStepItem() { Range=new object[] { 0, 250 }, Color="cyan" },
 						new GaugeStepItem() { Range=new object[] { 250, 400 }, Color="royalblue" }
 					},
-					Shape = GaugeShapeOptions.Angular,
+					Shape = ShapeGaugeOptions.Angular,
 					Threshold = new ThresholdInfo()
 					{
-						Line = new LineInfo() { Color = "red", Width = 4 },
+						Line = new LineColorWidthInfo() { Color = "red", Width = 4 },
 						Thickness = 0.75,
 						Value = 490
 					}
@@ -1186,11 +1206,11 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 		
 
 			TraceList dataTraces = new TraceList(guage);
-			LayoutInfo layout = new LayoutInfo()
+			Layout layout = new Layout()
 			{
 				Width = plotWidth,
 				Height = plotHeight,
-				Margin = new MarginInfo() { Top = 0, Bottom = 0 },
+				Margin = new MarginInfo() { T = 0, B = 0 },
 				PaperBgColor = "lavender",
 				Font = new FontInfo()
 				{
@@ -1212,8 +1232,12 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 				Delta = new DeltaInfo() { Reference = 200 },
 				Domain = new DomainInfo() { X = new double[] { 0, 1 }, Y = new double[] { 0, 1 } },
 				Value = 220,
-				Mode = ModeOptions.Number_Gauge_Delta,
-				Title = new TitleInfo() { Text = "<b>Profit</b><br><span style='color: gray; font-size:0.8em'>U.S. $</span>", Font = new FontInfo() { Size = 14 } },
+				Mode = new ModeIndicatorOptions[] { ModeIndicatorOptions.Number, ModeIndicatorOptions.Gauge, ModeIndicatorOptions.Delta },
+				Title = new TitleAlignFontInfo()
+				{
+					Text = "<b>Profit</b><br><span style='color: gray; font-size:0.8em'>U.S. $</span>",
+					Font = new FontTitleInfo() { Size = 14 }
+				},
 
 				Gauge = new GaugeInfo()
 				{
@@ -1225,10 +1249,10 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 						new GaugeStepItem() { Range=new object[] { 0, 150 }, Color="lightgray" },
 						new GaugeStepItem() { Range=new object[] { 150, 250 }, Color="gray" }
 					},
-					Shape = GaugeShapeOptions.Bullet,
+					Shape = ShapeGaugeOptions.Bullet,
 					Threshold = new ThresholdInfo()
 					{
-						Line = new LineInfo() { Color = "red", Width = 2, Gradient = new GradientInfo() { YAnchor = GradientTypeOptions.Vertical } },
+						Line = new LineColorWidthInfo() { Color = "red", Width = 2 },
 						Thickness = 0.75,
 						Value = 280
 					},
@@ -1239,14 +1263,14 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 
 
 			TraceList dataTraces = new TraceList(bullet);
-			LayoutInfo layout = new LayoutInfo()
+			Layout layout = new Layout()
 			{
 				Width = plotWidth,
 				Height = plotHeight,
 				Margin = new MarginInfo()
                 {
-					Top=300,
-					Bottom=300
+					T=300,
+					B=300
                 }
 			};
 			
@@ -1312,90 +1336,91 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 						AutoColorScale = false,
 						ReverseScale = true,
 						ColorScale = ColorScaleOptions.Portland.GetDescription(),
-						Transforms = new ItemList<TransformsItem>() {
-							new TransformsItem()
+						Transforms = new ItemList<Transform>() {
+							new AggregateTransform()
 							{
-								TransformsType = TransformTypeOptions.Aggregate,
 								Groups = happinessRanked.Select(item => item.Country).ToArray(),
-								Aggregations = new ItemList<Transforms.AggregationItem>
-								{
+
+								Aggregations = new ItemList<AggregationItem>(
 									new Transforms.AggregationItem()
 									{
 										Target = "z",
-										Func =  Enumerations.TransformsEnums.FuncOptions.Avg,
+										Func =  FuncOptions.Avg,
 										Enabled= true
-									}
-								}
+									}								
+								)
 							}
 						}
+					
 					};
 
 					TraceList dataTraces = new TraceList(trace);
 
-					LayoutInfo layout = new LayoutInfo()
+					Layout layout = new Layout()
 					{
-						Title = new TitleInfo() { Text = "<b>World Happiness</b><br>2015 - 2017" },
+						Title = new TitleLayoutInfo() { Text = "<b>World Happiness</b><br>2015 - 2017" },
 						Geo = new GeoInfo()
 						{
 							ShowFrame = false,
 							ShowCoastLines = false,
-							Projection = new ProjectionInfo { ProjectionType = ProjectionTypeOptions.Orthographic }
+							Projection = new ProjectionGeoInfo { Type = GeoProjectionTypeOptions.Orthographic }
 						},
-						UpdateMenus = new ItemList<UpdateMenusItem>() {
-							new UpdateMenusItem()
+						UpdateMenus = new ItemList<UpdateMenuItem>() {
+							new UpdateMenuItem()
 							{
 								X= 0.85,
 								Y=1.15,
-								XRef = RefOptions.Paper,
-								YRef = RefOptions.Paper,
-								YAnchor = YAnchorOptions.Top,
+								
+								//XRef = RefOptions.Paper,//not in schema
+								//YRef = RefOptions.Paper, //not in schema
+								YAnchor = AutoTopMiddleBottomOptions.Top,
 								Active = 0,
 								ShowActive=true,
-								Buttons = new ItemList<ButtonsItem>()
+								Buttons = new ItemList<ButtonItem>()
 								{
-									new ButtonsItem()
+									new ButtonItem()
 									{
 								 		Method = MethodOptions.Restyle,
 										Args = new object[]{"transforms[0].aggregations[0].func", "avg"},
 										Label = "Avg"
 									},
-									new ButtonsItem()
+									new ButtonItem()
 									{
 								 		Method = MethodOptions.Restyle,
 										Args = new object[]{"transforms[0].aggregations[0].func", "sum"},
 										Label = "Sum"
 									},
-									new ButtonsItem()
+									new ButtonItem()
 									{
 								 		Method = MethodOptions.Restyle,
 										Args = new object[]{"transforms[0].aggregations[0].func", "min"},
 										Label = "Min"
 									},
-									new ButtonsItem()
+									new ButtonItem()
 									{
 								 		Method = MethodOptions.Restyle,
 										Args = new object[]{"transforms[0].aggregations[0].func", "max"},
 										Label = "Max"
 									},
-									new ButtonsItem()
+									new ButtonItem()
 									{
 								 		Method = MethodOptions.Restyle,
 										Args = new object[]{"transforms[0].aggregations[0].func", "mode"},
 										Label = "Mode"
 									},
-									new ButtonsItem()
+									new ButtonItem()
 									{
 								 		Method = MethodOptions.Restyle,
 										Args = new object[]{"transforms[0].aggregations[0].func", "median"},
 										Label = "Median"
 									},
-									new ButtonsItem()
+									new ButtonItem()
 									{
 								 		Method = MethodOptions.Restyle,
 										Args = new object[]{"transforms[0].aggregations[0].func", "first"},
 										Label = "First"
 									},
-									new ButtonsItem()
+									new ButtonItem()
 									{
 								 		Method = MethodOptions.Restyle,
 										Args = new object[]{"transforms[0].aggregations[0].func", "last"},
@@ -1456,20 +1481,20 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 					ChoroplethMapboxTrace trace = new ChoroplethMapboxTrace()
 					{
 						Z = unemploymentFipsArea.Select(item => item.Unemp).ToArray(),
-						Zmax=12,
-						Zmin=0,
+						ZMax=12,
+						ZMin=0,
 						Locations  = unemploymentFipsArea.Select(item => item.Fips).ToArray(),
 						GeoJson = "https://raw.githubusercontent.com/plotly/datasets/master/geojson-counties-fips.json",
-						Opacity = 0.5
+						
 					};
 
-					LayoutInfo layout = new LayoutInfo()
+					Layout layout = new Layout()
 					{
 						
 						Width = plotWidth,
 						Height = plotHeight,
-						Title = new TitleInfo() { Text = "2016 US Unemployment by County" },
-						Mapbox = new MapboxInfo() { Style = StyleOptions.CartoPositron, Zoom = 3.2, Center = new CenterInfo() { Lat = 37.0902, Lon = -95.7129 } },
+						Title = new TitleLayoutInfo() { Text = "2016 US Unemployment by County" },
+						Mapbox = new MapboxInfo() { Style = StyleOptions.CartoPositron, Zoom = 3.2, Center = new GeoCenterInfo() { Lat = 37.0902, Lon = -95.7129 } },
 						ColorAxis = new ColorAxisInfo() { ShowScale=false, ColorScale = ColorScaleOptions.Viridis.GetDescription()},
 						
 					};
@@ -1494,7 +1519,7 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 			};
 			TraceList dataTraces = new TraceList(trace);
 
-			LayoutInfo layout = new LayoutInfo()
+			Layout layout = new Layout()
 			{
 				Width = plotWidth,
 				Height = plotHeight,
@@ -1550,28 +1575,29 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 							new ScatterGeoTrace()
 							{
 								LocationMode = LocationModeOptions.USAStates,
-								Mode = ModeOptions.Lines,
-								Longitude = new object[] { path.StartLon, path.EndLon },
-								Latitude = new object[] { path.StartLat, path.EndLat },
+								Mode = new ModeScatterOptions[] { ModeScatterOptions.Lines },
+								Lon = new object[] { path.StartLon, path.EndLon },
+								Lat = new object[] { path.StartLat, path.EndLat },
 								Line = new LineInfo() { Width = 1, Color = "red" },
 								Opacity = path.Count * 1.0 / maxCount
 							}
 							);
 					}
 
-					LayoutInfo layout = new LayoutInfo()
+					Layout layout = new Layout()
 					{
-						Title = new TitleInfo() { Text = "Feb. 2011 American Airline flight paths" },
+						Title = new TitleLayoutInfo() { Text = "Feb. 2011 American Airline flight paths" },
 						ShowLegend = false,
 						Geo = new GeoInfo()
 						{
 							Scope = ScopeOptions.NorthAmerica,
-							Projection = new ProjectionInfo()
+							Projection = new ProjectionGeoInfo()
 							{
-								ProjectionType = ProjectionTypeOptions.AzimuthalEqualArea
+								
+								Type = GeoProjectionTypeOptions.AzimuthalEqualArea
 
 							},
-							Showland = true,
+							ShowLand = true,
 							LakeColor = "rgb(243,243,243)",
 							CountryColor = "rgb(204,204,204)"
 						},
@@ -1590,22 +1616,23 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 			ScatterGeoTrace geo = new ScatterGeoTrace()
 			{
 				Locations = new string[] { "FRA", "DEU", "RUS", "ESP" },
-				Mode = ModeOptions.Markers,
-				Marker = new MarkerInfo()
+				Mode = new ModeScatterOptions[] { ModeScatterOptions.Markers },
+				
+				Marker = new MarkerScatterGeoInfo()
 				{
 					Size = new double[] { 20, 30, 15, 10 },
 					Color = new object[] { 10, 20, 40, 50 },
-					Cmin = 0,
-					Cmax = 50,
+					CMin = 0,
+					CMax = 50,
 					ColorScale = "Greens",
-					ColorBar = new ColorBarInfo() { Title = new TitleInfo() { Text = "Some Rate" }, TickSuffix = "%", ShowTickSuffix = ShowLabelOptions.Last },
-					Line = new LineInfo() { Color = "black" }
+					ColorBar = new ColorBarInfo() { Title = new TitleFontSideInfo() { Text = "Some Rate" }, TickSuffix = "%", ShowTickSuffix = ShowTickOptions.Last },
+					Line = new LineMarkerInfo() { Color = "black" }
 				},
 				Name = "Europe Data"
 			};
 
 			TraceList dataTraces = new TraceList(geo);
-			LayoutInfo layout = new LayoutInfo()
+			Layout layout = new Layout()
 			{
 				Geo = new GeoInfo() { Scope = ScopeOptions.Europe, Resolution = ResolutionOptions._50 },
 				Height = plotHeight,
@@ -1624,19 +1651,19 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 
 			ScatterMapboxTrace trace = new ScatterMapboxTrace()
 			{
-				Fill = FillOptions.ToSelf,
+				Fill = FillMapboxOptions.ToSelf,
 				Lon = new double[] { -74, -70, -70, -74 },
 				Lat = new double[] { 47, 47, 45, 45 },
-				Marker = new MarkerInfo() { Size = 10, Color = "orange" }
+				Marker = new MarkerMapboxInfo() { Size = 10, Color = "orange" }
 			};
 			TraceList dataTraces = new TraceList(trace);
 
-			LayoutInfo layout = new LayoutInfo()
+			Layout layout = new Layout()
 			{
 				Width = plotWidth,
 				Height = plotHeight,
 				ShowLegend = false,
-				Mapbox = new MapboxInfo() { Style = StyleOptions.StamenTerrain, Center = new CenterInfo() { Lat = 46, Lon = -73 }, Zoom = 5 }
+				Mapbox = new MapboxInfo() { Style = StyleOptions.StamenTerrain, Center = new GeoCenterInfo() { Lat = 46, Lon = -73 }, Zoom = 5 }
 
 			};
 
@@ -1662,9 +1689,9 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 			contourTrace.Contours = new ContoursInfo() { Coloring = ColoringOptions.Heatmap };
 			TraceList dataTraces = new TraceList(contourTrace);
 
-			LayoutInfo layout = new LayoutInfo()
+			Layout layout = new Layout()
 			{
-				Title = new TitleInfo() { Text = "Smooth Contour Coloring" },
+				Title = new TitleLayoutInfo() { Text = "Smooth Contour Coloring" },
 				Height = plotHeight,
 				Width = plotWidth
 			};
@@ -1683,7 +1710,7 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 				Z = new double[] { 1, 1.96, 2.56, 3.0625, 4, 5.0625, 1, 7.5625, 9, 12.25, 15.21, 14.0625 },
 				AutoContour = false,
 				Contours = new ContoursInfo() { Start = 1, End = 14, Size = 1 },
-				Line = new LineInfo() { Width = 2, Smoothing = 0 },
+				Line = new LineColorDashSmoothingWidthInfo() { Width = 2, Smoothing = 0 },
 				ColorBar = new ColorBarInfo() { Len = 0.4, Y = 0.25 }
 
 			};
@@ -1694,8 +1721,8 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 				B = new double[] { 4, 4, 4, 4, 5, 5, 5, 5, 6, 6, 6, 6 },
 				X = new double[] { 2, 3, 4, 5, 2.2, 3.1, 4.1, 5.1, 1.5, 2.5, 3.5, 4.5 },
 				Y = new double[] { 1, 1.4, 1.6, 1.75, 2, 2.5, 2.7, 2.75, 3, 3.5, 3.7, 3.75 },
-				AAxis = new ABAxisInfo() { TickPrefix = "a = ", Smoothing = 0, AxisType = ABAxisTypeOptions.Linear, MinorGridCount = 9 },
-				BAxis = new ABAxisInfo() { TickPrefix = "b = ", Smoothing = 0, AxisType = ABAxisTypeOptions.Linear, MinorGridCount = 9 }
+				AAxis = new CarpetAxisInfo() { TickPrefix = "a = ", Smoothing = 0, Type = AutoDateCategoryLinearTypeOptions.Linear, MinorGridCount = 9 },
+				BAxis = new CarpetAxisInfo() { TickPrefix = "b = ", Smoothing = 0, Type = AutoDateCategoryLinearTypeOptions.Linear, MinorGridCount = 9 }
 
 			};
 
@@ -1704,12 +1731,12 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 			TraceList dataTraces = new TraceList(trace1);
 			dataTraces.AddTrace(trace2);
 
-			LayoutInfo layout = new LayoutInfo()
+			Layout layout = new Layout()
 			{
-				Title = new TitleInfo() { Text = "Cheater plot with 1d input" },
-				Margin = new MarginInfo() { Top = 40, Right = 30, Bottom = 30, Left = 30 },
-				YAxis = new AxisInfo() { Range = new double[] { 0.388, 4.361 } },
-				XAxis = new AxisInfo() { Range = new double[] { 0.667, 5.932 } },
+				Title = new TitleLayoutInfo() { Text = "Cheater plot with 1d input" },
+				Margin = new MarginInfo() { T = 40, R = 30, B = 30, L = 30 },
+				YAxis = new LayoutYAxisInfo() { Range = new double[] { 0.388, 4.361 } },
+				XAxis = new LayoutAxisInfo() { Range = new double[] { 0.667, 5.932 } },
 				Height = plotHeight,
 				Width = plotWidth
 			};
@@ -1780,67 +1807,67 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 						blockList.Add(block);
 					}
 
-					ItemList<DimensionItem> dimensions = new ItemList<DimensionItem>(
-						new DimensionItem[] {
-							new DimensionItem()
-							{
+					ItemList<ParCoordsDimensionItem> dimensions = new ItemList<ParCoordsDimensionItem>(
+						new ParCoordsDimensionItem[] {
+							new ParCoordsDimensionItem()
+							{ 
 								ConstraintRange = new object[] { 100000, 150000 },
 								Range = new object[] { 32000, 227900 },
 								Label = "Block height",
 								Values = blockList.Select(block => block.blockHeight).ToArray()
 							},
-							new DimensionItem()
+							new ParCoordsDimensionItem()
 							{
 								Range = new object[] { 0, 700000 },
 								Label = "Block width",
 								Values = blockList.Select(block => block.blockWidth).ToArray()
 							},
-							new DimensionItem()
+							new ParCoordsDimensionItem()
 							{
 								TickVals = new double[]{0, 0.5, 1, 2, 3},
 								TickText = new string[]{"A", "AB", "B", "Y", "Z"},
 								Label = "Cylinder material",
 								Values = blockList.Select(block => block.blockWidth).ToArray()
 							},
-							new DimensionItem()
+							new ParCoordsDimensionItem()
 							{
 								Range = new object[] { -1, 4 },
 								TickVals = new double[]{0, 1, 2, 3},
 								Label = "Block material",
 								Values = blockList.Select(block => block.blockMaterial).ToArray()
 							},
-							new DimensionItem()
+							new ParCoordsDimensionItem()
 							{
 								Range = new object[] {134, 3154 },
 								Label = "Total weight",
 								Visible = true,
 								Values = blockList.Select(block => block.totalWeight).ToArray()
 							},
-							new DimensionItem()
+							new ParCoordsDimensionItem()
 							{
 								Range = new object[] { 9, 19984 },
 								Label = "Assembly penalty weight",
 								Values = blockList.Select(block => block.assemblyPW).ToArray()
 							},
-							new DimensionItem()
+							new ParCoordsDimensionItem()
 							{
 								Range = new object[] { 49000, 568000 },
 								Label = "Height st width",
 								Values = blockList.Select(block => block.HstW).ToArray()
 							},
-							new DimensionItem()
+							new ParCoordsDimensionItem()
 							{
 								Range = new object[] {-28000, 196430 },
 								Label = "Min height width",
 								Values = blockList.Select(block => block.minHW).ToArray()
 							},
-							new DimensionItem()
+							new ParCoordsDimensionItem()
 							{
 								Range = new object[] {98453, 501789 },
 								Label = "Min width diameter",
 								Values = blockList.Select(block => block.minWD).ToArray()
 							},
-							new DimensionItem()
+							new ParCoordsDimensionItem()
 							{
 								Range = new object[] { 1417, 107154 },
 								Label = "RF block",
@@ -1850,29 +1877,29 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 						}
 					);
 
-					ParallelCoordinateTrace trace = new ParallelCoordinateTrace()
+					ParallelCoordinatesTrace trace = new ParallelCoordinatesTrace()
 					{
 						Dimensions = dimensions,
-						Line = new LineInfo()
+						Line = new LineParCoordsInfo()
 						{
 							ShowScale = true,
 							ReverseScale = true,
 							ColorScale = ColorScaleOptions.Jet.GetDescription(),
-							Cmin = -4000,
-							Cmax = -100,
+							CMin = -4000,
+							CMax = -100,
 							Color = blockList.Select(block => block.colorVal).ToArray()
 						}
 					};
 
 					TraceList dataTraces = new TraceList(trace);
 
-					LayoutInfo layout = new LayoutInfo()
+					Layout layout = new Layout()
 					{
-						Title = new TitleInfo() { Text = "Parallel Coordinate Chart" },
+						Title = new TitleLayoutInfo() { Text = "Parallel Coordinate Chart" },
 						ShowLegend = false,
 						Height = plotHeight,
 						Width = plotWidth,
-						Margin = new MarginInfo() { Left = 50, Right = 0, Top = 250, Bottom = 250 }
+						Margin = new MarginInfo() { L = 50, R = 0, T= 250, B = 250 }
 					};
 
 					await Chart1.newPlot(dataTraces, layout, commonConfig);
@@ -1884,50 +1911,50 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 		{
 			//https://plotly.com/javascript/polar-chart/
 
-			PolarTrace polar1 = new PolarTrace()
+			ScatterPolarTrace polar1 = new ScatterPolarTrace()
 			{
-				Mode = ModeOptions.Lines,
+				Mode = new ModeScatterOptions[] { ModeScatterOptions.Lines },
 				R = new double[] { 0, 1.5, 1.5, 0, 2.5, 2.5, 0 },
 				Theta = new double[] { 0, 10, 25, 0, 205, 215, 0 },
-				Line = new LineInfo() { Color = "black" },
-				Fill = FillOptions.ToSelf,
+				Line = new LineColorDashShapeSmoothingWidthInfo() { Color = "black" },
+				Fill = FillPolarOptions.ToSelf,
 				FillColor = "#709BFF"
 			};
 
-			PolarTrace polar2 = new PolarTrace()
+			ScatterPolarTrace polar2 = new ScatterPolarTrace()
 			{
-				Mode = ModeOptions.Lines,
+				Mode = new ModeScatterOptions[] { ModeScatterOptions.Lines },
 				R = new double[] { 0, 3.5, 3.5, 0 },
 				Theta = new double[] { 0, 55, 75, 0 },
-				Line = new LineInfo() { Color = "black" },
-				Fill = FillOptions.ToSelf,
+				Line = new LineColorDashShapeSmoothingWidthInfo() { Color = "black" },
+				Fill = FillPolarOptions.ToSelf,
 				FillColor = "#E4FF87"
 			};
-			PolarTrace polar3 = new PolarTrace()
+			ScatterPolarTrace polar3 = new ScatterPolarTrace()
 			{
-				Mode = ModeOptions.Lines,
+				Mode = new ModeScatterOptions[] { ModeScatterOptions.Lines },
 				R = new double[] { 0, 4.5, 4.5, 0, 4.5, 4.5, 0 },
 				Theta = new double[] { 0, 100, 120, 0, 305, 320, 0 },
-				Line = new LineInfo() { Color = "black" },
-				Fill = FillOptions.ToSelf,
+				Line = new LineColorDashShapeSmoothingWidthInfo() { Color = "black" },
+				Fill = FillPolarOptions.ToSelf,
 				FillColor = "#FFAA70"
 			};
-			PolarTrace polar4 = new PolarTrace()
+			ScatterPolarTrace polar4 = new ScatterPolarTrace()
 			{
-				Mode = ModeOptions.Lines,
+				Mode = new ModeScatterOptions[] { ModeScatterOptions.Lines },
 				R = new double[] { 0, 4, 4, 0 },
 				Theta = new double[] { 0, 4.5, 4.5, 0, 4.5, 4.5, 0 },
-				Line = new LineInfo() { Color = "black" },
-				Fill = FillOptions.ToSelf,
+				Line = new LineColorDashShapeSmoothingWidthInfo() { Color = "black" },
+				Fill = FillPolarOptions.ToSelf,
 				FillColor = "#FFDF70"
 			};
-			PolarTrace polar5 = new PolarTrace()
+			ScatterPolarTrace polar5 = new ScatterPolarTrace()
 			{
-				Mode = ModeOptions.Lines,
+				Mode = new ModeScatterOptions[] { ModeScatterOptions.Lines },
 				R = new double[] { 0, 3, 3, 0 },
 				Theta = new double[] { 0, 262.5, 277.5, 0 },
-				Line = new LineInfo() { Color = "black" },
-				Fill = FillOptions.ToSelf,
+				Line = new LineColorDashShapeSmoothingWidthInfo() { Color = "black" },
+				Fill = FillPolarOptions.ToSelf,
 				FillColor = "#B6FFB4"
 			};
 
@@ -1935,9 +1962,9 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 
 
 
-			LayoutInfo layout = new LayoutInfo()
+			Layout layout = new Layout()
 			{
-				Title = new TitleInfo() { Text = "Polar Chart" },
+				Title = new TitleLayoutInfo() { Text = "Polar Chart" },
 				Polar = new PolarInfo() { RadialAxis = new RadialAxisInfo() { Visible = true, Range = new double[] { 0, 5 } } },
 				ShowLegend = false,
 				Height = plotHeight,
@@ -1958,15 +1985,15 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 				A = new double[] { 4e-6, 4e-6, 4e-6, 4.5e-6, 4.5e-6, 4.5e-6, 5e-6, 5e-6, 5e-6, 6e-6, 6e-6, 6e-6 },
 				B = new double[] { 1e6, 2e6, 3e6, 1e6, 2e6, 3e6, 1e6, 2e6, 3e6, 1e6, 2e6, 3e6 },
 				Y = new double[] { 2, 3.5, 4, 3, 4.5, 5, 5.5, 6.5, 7.5, 8, 8.5, 10 },
-				AAxis = new ABAxisInfo() { TickPrefix = "a = ", TickSuffix = "m", Smoothing = 1, MinorGridCount = 9 },
-				BAxis = new ABAxisInfo() { TickPrefix = "b = ", TickSuffix = "Pa", Smoothing = 1, MinorGridCount = 9 }
+				AAxis = new CarpetAxisInfo() { TickPrefix = "a = ", TickSuffix = "m", Smoothing = 1, MinorGridCount = 9 },
+				BAxis = new CarpetAxisInfo() { TickPrefix = "b = ", TickSuffix = "Pa", Smoothing = 1, MinorGridCount = 9 }
 			};
 
 			ScatterCarpetTrace trace2 = new ScatterCarpetTrace()
 			{
 				A = new double[] { 4e-6, 4.5e-6, 5e-6, 6e-6 },
 				B = new double[] { 1.5e6, 2.5e6, 1.5e6, 2.5e6 },
-				Line = new LineInfo() { Smoothing = 1, Shape = LineShapeOptions.Spline }
+				Line = new LineColorDashShapeSmoothingWidthInfo() { Smoothing = 1, Shape = ShapeLineScatterBasicOptions.Spline }
 			};
 
 			TraceList dataTraces = new TraceList(trace1);
@@ -1997,14 +2024,14 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 		{
 			//https://plotly.com/javascript/ternary-plots/
 
-			TernaryTrace trace = new TernaryTrace()
+			ScatterTernaryTrace trace = new ScatterTernaryTrace()
 			{
 				A = new double[] { 75, 70, 75, 5, 10, 10, 20, 10, 15, 10, 20 },
 				B = new double[] { 25, 10, 20, 60, 80, 90, 70, 20, 5, 10, 10 },
 				C = new double[] { 0, 20, 50, 35, 10, 0, 10, 70, 80, 80, 70 },
 				Text = new string[] { "point 1", "point 2", "point 3", "point 4", "point 5", "point 6", "point 7", "point 8", "point 9", "point 10", "point 11" },
-				Marker = new MarkerInfo() { Size = 14, Line = new LineInfo() { Width = 2, Color = "DB7365" }, Symbol = SymbolOptions.CircleOpen },
-				Mode = ModeOptions.Markers
+				Marker = new MarkerScatterInfo() { Size = 14, Line = new LineMarkerInfo() { Width = 2, Color = "DB7365" }, Symbol = SymbolOptions.CircleOpen },
+				Mode = new ModeScatterOptions[] { ModeScatterOptions.Markers }
 			};
 
 			ItemList<AnnotationItem> annotations = new ItemList<AnnotationItem>();
@@ -2017,16 +2044,16 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 				Font = new FontInfo() { Size = 15 }
 			});
 
-			LayoutInfo layout = new LayoutInfo()
+			Layout layout = new Layout()
 			{
 				Ternary = new TernaryInfo()
 				{
 					Sum = 100,
 					AAxis = new TernaryAxisInfo()
 					{
-						Title = new TitleInfo() { Text = "Journalist", Font = new FontInfo() { Size = 20 } },
+						Title = new TitleTernaryAxisInfo() { Text = "Journalist", Font = new FontInfo() { Size = 20 } },
 						TickAngle = 0,
-						TickFont = new FontInfo() { Size = 15 },
+						TickFont = new TickFontInfo() { Size = 15 },
 						TickColor = "black",
 						TickLen = 5,
 						ShowGrid = true,
@@ -2035,9 +2062,9 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 					},
 					BAxis = new TernaryAxisInfo()
 					{
-						Title = new TitleInfo() { Text = "<br>Developer", Font = new FontInfo() { Size = 20 } },
+						Title = new TitleTernaryAxisInfo() { Text = "<br>Developer", Font = new FontInfo() { Size = 20 } },
 						TickAngle = 45,
-						TickFont = new FontInfo() { Size = 15 },
+						TickFont = new TickFontInfo() { Size = 15 },
 						TickColor = "black",
 						TickLen = 5,
 						ShowGrid = true,
@@ -2046,9 +2073,9 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 					},
 					CAxis = new TernaryAxisInfo()
 					{
-						Title = new TitleInfo() { Text = "<br>Designer", Font = new FontInfo() { Size = 20 } },
+						Title = new TitleTernaryAxisInfo() { Text = "<br>Designer", Font = new FontInfo() { Size = 20 } },
 						TickAngle = -45,
-						TickFont = new FontInfo() { Size = 15 },
+						TickFont = new TickFontInfo() { Size = 15 },
 						TickColor = "black",
 						TickLen = 5,
 						ShowGrid = true,
@@ -2125,29 +2152,29 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 					Jitter = 0.5,
 					WhiskerWidth = 0.2,
 					FillColor = "cls",
-					Marker = new MarkerInfo() { Size = 2 },
-					Line = new LineInfo() { Width = 1 }
+					Marker = new MarkerBoxInfo() { Size = 2 },
+					Line = new LineColorWidthInfo() { Width = 1 }
 
 				};
 
 				dataTraces.AddTrace(box);
 			}
 
-			LayoutInfo layout = new LayoutInfo()
+			BoxLayout layout = new BoxLayout()
 			{
-				Title = new TitleInfo() { Text = "Points Scored by the Top 9 Scoring NBA Players in 2012" },
-				YAxis = new AxisInfo()
+				Title = new TitleLayoutInfo() { Text = "Points Scored by the Top 9 Scoring NBA Players in 2012" },
+				YAxis = new LayoutYAxisInfo()
 				{
-					AutoRange = Enumerations.LayoutEnums.AutoRangeOptions.True,
+					AutoRange = AutoRangeOptions.True,
 					ShowGrid = true,
 					ZeroLine = true,
 					DTick = 5,
 					GridColor = "rgb(255, 255, 255)",
 					GridWidth = 1,
 					ZeroLineColor = "rgb(255, 255, 255)",
-					ZeroLinewidth = 2
+					ZeroLineWidth = 2
 				},
-				Margin = new MarginInfo() { Left = 40, Right = 30, Bottom = 80, Top = 100 },
+				Margin = new MarginInfo() { L = 40, R = 30, B = 80, T = 100 },
 				PaperBgColor = "rgb(243, 243, 243)",
 				PlotBgColor = "rgb(243, 243, 243)",
 				ShowLegend = false,
@@ -2189,11 +2216,11 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 			{
 				X = x1,
 				Y = y1,
-				Name = "control",
+				Name = "control",				
 				AutoBinX = false,
-				Marker = new MarkerInfo() { Color = "rgba(255, 100, 102, 0.7)", Line = new LineInfo() { Color = "rgba(255, 100, 102, 1)", Width = 1 } },
+				Marker = new MarkerHistogramInfo() { Color = "rgba(255, 100, 102, 0.7)", Line = new LineMarkerInfo() { Color = "rgba(255, 100, 102, 1)", Width = 1 } },
 				Opacity = 0.5,
-				XBins = new BinInfo() { End = 2.8, Size = 0.06, Start = 0.5 }
+				XBins = new BinsInfo() { End = 2.8, Size = 0.06, Start = 0.5 }
 			};
 
 
@@ -2204,22 +2231,26 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 				Y = y2,
 				Name = "experiment",
 				AutoBinX = false,
-				Marker = new MarkerInfo() { Color = "rgba(100, 200, 102, 0.7)", Line = new LineInfo() { Color = "rgba(100, 200, 102, 1)", Width = 1 } },
+				Marker = new MarkerHistogramInfo()
+				{
+					Color = "rgba(100, 200, 102, 0.7)",
+					Line = new LineMarkerInfo() { Color = "rgba(100, 200, 102, 1)", Width = 1 }
+				},
 				Opacity = 0.5,
-				XBins = new BinInfo() { End = 4, Size = 0.06, Start = -3.2 }
+				XBins = new BinsInfo() { End = 4, Size = 0.06, Start = -3.2 }
 			};
 
 			TraceList dataTraces = new TraceList(trace1);
 			dataTraces.AddTrace(trace2);
 
-			LayoutInfo layout = new LayoutInfo()
+			BarLayout layout = new BarLayout()
 			{
 				BarGap = 0.05f,
 				BarGroupGap = 0.2f,
 				BarMode = BarModeOptions.Overlay,
-				Title = new TitleInfo() { Text = "Sample Results" },
-				XAxis = new AxisInfo() { Title = new TitleInfo() { Text = "Value" } },
-				YAxis = new AxisInfo() { Title = new TitleInfo() { Text = "Count" } },
+				Title = new TitleLayoutInfo() { Text = "Sample Results" },
+				XAxis = new LayoutAxisInfo() { Title = new TitleFontStandoffInfo() { Text = "Value" } },
+				YAxis = new LayoutYAxisInfo() { Title = new TitleFontStandoffInfo() { Text = "Count" } },
 				Height = plotHeight,
 				Width = plotWidth
 			};
@@ -2246,8 +2277,17 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 			{
 				X = x,
 				Y = y,
-				Contours = new ContoursInfo() { ShowLabels = true, LabelFont = new FontInfo() { Family = "Raleway", Color = "white" } },
-				HoverLabel = new HoverLabelInfo() { BgColor = "white", BorderColor = "black", Font = new FontInfo() { Color = "black", Family = "Raleway" } }
+				Contours = new ContoursInfo()
+				{
+					ShowLabels = true,
+					LabelFont = new LabelFontInfo() { Family = "Raleway", Color = "white" }
+				},
+				HoverLabel = new HoverLabelInfo()
+				{
+					BgColor = "white",
+					BorderColor = "black",
+					Font = new FontLabelInfo() { Color = "black", Family = "Raleway" }
+				}
 			};
 
 			TraceList dataTraces = new TraceList(trace);
@@ -2313,21 +2353,21 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 						passengerList.Add(passenger);
 					}
 
-					DimensionItem classDim = new DimensionItem()
+					ParCatsDimensionItem classDim = new ParCatsDimensionItem()
 					{
 						Label = "Class",
-						CategoryOrder = CategoryOrderOptions.CategoryAscending,
+						CategoryOrder = DimensionCategoryOrderOptions.CategoryAscending,
 						Values = passengerList.Select(passenger => passenger.Pclass).ToArray(),
 					};
 
-					DimensionItem genderDim = new DimensionItem()
+					ParCatsDimensionItem genderDim = new ParCatsDimensionItem()
 					{
 						Label = "Gender",
-						CategoryOrder = CategoryOrderOptions.CategoryAscending,
+						CategoryOrder = DimensionCategoryOrderOptions.CategoryAscending,
 						Values = passengerList.Select(passenger => passenger.Sex).ToArray(),
 					};
 
-					DimensionItem survivalDim = new DimensionItem()
+					ParCatsDimensionItem survivalDim = new ParCatsDimensionItem()
 					{
 						Label = "Outcome",
 						CategoryArray = new int[] { 0, 1 },
@@ -2335,30 +2375,30 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 						TickText = new string[] { "perished", "survived" }
 					};
 
-					ItemList<DimensionItem> dimensions = new ItemList<DimensionItem>();
+					ItemList<ParCatsDimensionItem> dimensions = new ItemList<ParCatsDimensionItem>();
 					dimensions.Add(classDim);
 					dimensions.Add(genderDim);
 					dimensions.Add(survivalDim);
 
 					ParallelCategoriesTrace trace = new ParallelCategoriesTrace()
 					{
-						Arrangement = ArrangementOptions.Freeform,
+						Arrangement = ParCatsArrangementOptions.FreeForm,
 						Dimensions = dimensions,
-						LabelFont = new FontInfo() { Size = 14 },
-						Line = new LineInfo()
+						LabelFont = new LabelFontInfo() { Size = 14 },
+						Line = new LineParCatsInfo()
 						{
 							Color = survivalDim.Values,
 							ColorScale = new object[] { new object[] { 0, "lightsteelblue" }, new object[] { 1, "mediumseagreen" } }
 						},
-						HoverOn = HoverOnOptions.Color
+						HoverOn = ParCatsHoverOnOptions.Color
 
 					};
 
 					TraceList dataTraces = new TraceList(trace);
 
-					LayoutInfo layout = new LayoutInfo()
+					Layout layout = new Layout()
 					{
-						Title = new TitleInfo() { Text = "Titanic Passenger Outcome" },
+						Title = new TitleLayoutInfo() { Text = "Titanic Passenger Outcome" },
 						AutoSize = false,
 						Width = plotWidth,
 						Height = plotHeight,
@@ -2425,21 +2465,21 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 						samples.Add(iris);
 					}
 
-					DimensionItem dim1 = new DimensionItem()
+					SplomDimensionItem dim1 = new SplomDimensionItem()
 					{
 						Label = "sepal length",
 
 						Values = samples.Select(iris => iris.SepalLength).ToArray(),
 					};
 
-					DimensionItem dim2 = new DimensionItem()
+					SplomDimensionItem dim2 = new SplomDimensionItem()
 					{
 						Label = "sepal width",
 
 						Values = samples.Select(iris => iris.SepalWidth).ToArray(),
 					};
 
-					DimensionItem dim3 = new DimensionItem()
+					SplomDimensionItem dim3 = new SplomDimensionItem()
 					{
 						Label = "petal length",
 
@@ -2447,7 +2487,7 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 
 					};
 
-					DimensionItem dim4 = new DimensionItem()
+					SplomDimensionItem dim4 = new SplomDimensionItem()
 					{
 						Label = "petal width",
 
@@ -2455,7 +2495,7 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 
 					};
 
-					ItemList<DimensionItem> dimensions = new ItemList<DimensionItem>();
+					ItemList<SplomDimensionItem> dimensions = new ItemList<SplomDimensionItem>();
 					dimensions.Add(dim1);
 					dimensions.Add(dim2);
 					dimensions.Add(dim3);
@@ -2466,7 +2506,7 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 
 						Dimensions = dimensions,
 
-						Marker = new MarkerInfo()
+						Marker = new MarkerSplomInfo()
 						{
 							Color = samples.Select(iris => ColorLookup(iris.IrisClass)).ToArray(),
 							ColorScale = new object[]
@@ -2478,7 +2518,7 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 									new object[]{0.666, "#636efa" },
 									new object[]{ 1, "#636efa" },
 							},
-							Line = new LineInfo()
+							Line = new LineMarkerInfo()
 							{
 								Color = "white",
 								Width = 0.5
@@ -2492,37 +2532,45 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 
 					TraceList dataTraces = new TraceList(trace);
 
-					AxisInfo axis = new AxisInfo()
+					LayoutAxisInfo axisx = new LayoutAxisInfo()
 					{
 						ShowLine = false,
 						ZeroLine = false,
 						GridColor = "#fff",
-						Ticklen = 4
+						TickLen = 4
+
+					};
+					LayoutYAxisInfo axisy = new LayoutYAxisInfo()
+					{
+						ShowLine = false,
+						ZeroLine = false,
+						GridColor = "#fff",
+						TickLen = 4
 
 					};
 
-					LayoutInfo layout = new LayoutInfo()
+					Layout layout = new Layout()
 					{
-						Title = new TitleInfo() { Text = "Iris Dataset" },
+						Title = new TitleLayoutInfo() { Text = "Iris Dataset" },
 						AutoSize = false,
 						Width = plotWidth,
 						Height = plotHeight,
 						HoverMode = HoverModeOptions.Closest,
-						DragMode = DragModeOptions.Select,
+						DragMode = LayoutDragModeOptions.Select,
 						PlotBgColor = "rgba(240, 240, 240, 0.95)"
 
 
 
 					};
 					// badly flawed architecture by plotly
-					(layout.ValueItems as dynamic).xaxis = axis.ValueItems;
-					(layout.ValueItems as dynamic).xaxis2 = axis.ValueItems;
-					(layout.ValueItems as dynamic).xaxis3 = axis.ValueItems;
-					(layout.ValueItems as dynamic).xaxis4 = axis.ValueItems;
-					(layout.ValueItems as dynamic).yaxis = axis.ValueItems;
-					(layout.ValueItems as dynamic).yaxis2 = axis.ValueItems;
-					(layout.ValueItems as dynamic).yaxis3 = axis.ValueItems;
-					(layout.ValueItems as dynamic).yaxis4 = axis.ValueItems;
+					(layout.ValueItems as dynamic).xaxis = axisx.ValueItems;
+					(layout.ValueItems as dynamic).xaxis2 = axisx.ValueItems;
+					(layout.ValueItems as dynamic).xaxis3 = axisx.ValueItems;
+					(layout.ValueItems as dynamic).xaxis4 = axisx.ValueItems;
+					(layout.ValueItems as dynamic).yaxis = axisy.ValueItems;
+					(layout.ValueItems as dynamic).yaxis2 = axisy.ValueItems;
+					(layout.ValueItems as dynamic).yaxis3 = axisy.ValueItems;
+					(layout.ValueItems as dynamic).yaxis4 = axisy.ValueItems;
 
 
 					await Chart1.newPlot(dataTraces, layout, commonConfig);
@@ -2574,10 +2622,10 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 						LegendGroup = "Yes",
 						ScaleGroup = "Yes",
 						Name = "Yes",
-						Side = DensitySideOptions.Negative,
+						Side = ViolinSideOptions.Negative,
 						Box = new BoxInfo() { Visible = true },
-						Line = new LineInfo() { Color = "blue", Width = 2 },
-						MeanLine = new LineInfo() { }
+						Line = new LineColorWidthInfo() { Color = "blue", Width = 2 },
+						MeanLine = new MeanLineInfo() { }
 					};
 
 					ViolinTrace traceNo = new ViolinTrace()
@@ -2587,23 +2635,23 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 						LegendGroup = "No",
 						ScaleGroup = "No",
 						Name = "No",
-						Side = DensitySideOptions.Positive,
+						Side = ViolinSideOptions.Positive,
 						Box = new BoxInfo() { Visible = true },
-						Line = new LineInfo() { Color = "green", Width = 2 },
-						MeanLine = new LineInfo() { }
+						Line = new LineColorWidthInfo() { Color = "green", Width = 2 },
+						MeanLine = new MeanLineInfo() {  }
 					};
 
 					TraceList dataTraces = new TraceList(new[] { traceYes, traceNo });
 
-					LayoutInfo layout = new LayoutInfo()
+					ViolinLayout layout = new ViolinLayout()
 					{
-						Title = new TitleInfo() { Text = "Split Violin Plot" },
+						Title = new TitleLayoutInfo() { Text = "Split Violin Plot" },
 						Height = plotHeight,
 						Width = plotWidth,
-						YAxis = new AxisInfo() { ZeroLine = false },
+						YAxis = new LayoutYAxisInfo() { ZeroLine = false },
 						ViolinGap = 0,
 						ViolinGroupGap = 0,
-						ViolinMode = ViolinModeOptions.Overlay
+						ViolinMode = GroupOverlayBoxModeOptions.Overlay
 					};
 
 					await Chart1.newPlot(dataTraces, layout, commonConfig);
@@ -2657,13 +2705,13 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 						W = VectorList.Select(vec => vec.w).ToArray(),
 						AutoColorScale = false,
 						ColorScale  =  ColorScaleOptions.Blues.GetDescription(),
-						SizeMode = SizeModeOptions.Absolute,
+						SizeMode = SizeModeConeOptions.Absolute,
 						SizeRef = 40
 					};
 
-					LayoutInfo layout = new LayoutInfo()
+					Layout layout = new Layout()
 					{
-						Title = new TitleInfo() { Text = "Cone Vector Plot" },
+						Title = new TitleLayoutInfo() { Text = "Cone Vector Plot" },
 						
 						Width = plotWidth,
 						Height = plotHeight,
@@ -2734,7 +2782,7 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 						Surface = new SurfaceInfo { Show = true, Count = 1, Fill = 0.8 },
 						Slices = new SlicesInfo
 						{
-							Z = new SliceRenderInfo()
+							Z = new SliceInfo()
 							{
 								Show = true,
 								Locations = new double[] { -0.3, 0.5 },
@@ -2753,9 +2801,9 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 
 					TraceList dataTraces = new TraceList(new[] { trace1 });
 
-					LayoutInfo layout = new LayoutInfo()
+					Layout layout = new Layout()
 					{
-						Title = new TitleInfo() { Text = "3D Line Plot" },
+						Title = new TitleLayoutInfo() { Text = "3D Line Plot" },
 						AutoSize = false,
 						Width = plotWidth,
 						Height = plotHeight,
@@ -2768,9 +2816,9 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 						},
 						Margin = new MarginInfo()
 						{
-							Left = 0,
-							Bottom = 0,
-							Top = 0
+							L = 0,
+							B = 0,
+							T = 0
 						}
 					};
 
@@ -2822,12 +2870,12 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 						X = lines.Select(item => item.x1).ToArray(),
 						Y = lines.Select(item => item.y1).ToArray(),
 						Z = lines.Select(item => item.z1).ToArray(),
-						Marker = new MarkerInfo()
+						Marker = new MarkerScatter3DInfo()
 						{
 							Color = "#1f77b4",
 							Size = 12,
 							Symbol = SymbolOptions.Circle,
-							Line = new LineInfo()
+							Line = new LineMarkerInfo()
 							{
 								Color = "rgb(0,0,0)",
 								Width = 0
@@ -2835,8 +2883,8 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 							}
 						}
 				,
-						Mode = ModeOptions.Lines,
-						Line = new LineInfo()
+						Mode = new ModeScatterOptions[] { ModeScatterOptions.Lines },
+						Line = new LineScatter3DInfo()
 						{
 							Color = "#1f77b4",
 							Width = 1
@@ -2849,12 +2897,12 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 						X = lines.Select(item => item.x2).ToArray(),
 						Y = lines.Select(item => item.y2).ToArray(),
 						Z = lines.Select(item => item.z2).ToArray(),
-						Marker = new MarkerInfo()
+						Marker = new MarkerScatter3DInfo()
 						{
 							Color = "#9467bd",
 							Size = 12,
 							Symbol = SymbolOptions.Circle,
-							Line = new LineInfo()
+							Line = new LineMarkerInfo()
 							{
 								Color = "rgb(0,0,0)",
 								Width = 0
@@ -2862,8 +2910,8 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 							}
 						}
 				,
-						Mode = ModeOptions.Lines,
-						Line = new LineInfo()
+						Mode = new ModeScatterOptions[] { ModeScatterOptions.Lines },
+						Line = new LineScatter3DInfo()
 						{
 							Color = "rgb(44, 160, 44)",
 							Width = 1
@@ -2876,12 +2924,12 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 						X = lines.Select(item => item.x3).ToArray(),
 						Y = lines.Select(item => item.y3).ToArray(),
 						Z = lines.Select(item => item.z3).ToArray(),
-						Marker = new MarkerInfo()
+						Marker = new MarkerScatter3DInfo()
 						{
 							Color = "#bcbd22",
 							Size = 12,
 							Symbol = SymbolOptions.Circle,
-							Line = new LineInfo()
+							Line = new LineMarkerInfo()
 							{
 								Color = "rgb(0,0,0)",
 								Width = 0
@@ -2889,8 +2937,8 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 							}
 						}
 				,
-						Mode = ModeOptions.Lines,
-						Line = new LineInfo()
+						Mode = new ModeScatterOptions[] { ModeScatterOptions.Lines },
+						Line = new LineScatter3DInfo()
 						{
 							Color = "#bcbd22",
 							Width = 1
@@ -2902,18 +2950,18 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 
 					TraceList dataTraces = new TraceList(new[] { trace1, trace2, trace3 });
 
-					LayoutInfo layout = new LayoutInfo()
+					Layout layout = new Layout()
 					{
-						Title = new TitleInfo() { Text = "3D Line Plot" },
+						Title = new TitleLayoutInfo() { Text = "3D Line Plot" },
 						AutoSize = false,
 						Width = plotWidth,
 						Height = plotHeight,
 						Margin = new MarginInfo()
 						{
-							Left = 0,
-							Right = 0,
-							Bottom = 0,
-							Top = 65
+							L = 0,
+							R = 0,
+							B = 0,
+							T = 65
 						}
 					};
 
@@ -2962,12 +3010,12 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 						X = lines.Select(item => item.x1).ToArray(),
 						Y = lines.Select(item => item.y1).ToArray(),
 						Z = lines.Select(item => item.z1).ToArray(),
-						Marker = new MarkerInfo()
+						Marker = new MarkerScatter3DInfo()
 						{
 							Color = "#1f77b4",
 							Size = 12,
 							Symbol = SymbolOptions.Circle,
-							Line = new LineInfo()
+							Line = new LineMarkerInfo()
 							{
 								Color = "rgba(217, 217, 217, 0.14)",
 								Width = 0.5
@@ -2976,7 +3024,7 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 							Opacity = 0.8
 						}
 				,
-						Mode = ModeOptions.Markers
+						Mode = new ModeScatterOptions[] { ModeScatterOptions.Markers }
 
 
 					};
@@ -2988,21 +3036,20 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 						X = trace2lines.Select(item => item.x2).ToArray(),
 						Y = trace2lines.Select(item => item.y2).ToArray(),
 						Z = trace2lines.Select(item => item.z2).ToArray(),
-						Marker = new MarkerInfo()
+						Marker = new MarkerScatter3DInfo()
 						{
 							Color = "#9467bd",
 							Size = 12,
 							Symbol = SymbolOptions.Circle,
-							Line = new LineInfo()
+							Line = new LineMarkerInfo()
 							{
 								Color = "rgba(217, 217, 217, 0.14)",
 								Width = 0.5
 							},
 							Opacity = 0.8
 
-						}
-				,
-						Mode = ModeOptions.Markers
+						},
+						Mode = new ModeScatterOptions[] { ModeScatterOptions.Markers }
 
 					};
 
@@ -3011,18 +3058,18 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 
 					TraceList dataTraces = new TraceList(new[] { trace1, trace2 });
 
-					LayoutInfo layout = new LayoutInfo()
+					Layout layout = new Layout()
 					{
-						Title = new TitleInfo() { Text = "3D Line Plot" },
+						Title = new TitleLayoutInfo() { Text = "3D Line Plot" },
 						AutoSize = false,
 						Width = plotWidth,
 						Height = plotHeight,
 						Margin = new MarginInfo()
 						{
-							Left = 0,
-							Right = 0,
-							Bottom = 0,
-							Top = 0
+							L = 0,
+							R = 0,
+							B = 0,
+							T = 0
 						},
 						ShowLegend = false
 					};
@@ -3083,7 +3130,7 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 						ColorScale = ColorScaleOptions.Blues.GetDescription(),
 						ShowScale = false,
 						MaxDisplayed = 3000,
-						Starts = new PositionInfo()
+						Starts = new StartsInfo()
 						{
 							X = new int[] { 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80 },
 							Y = new int[] { 20, 30, 40, 50, 20, 30, 40, 50, 20, 30, 40, 50, 20, 30, 40, 50 },
@@ -3094,7 +3141,7 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 					};
 
 
-					LayoutInfo layout = new LayoutInfo()
+					Layout layout = new Layout()
 					{
 						Scene = new SceneInfo()
 						{
@@ -3110,10 +3157,10 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 						Height = plotHeight,
 						Margin = new MarginInfo()
 						{
-							Left = 20,
-							Right = 20,
-							Bottom = 20,
-							Top = 20
+							L = 20,
+							R = 20,
+							B = 20,
+							T = 20
 						}
 					};
 
@@ -3164,9 +3211,9 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 					SurfaceTrace trace = new SurfaceTrace()
 					{
 						Z = z_data,
-						Contours = new Contours3DInfo()
+						Contours = new SurfaceContoursInfo()
 						{
-							Z = new Contour3DLineInfo()
+							Z = new ContoursRenderInfo()
 							{
 								Show = true,
 								UseColorMap = true,
@@ -3179,9 +3226,9 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 						}
 					};
 
-					LayoutInfo layout = new LayoutInfo()
+					Layout layout = new Layout()
 					{
-						Title = new TitleInfo() { Text = "Mt Bruno Elevation With Projected Contours" },
+						Title = new TitleLayoutInfo() { Text = "Mt Bruno Elevation With Projected Contours" },
 
 						Scene = new SceneInfo()
 						{
@@ -3195,10 +3242,10 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 						Height = plotHeight,
 						Margin = new MarginInfo()
 						{
-							Left = 65,
-							Right = 50,
-							Bottom = 65,
-							Top = 90
+							L = 65,
+							R = 50,
+							B = 65,
+							T = 90
 						}
 
 
@@ -3233,16 +3280,16 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 				FlatShading = true,
 				Opacity = 0.05,
 				OpacityScale = new Object[] { new double[] { 0, 1.0 }, new double[] { 0.2, 0.9 }, new double[] { 0.3, 0.5 }, new double[] { 0.4, 0.4 }, new double[] { 0.5, 0.5 }, new double[] { 1, 1.0 } },
-				Lighting = new LightingInfo() { FaceNormalsEpsilon=0},
+				Lighting = new SurfaceLightingInfo() {  FaceNormalsEpsilon=0},
 				ReverseScale = true,
 				Slices = new SlicesInfo()
 				{
-					X = new SliceRenderInfo() { Show = true },
-					Y = new SliceRenderInfo() { Show = true },
-					Z = new SliceRenderInfo() { Show = true }
+					X = new SliceInfo() { Show = true },
+					Y = new SliceInfo() { Show = true },
+					Z = new SliceInfo() { Show = true }
 				},
-				SpaceFrame = new SpaceFrameInfo() { Fill=1, Show = true},
-				Surface = new SurfaceInfo() { Show=true, Fill=1, Pattern= Enumerations.TracesEnums.PatternOptions.All, Count=25},
+				Spaceframe = new SpaceframeInfo() { Fill=1, Show = true},
+				Surface = new SurfaceInfo() { Show=true, Fill=1, Pattern= new SurfacePatternOptions[] { SurfacePatternOptions.A }, Count=25},
 				Value = KilnGod.PlotlyCharts.DemoTest.Data.VolumeData.Value,
 				X = KilnGod.PlotlyCharts.DemoTest.Data.VolumeData.X,
 				Y = KilnGod.PlotlyCharts.DemoTest.Data.VolumeData.Y,
@@ -3251,9 +3298,9 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 
 			TraceList dataTraces = new TraceList(trace);
 
-			LayoutInfo layout = new LayoutInfo()
+			Layout layout = new Layout()
 			{
-				Title = new TitleInfo() { Text = "volume airflow model" },
+				Title = new TitleLayoutInfo() { Text = "volume airflow model" },
 				
 				Width = plotWidth,
 				Height = plotHeight,
@@ -3267,12 +3314,12 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 						Y = 1,
 						Z = 1
 					},
-					XAxis = new AxisInfo() { NTicks = 12 },
-					YAxis = new AxisInfo() { NTicks = 12 },
-					ZAxis = new AxisInfo() { NTicks = 12 },
+					XAxis = new SceneAxisInfo() { NTicks = 12 },
+					YAxis = new SceneYAxisInfo() { NTicks = 12 },
+					ZAxis = new SceneAxisInfo() { NTicks = 12 },
 					Camera = new CameraInfo()
 					{
-						Center = new CenterInfo()
+						Center = new CameraCenterInfo()
 						{
 							X = 0,
 							Y = 0,

@@ -1,4 +1,4 @@
-﻿//***********************************************************************************
+//***********************************************************************************
 // KilnGod.PlotlyCharts 
 //
 // Copyright (c) 2022 James Carpenter (KilnGod)
@@ -9,15 +9,18 @@
 // Source License. See LICENSE.txt for details.
 //***********************************************************************************
 
+using KilnGod.PlotlyCharts.Common;
 using KilnGod.PlotlyCharts.Enumerations;
 using KilnGod.PlotlyCharts.Wrappers;
+using System.Dynamic;
 
 namespace KilnGod.PlotlyCharts.Frames
 {
+
 	public class FramesEntryItem : ValuesObject
 	{
 
-		public FramesEntryItem() : base() { }
+		public FramesEntryItem():base()		{		}
 
 		public string? Baseframe
 		{
@@ -56,5 +59,5 @@ namespace KilnGod.PlotlyCharts.Frames
 		}
 
 	}
-
 }
+

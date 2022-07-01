@@ -16,8 +16,6 @@ using Microsoft.JSInterop;
 using System.Linq;
 using System.IO;
 using KilnGod.PlotlyCharts.Services;
-using KilnGod.PlotlyCharts.Enumerations.TracesEnums;
-using KilnGod.PlotlyCharts.Enumerations.TransformsEnums;
 using KilnGod.PlotlyCharts.Wrappers;
 
 namespace KilnGod.PlotlyCharts.DemoTest.Pages
@@ -74,7 +72,7 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
         {
 
 
-            string value = FuncOptions.Range.GetDescription();
+          //  string value = FuncOptions.Range.GetDescription();
             JsonDocument doc = JsonDocument.Parse(AreaText);
 
 
@@ -560,6 +558,8 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
                 if (map.ClassTypeName != lastClassName)
                 {
 
+                 
+
                     string Info = string.Empty;
 
                     if (!item.CsType.EndsWith("Item"))
@@ -572,7 +572,17 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
                         result += indent + "public class " + map.ClassTypeName + "\n";
                         result += indent + "{\n\n";
 
-                        result += indent + "\tpublic " + map.ClassTypeName.Substring(0, map.ClassTypeName.IndexOf(":") - 1) + "():base()";
+                        string typeEnum = map.ClassTypeName.Substring(map.ClassTypeName.IndexOf(":") + 1).Trim();
+                        if (typeEnum == "Layout")
+                        {
+                            result += indent + "\tpublic " + map.ClassTypeName.Substring(0, map.ClassTypeName.IndexOf(":") - 1) + "():base()";
+                        }
+                        else
+                        {
+                            
+                            string optionEnum = map.ClassTypeName.Substring(0, map.ClassTypeName.IndexOf(typeEnum)).Trim();
+                            result += indent + "\tpublic " + map.ClassTypeName.Substring(0, map.ClassTypeName.IndexOf(":") - 1) + "():base(" + typeEnum + "Options." + CamelCaseName( optionEnum) + ")";
+                        }
 
                     }
                     else
@@ -594,7 +604,12 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
                     foreach (SchemaItem child in children)
                     {
 
-
+                        if (child.Name == "groups" && child.ElementType == SchemaElementType.stringOption)
+                        {
+                            // hack
+                            child.ElementType = SchemaElementType.dataArrayOption;
+                        }
+                                                    
 
                         MapNameType childMap = child.map;
 
@@ -1161,7 +1176,11 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
                .Replace("closed", "Closed")
                .Replace("open", "Open")
                .Replace("path", "Path")
-               .Replace("line", "Line")
+               .Replace("hspline", "HSpline")
+               .Replace("spline", "Spline")
+               .Replace("drawline", "DrawLine")
+              
+               //.Replace("line", "Line")
                .Replace("rect", "Rect")
                .Replace("circle", "Circle")
                .Replace("json", "JSON")
@@ -1928,6 +1947,13 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
                 case "attributes.line.shape":
                     switch (node.item.Parent.Parent.Parent.Name)
                     {
+                        case "scattercarpet":
+                        case "scatterpolar":
+                        case "scattersmith":
+                        case "scatterternary":
+                            node.ClassTypeName = "ShapeLineScatterBasicOptions";
+                            node.FileName = "ShapeLineScatterBasicOptions.cs";
+                            break;
                         case "parcats":
                             node.ClassTypeName = "ShapeLineParCatsOptions";
                             node.FileName = "ShapeLineParCatsOptions.cs";
@@ -2776,8 +2802,8 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 
                
                 case "traces.parcoords.attributes":
-                    node.ClassTypeName = "ParallelCoordinateTrace : Trace";
-                    node.FileName = "ParallelCoordinateTrace.cs";
+                    node.ClassTypeName = "ParallelCoordinatesTrace : Trace";
+                    node.FileName = "ParallelCoordinatesTrace.cs";
                     break;
 
               
@@ -3804,8 +3830,8 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
                     break;
 
                 case "frames.items.frames_entry":
-                    node.ClassTypeName = "FrameEntryItem";
-                    node.FileName = "FrameEntryItem.cs";
+                    node.ClassTypeName = "FramesEntryItem";
+                    node.FileName = "FramesEntryItem.cs";
                     break;
                 case "images.items.image":
                     node.ClassTypeName = "ImageItem";
@@ -4020,6 +4046,7 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
                 .Replace("itemname", "ItemName")
                 .Replace("items", "Items")
                 .Replace("json", "Json")
+                .Replace("ticklabel", "TickLabel")
                 .Replace("label", "Label")
                 .Replace("layer", "Layer")
                 .Replace("legendrank", "LegendRank")
@@ -4066,6 +4093,7 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
                 .Replace("polar", "Polar")
                 .Replace("period", "Period")
                 .Replace("position", "Position")
+                .Replace("tickprefix", "TickPrefix")
                 .Replace("prefix", "Prefix")
                 
                 
@@ -4128,6 +4156,7 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
                 .Replace("style", "Style")
                 .Replace("subplotid", "SubplotID")
                 .Replace("subunit", "Subunit")
+                 .Replace("ticksuffix", "TickSuffix")
                 .Replace("suffix", "Suffix")
                 .Replace("surface", "Surface")
                 .Replace("traceref", "TraceRef")
@@ -4140,7 +4169,12 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
                 .Replace("theta", "Theta")
                 .Replace("ticklen", "TickLen")
                 .Replace("tickson", "TicksOn")
-                .Replace("tick", "Tick")
+                .Replace("dtick", "DTick")
+                .Replace("ntick", "NTick")
+                .Replace("autotick", "AutoTick")
+               
+                
+
                 .Replace("title", "Title")
                 .Replace("thousands", "Thousands")
                 .Replace("toself", "ToSelf")

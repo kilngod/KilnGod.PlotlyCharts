@@ -2,9 +2,18 @@
 
 <h3>PlotlySourceGen</h3>
 
-<strong>This needs a rewrite from the lessons learned building out the 0.1 library.</strong>
-<br />
+<strong>Release 0.2 - Fully automate the generation of 550+ enums and classes from the "plot-schema.json" file.  </strong>
 
+<br />
+Release 0.1 - Prove we can drive Plotly from Blazor with all charts rendering. This was enough to justify writing a class generator from the schema file.
+<br />
+<br />
+<strong>Notes</strong>
+Plotly.js is extremely "fiddly" with many groups of classes and enums with only a single element different. I would note in the <br />
+
+"https://plotly.com/javascript/scientific-charts/" samples, at lease 3 of the sample plots were setting properties which do not exist in the schema.
+<br />
+<br />
   <button class="btn btn-primary m-1" disabled="@DisabledButtons" @onclick="GenerateSource">Generate Source</button>
   <br />
 

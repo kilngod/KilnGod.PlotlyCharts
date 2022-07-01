@@ -1,4 +1,4 @@
-﻿//***********************************************************************************
+//***********************************************************************************
 // KilnGod.PlotlyCharts 
 //
 // Copyright (c) 2022 James Carpenter (KilnGod)
@@ -9,17 +9,18 @@
 // Source License. See LICENSE.txt for details.
 //***********************************************************************************
 
+using KilnGod.PlotlyCharts.Common;
 using KilnGod.PlotlyCharts.Enumerations;
-using KilnGod.PlotlyCharts.Enumerations.TransformsEnums;
 using KilnGod.PlotlyCharts.Wrappers;
 using System.Dynamic;
 
 namespace KilnGod.PlotlyCharts.Transforms
 {
+
 	public class StyleItem : ValuesObject
 	{
 
-		public StyleItem() : base() { }
+		public StyleItem():base()		{		}
 
 		public string? Target
 		{
@@ -34,6 +35,5 @@ namespace KilnGod.PlotlyCharts.Transforms
 		}
 
 	}
-
-
 }
+

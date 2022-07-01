@@ -21,7 +21,7 @@ namespace KilnGod.PlotlyCharts.Wrappers
 
         }
 
-        public Transform(TransformTypeOptions transformType)
+        public Transform(TransformOptions transformType)
         {
             TransformType = transformType.GetDescription();
         }

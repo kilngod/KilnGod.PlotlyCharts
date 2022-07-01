@@ -13,13 +13,14 @@ using System.Text.Json.Nodes;
 using KilnGod.PlotlyCharts.Enumerations;
 using KilnGod.PlotlyCharts.Configuration;
 using KilnGod.PlotlyCharts.Wrappers;
+using KilnGod.PlotlyCharts.Layouts;
 
 namespace KilnGod.PlotlyCharts
 {
     public static class PlotlyChartExtensions
     {
 
-        public async static ValueTask<JsonObject> validate(this PlotlyChart chart, object data, LayoutInfo layout) => await chart.GetFunctionPlotlyBasis<JsonObject>("validate", data, layout.ValueItems);
+        public async static ValueTask<JsonObject> validate(this PlotlyChart chart, object data, Layout layout) => await chart.GetFunctionPlotlyBasis<JsonObject>("validate", data, layout.ValueItems);
 
         public async static ValueTask<JsonObject> validateTemplate(this PlotlyChart chart, string templateName, object plotObject ) => await chart.GetFunctionPlotlyBasis<JsonObject>("validateTemplate", templateName, plotObject);
 
@@ -31,22 +32,22 @@ namespace KilnGod.PlotlyCharts
 
         public async static ValueTask react(this PlotlyChart chart, object data_or_plotObject) => await chart.SetFunctionPlotlyChart("react", data_or_plotObject);
 
-        public async static ValueTask react(this PlotlyChart chart, TraceList data, LayoutInfo layout) => await chart.SetFunctionPlotlyChart("react", data.Values, layout.ValueItems);
+        public async static ValueTask react(this PlotlyChart chart, TraceList data, Layout layout) => await chart.SetFunctionPlotlyChart("react", data.Values, layout.ValueItems);
 
-        public async static ValueTask react(this PlotlyChart chart, TraceList data, LayoutInfo layout, ConfigInfo config) => await chart.SetFunctionPlotlyChart("react", data.Values, layout.ValueItems, config.ValueItems);
+        public async static ValueTask react(this PlotlyChart chart, TraceList data, Layout layout, ConfigInfo config) => await chart.SetFunctionPlotlyChart("react", data.Values, layout.ValueItems, config.ValueItems);
 
 
         public async static ValueTask newPlot(this PlotlyChart chart, TraceList data) => await chart.SetFunctionPlotlyChart("newPlot", data.Values);
 
-        public async static ValueTask newPlot(this PlotlyChart chart, TraceList data, LayoutInfo layout) => await chart.SetFunctionPlotlyChart("newPlot", data.Values, layout.ValueItems);
+        public async static ValueTask newPlot(this PlotlyChart chart, TraceList data, Layout layout) => await chart.SetFunctionPlotlyChart("newPlot", data.Values, layout.ValueItems);
 
-        public async static ValueTask newPlot(this PlotlyChart chart, TraceList data, LayoutInfo layout, ConfigInfo config) => await chart.SetFunctionPlotlyChart("newPlot", data.Values, layout.ValueItems, config.ValueItems);
+        public async static ValueTask newPlot(this PlotlyChart chart, TraceList data, Layout layout, ConfigInfo config) => await chart.SetFunctionPlotlyChart("newPlot", data.Values, layout.ValueItems, config.ValueItems);
 
         public async static ValueTask purge(this PlotlyChart chart) => await chart.SetFunctionPlotlyChart("purge");
 
-        public async static ValueTask update(this PlotlyChart chart, object data_update, LayoutInfo layout_update) => await chart.SetFunctionPlotlyChart("update", data_update, layout_update.ValueItems);
+        public async static ValueTask update(this PlotlyChart chart, object data_update, Layout layout_update) => await chart.SetFunctionPlotlyChart("update", data_update, layout_update.ValueItems);
 
-        public async static ValueTask relayout(this PlotlyChart chart, LayoutInfo layout_update) => await chart.SetFunctionPlotlyChart("relayout", layout_update.ValueItems);
+        public async static ValueTask relayout(this PlotlyChart chart, Layout layout_update) => await chart.SetFunctionPlotlyChart("relayout", layout_update.ValueItems);
 
         public async static ValueTask restyle(this PlotlyChart chart, object trace_update) => await chart.SetFunctionPlotlyChart("restyle", trace_update);
         public async static ValueTask restyle(this PlotlyChart chart, object trace_update, int trace) => await chart.SetFunctionPlotlyChart("restyle", trace_update, trace);

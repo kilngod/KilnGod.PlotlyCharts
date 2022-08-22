@@ -4,6 +4,23 @@
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <Authors>James Carpenter</Authors>
+    <Company>KilnGod</Company>
+    <PackageReadmeFile>ReadMe.md</PackageReadmeFile>
+    <SignAssembly>False</SignAssembly>
+    <PackageProjectUrl>https://github.com/kilngod/KilnGod.PlotlyCharts</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/kilngod/KilnGod.PlotlyCharts</RepositoryUrl>
+    <PackageTags>Blazor;Charts;Charting;PlotlyCharts</PackageTags>
+    <RepositoryType>git</RepositoryType>
+    <PackageReleaseNotes>0.2 pre-release of a plotly.js as a Blazor code first component.</PackageReleaseNotes>
+    <AssemblyVersion>0.2.0.0</AssemblyVersion>
+    <FileVersion>0.2.0.0</FileVersion>
+    <PackageIcon>ChartIcon.png</PackageIcon>
+    <Description>Blazor component wrapper of Plotly.js library. MIT license works with both WebAssembly and WebServer applications. JavaScript ES6 compliant module.</Description>
+    <Copyright>Copyright 2022 James Carpenter "KilnGod"</Copyright>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
 
   <ItemGroup>
@@ -13,13 +30,24 @@
     <None Remove="JsonSchema\**" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="..\ChartIcon.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Include="..\ReadMe.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
 
   <ItemGroup>
     <SupportedPlatform Include="browser" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.5" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.8" />
   </ItemGroup>
 
 </Project>

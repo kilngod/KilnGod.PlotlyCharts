@@ -22,7 +22,7 @@
             </NavLink>
         </div>
 
-         <div class="nav-item px-3">
+         <div class="nav-item px-3" hidden="@notDebugMode">
             <NavLink class="nav-link" href="PlotlySourceGen">
                 <span class="oi oi-plus" aria-hidden="true"></span> Plotly Schema Gen
             </NavLink>
@@ -33,6 +33,12 @@
 
 @code {
     private bool collapseNavMenu = true;
+
+#if DEBUG
+    private bool notDebugMode = false;
+#else
+    private bool notDebugMode = true;
+#endif
 
     private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
 

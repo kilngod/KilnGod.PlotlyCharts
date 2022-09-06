@@ -7,6 +7,9 @@
 ## Purpose
 I needed a good 2D graphics library, seemed easy enough to make a Blazor wrapper around "plotly.js" library. 
 
+## Sample App
+[KilnGod_Plotly_Charts](https://wonderful-rock-062f91310.1.azurestaticapps.net)
+
 ## Status (alpha 0.1)
 I'm only 20 hours in and have most charts plotting, still needs a lot of work. As I've worked through the "plotly.js" 
 architecture creating c# wrapper objects, currently still a fiddly process. I will need to rerun though the automation 

@@ -32,6 +32,7 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 		public PlotlyChart Chart1 { get; set; }
 
 #nullable enable
+
 		[Inject]
 		public IWebfileRepository? Webfile { get; set; }
 
@@ -40,6 +41,8 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 		static int plotWidth = 800;
 		static int plotHeight = 800;
 
+
+		// common plotly layout used in many examples
 		Layout commonLayout = new Layout() {
 			Margin = new MarginInfo()
 			{
@@ -51,8 +54,17 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 			Height = plotHeight,
 			Width = plotWidth
 		};
+
+		// common plotly config used in many examples
 		ConfigInfo commonConfig = new ConfigInfo() { Responsive = true, Editable = false, DisplayLogo = false };
 
+
+
+		/// <summary>
+		/// Set capture to detect the chart control is ready for action
+		/// </summary>
+		/// <param name="firstRender"></param>
+		/// <returns></returns>
 		protected override async Task OnAfterRenderAsync(bool firstRender)
 		{
 			if (firstRender)
@@ -62,6 +74,12 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 			await base.OnAfterRenderAsync(firstRender);
 		}
 
+
+
+		/// <summary>
+		/// Chart control notifies page render is complete.
+		/// </summary>
+		/// <param name="obj"></param>
 		private void Chart1_InitComplete(PlotlyChart obj)
 		{
 			DisabledButtons = false;
@@ -69,10 +87,15 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 		}
 
 
-		public async void ScatterChart()
-		{
-			//https://plotly.com/javascript/line-and-scatter/
 
+        /// <summary>
+        /// Scatter chart sample from plotly website in C#.
+        ///
+        /// https://plotly.com/javascript/line-and-scatter/
+        /// </summary>
+        public async void ScatterChart()
+		{
+			
 			ScatterTrace trace = new ScatterTrace();
 
 			trace.X = new int[] { 1, 2, 3, 4 };
@@ -93,7 +116,14 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 			await Chart1.newPlot(dataTraces, layout, commonConfig);
 		}
 
-		public async void LogScatterChart()
+
+
+        /// <summary>
+        /// LogScatter chart sample from plotly website in C#.
+		///
+		/// 
+        /// </summary>
+        public async void LogScatterChart()
 		{
 
 			ScatterTrace trace1 = new ScatterTrace()
@@ -108,11 +138,7 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 				Y = new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8 }
 			};
 
-
-
 			TraceList dataTraces = new TraceList(new ScatterTrace[] { trace1, trace2 });
-
-
 
 			Layout layout = new Layout
 			{
@@ -129,9 +155,14 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 		}
 
 
-		public async void BarChart()
+
+        /// <summary>
+        /// Bar chart sample from plotly website in C#.
+		///
+		/// https://plotly.com/javascript/bar-charts/
+        /// </summary>
+        public async void BarChart()
 		{
-			//https://plotly.com/javascript/bar-charts/
 
 			BarTrace trace1 = new BarTrace();
 
@@ -164,10 +195,15 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 		}
 
 
-		public async void PieChart()
-		{
-			//https://plotly.com/javascript/pie-charts/
 
+        /// <summary>
+        /// Pie chart sample from plotly website in C#.
+		///
+		/// https://plotly.com/javascript/pie-charts/
+        /// </summary>
+        public async void PieChart()
+		{
+			
 			PieTrace trace = new PieTrace()
 			{
 
@@ -181,16 +217,18 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 
 			TraceList dataTraces = new TraceList(trace);
 
-
-
 			PieLayout layout = new PieLayout() { Title = new TitleLayoutInfo() { Text = "Pie Chart" }, ShowLegend = false, Height = plotHeight, Width = plotWidth };
 			
-
 			await Chart1.newPlot(dataTraces, layout, commonConfig);
 
 		}
 
-		public async void BubbleChart()
+        /// <summary>
+        ///  Bubble chart sample from plotly website in C#.
+		///
+		/// 
+        /// </summary>
+        public async void BubbleChart()
 		{
 
 			ScatterTrace trace = new ScatterTrace()
@@ -225,7 +263,13 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 		}
 
 
-		public async void TimeSeriesChart()
+
+        /// <summary>
+        /// Time series chart sample from plotly website in C#.
+		///
+		/// 
+        /// </summary>
+        public async void TimeSeriesChart()
 		{
 
 			ScatterTrace trace = new ScatterTrace()
@@ -266,53 +310,60 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 
 		}
 
+
+
+		/// <summary>
+		/// BarPolar chart sample from plotly website in C#.
+		///
+		/// 
+		/// </summary>
 		public async void BarPolarChart()
-        {
+		{
 			TraceList dataTraces = new TraceList(
 				new Trace[] {
-			new BarPolarTrace()
-			{
-				R = new double[] { 77.5, 72.5, 70.0, 45.0, 22.5, 42.5, 40.0, 62.5 },
-				Theta = new string[] { "North", "N-E", "East", "S-E", "South", "S-W", "West", "N-W" },
-				Name = "11-14 m/s",
-				Marker = new MarkerBarPolarInfo() { Color = "rgb(106,81,163)" }
-			},
-			new BarPolarTrace()
-			{
-				R = new double[] { 57.5, 50.0, 45.0, 35.0, 20.0, 22.5, 37.5, 55.0 },
-				Theta = new string[] { "North", "N-E", "East", "S-E", "South", "S-W", "West", "N-W" },
-				Name = "8-11 m/s",
-				Marker = new MarkerBarPolarInfo() { Color = "rgb(158,154,200)" }
-			},
-			new BarPolarTrace()
-			{
-				R = new double[] { 40.0, 30.0, 30.0, 35.0, 7.5, 7.5, 32.5, 40.0 },
-				Theta = new string[] { "North", "N-E", "East", "S-E", "South", "S-W", "West", "N-W" },
-				Name = "5-8 m/s",
-				Marker = new MarkerBarPolarInfo() { Color = "rgb(203,201,226)" }
-			},
-			new BarPolarTrace()
-			{
-				R = new double[] { 20.0, 7.5, 15.0, 22.5, 2.5, 2.5, 12.5, 22.5 },
-				Theta = new string[] { "North", "N-E", "East", "S-E", "South", "S-W", "West", "N-W" },
-				Name = "< 5 m/s",
-				Marker = new MarkerBarPolarInfo() { Color = "rgb(242,240,247)" }
-			}
+				new BarPolarTrace()
+				{
+					R = new double[] { 77.5, 72.5, 70.0, 45.0, 22.5, 42.5, 40.0, 62.5 },
+					Theta = new string[] { "North", "N-E", "East", "S-E", "South", "S-W", "West", "N-W" },
+					Name = "11-14 m/s",
+					Marker = new MarkerBarPolarInfo() { Color = "rgb(106,81,163)" }
+				},
+				new BarPolarTrace()
+				{
+					R = new double[] { 57.5, 50.0, 45.0, 35.0, 20.0, 22.5, 37.5, 55.0 },
+					Theta = new string[] { "North", "N-E", "East", "S-E", "South", "S-W", "West", "N-W" },
+					Name = "8-11 m/s",
+					Marker = new MarkerBarPolarInfo() { Color = "rgb(158,154,200)" }
+				},
+				new BarPolarTrace()
+				{
+					R = new double[] { 40.0, 30.0, 30.0, 35.0, 7.5, 7.5, 32.5, 40.0 },
+					Theta = new string[] { "North", "N-E", "East", "S-E", "South", "S-W", "West", "N-W" },
+					Name = "5-8 m/s",
+					Marker = new MarkerBarPolarInfo() { Color = "rgb(203,201,226)" }
+				},
+				new BarPolarTrace()
+				{
+					R = new double[] { 20.0, 7.5, 15.0, 22.5, 2.5, 2.5, 12.5, 22.5 },
+					Theta = new string[] { "North", "N-E", "East", "S-E", "South", "S-W", "West", "N-W" },
+					Name = "< 5 m/s",
+					Marker = new MarkerBarPolarInfo() { Color = "rgb(242,240,247)" }
+				}
 				}
 			);
 
 
 			BarPolarLayout layout = new BarPolarLayout()
 			{
-				Title = new TitleLayoutInfo() { Text= "Wind Speed Distribution in Laurel, NE" },
-				Font = new FontInfo() { Size=16},
-				Legend = new LegendInfo() { Font = new FontInfo() { Size=16} },
+				Title = new TitleLayoutInfo() { Text = "Wind Speed Distribution in Laurel, NE" },
+				Font = new FontInfo() { Size = 16 },
+				Legend = new LegendInfo() { Font = new FontInfo() { Size = 16 } },
 				BarMode = BarPolarBarModeOptions.Overlay,
 				BarGap = 0,
 				Polar = new PolarInfo()
 				{
 					RadialAxis = new RadialAxisInfo() { TickSuffix = "%", Angle = 45, DTick = 20 },
-					AngularAxis = new AngularAxisInfo() { Direction= DirectionOptions.Clockwise}
+					AngularAxis = new AngularAxisInfo() { Direction = DirectionOptions.Clockwise }
 				},
 				Height = plotHeight,
 				Width = plotWidth
@@ -321,7 +372,13 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 			await Chart1.newPlot(dataTraces, layout, commonConfig);
 		}
 
-		public async void ScatterTernaryChart()
+
+        /// <summary>
+        /// ScatterTernary chart sample from plotly website in C#.
+		///
+		/// 
+        /// </summary>
+        public async void ScatterTernaryChart()
 		{
 			if (Webfile != null)
 			{
@@ -451,12 +508,15 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 				}
 			}
 		}
-		
 
-		public async void SunburstChart()
+        /// <summary>
+        /// Sunburst chart sample from plotly website in C#.
+		///
+		/// https://plotly.com/javascript/sunburst-charts/
+        /// </summary>
+        public async void SunburstChart()
 		{
-			//https://plotly.com/javascript/sunburst-charts/
-
+			
 			if (Webfile != null)
 			{
 				string? fileText = await Webfile.DownloadText("https://raw.githubusercontent.com/plotly/datasets/master/coffee-flavors.csv");
@@ -516,7 +576,14 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 			}
 		}
 
-		public async void IcicleChart()
+
+
+        /// <summary>
+        /// Icicle chart sample from plotly website in C#.
+		///
+		/// 
+        /// </summary>
+        public async void IcicleChart()
         {
 			if (Webfile != null)
 			{
@@ -575,10 +642,16 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 			}
 		}
 
-		public async void PointCloudChart()
-		{
-			//https://plotly.com/javascript/pointcloud/
 
+
+        /// <summary>
+        /// PointCloud chart sample from plotly website in C#.
+		///
+		/// https://plotly.com/javascript/pointcloud/
+        /// </summary>
+        public async void PointCloudChart()
+		{
+			
 			TraceList dataTraces = new TraceList(
 				new Trace[] {
 					new PointCloudTrace()
@@ -665,10 +738,16 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 			await Chart1.newPlot(dataTraces, layout, commonConfig);
 		}
 
-		public async void SankeyChart()
-        {
-			//https://plotly.com/javascript/sankey-diagram/
 
+
+        /// <summary>
+        /// Sankey chart sample from plotly website in C#.
+		///
+		/// https://plotly.com/javascript/sankey-diagram/
+        /// </summary>
+        public async void SankeyChart()
+        {
+			
 			TraceList dataTraces = new TraceList(
 				new Trace[] { new SankeyTrace()
 				{
@@ -700,7 +779,14 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 
 		}
 
-		public async void ScatterPolarChart()
+
+
+        /// <summary>
+        /// ScatterPolar chart sample from plotly website in C#.
+		///
+		/// 
+        /// </summary>
+        public async void ScatterPolarChart()
         {
 			TraceList dataTraces = new TraceList(
 				new Trace[] {
@@ -735,10 +821,16 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 			await Chart1.newPlot(dataTraces, layout, commonConfig);
 		}
 
-		public async void TableChart()
-		{
-			//https://plotly.com/javascript/table/
 
+
+        /// <summary>
+        /// Table chart sample from plotly website in C#.
+		///
+		/// https://plotly.com/javascript/table/
+        /// </summary>
+        public async void TableChart()
+		{
+			
 			if (Webfile != null)
 			{
 				string? fileText = await Webfile.DownloadText("https://raw.githubusercontent.com/plotly/datasets/master/Mining-BTC-180.csv");
@@ -820,10 +912,16 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 			}
 		}
 
-		public async void TreeMapChart()
-		{
-			//https://plotly.com/javascript/treemaps/
 
+
+        /// <summary>
+        /// Treemap chart sample from plotly website in C#.
+		///
+		/// https://plotly.com/javascript/treemaps/
+        /// </summary>
+        public async void TreeMapChart()
+		{
+			
 			if (Webfile != null)
 			{
 				string? fileText = await Webfile.DownloadText("https://raw.githubusercontent.com/plotly/datasets/master/coffee-flavors.csv");
@@ -867,10 +965,15 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 		}
 
 
-		public async void CandlestickChart()
-		{
-			//https://plotly.com/javascript/candlestick-charts/
 
+        /// <summary>
+        /// Candlestick chart sample from plotly website in C#.
+		///
+		/// https://plotly.com/javascript/candlestick-charts/
+        /// </summary>
+        public async void CandlestickChart()
+		{
+			
 			CandlestickTrace trace = new CandlestickTrace();
 
 
@@ -916,16 +1019,19 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 			};
 
 
-
-
 			await Chart1.newPlot(dataTraces, layout, commonConfig);
 
 		}
 
-		public async void OHLCChart()
-		{
-			//https://plotly.com/javascript/ohlc-charts/
 
+
+        /// <summary>
+        /// OHLC chart sample from plotly website in C#.
+		///
+		/// https://plotly.com/javascript/ohlc-charts/
+        /// </summary>
+        public async void OHLCChart()
+		{
 			OhlcTrace trace = new OhlcTrace();
 
 
@@ -969,18 +1075,20 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 
 			};
 
-
-
-		
-
 			await Chart1.newPlot(dataTraces, layout, commonConfig);
 
 		}
 
-		public async void WaterfallChart()
-		{
-			//https://plotly.com/javascript/waterfall-charts/
 
+
+        /// <summary>
+        /// Waterfall chart sample from plotly website in C#.
+		///
+		/// https://plotly.com/javascript/waterfall-charts/
+        /// </summary>
+        public async void WaterfallChart()
+		{
+			
 			WaterfallTrace waterfallTrace = new WaterfallTrace()
 			{
 				Name = "2018",
@@ -1062,10 +1170,15 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 		}
 
 
-		public async void FunnelChart()
-		{
-			//https://plotly.com/javascript/funnel-charts/
 
+        /// <summary>
+        /// Funnel chart sample from plotly website in C#.
+		///
+		/// https://plotly.com/javascript/funnel-charts/
+        /// </summary>
+        public async void FunnelChart()
+		{
+			
 			FunnelTrace funnel = new FunnelTrace()
 			{
 				Connector = new FunnelConnectorInfo() { Line = new LineInfo() { Color = "royalblue", Dash = SpikeDashOptions.Dot, Width = 3 } },
@@ -1088,9 +1201,15 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 			await Chart1.newPlot(dataTraces, layout, commonConfig);
 		}
 
-		public async void StackedFunnelChart()
+
+
+        /// <summary>
+        /// StackedFunnel chart sample from plotly website in C#.
+		///
+		/// https://plotly.com/javascript/funnel-charts/
+        /// </summary>
+        public async void StackedFunnelChart()
 		{
-			//https://plotly.com/javascript/funnel-charts/
 
 			FunnelTrace MontreallFunnel = new FunnelTrace()
 			{
@@ -1131,10 +1250,16 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 			await Chart1.newPlot(dataTraces, layout, commonConfig);
 		}
 
-		public async void FunnelAreaChart()
-		{
-			//https://plotly.com/javascript/funnel-charts/
 
+
+        /// <summary>
+        /// FunnelArea chart sample from plotly website in C#.
+		///
+		/// https://plotly.com/javascript/funnel-charts/
+        /// </summary>
+        public async void FunnelAreaChart()
+		{
+			
 			FunnelAreaTrace funnel = new FunnelAreaTrace()
 			{
 				Values = new int[] { 5, 4, 3, 2, 1 },
@@ -1167,11 +1292,15 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 		}
 
 
-		
-		public async void GuageChart()
+
+        /// <summary>
+        /// Gauge chart sample from plotly website in C#
+        ///
+        /// https://plotly.com/javascript/gauge-charts/
+        /// </summary>
+        public async void GuageChart()
 		{
-			//https://plotly.com/javascript/gauge-charts/
-		
+			
 
 			IndicatorTrace guage = new IndicatorTrace()
 			{
@@ -1218,14 +1347,20 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 					Color = "darkblue"
 				}
 			};
+
 			await Chart1.newPlot(dataTraces, layout, commonConfig);
 		}
 
-		
-		public async void BulletChart()
-		{
-			//https://plotly.com/javascript/bullet-charts/
 
+
+        /// <summary>
+        /// Bullet chart sample from plotly website in C#.
+		///
+		/// https://plotly.com/javascript/bullet-charts/
+        /// </summary>
+        public async void BulletChart()
+		{
+			
 			
 			IndicatorTrace bullet = new IndicatorTrace()
 			{
@@ -1257,10 +1392,7 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 						Value = 280
 					},
 				}
-
 			};
-			
-
 
 			TraceList dataTraces = new TraceList(bullet);
 			Layout layout = new Layout()
@@ -1277,10 +1409,16 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 			await Chart1.newPlot(dataTraces, layout, commonConfig);
 		}
 
-		public async void ChoroplethChart()
-		{
-			// https://plotly.com/javascript/aggregations/
 
+
+        /// <summary>
+        /// Choropleth chart sample from plotly website in C#.
+		///
+		/// https://plotly.com/javascript/aggregations/
+        /// </summary>
+        public async void ChoroplethChart()
+		{
+			
 			if (Webfile != null)
 			{
 				string? fileText = await Webfile.DownloadText("https://raw.githubusercontent.com/bcdunbar/datasets/master/worldhappiness.csv");
@@ -1440,10 +1578,15 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 		}
 
 
-		public async void ChoroplethMapboxChart()
-		{
-			//https://plotly.com/python/mapbox-county-choropleth/
 
+        /// <summary>
+        /// CloroplethMap chart sample from plotly website in C#.
+		///
+		/// https://plotly.com/python/mapbox-county-choropleth/
+        /// </summary>
+        public async void ChoroplethMapboxChart()
+		{
+			
 			if (Webfile != null)
 			{
 		
@@ -1507,10 +1650,15 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 			}
 		}
 
-		public async void DensityMapboxChart()
-		{
-			//https://plotly.com/javascript/mapbox-density-heatmaps/
 
+        /// <summary>
+        /// DensityMapbox chart sample from plotly website in C#.
+        ///
+		/// https://plotly.com/javascript/mapbox-density-heatmaps/
+        /// </summary>
+        public async void DensityMapboxChart()
+		{
+			
 			DensityMapboxTrace trace = new DensityMapboxTrace()
 			{
 				Lon = new double[] { 10, 20, 30 },
@@ -1529,10 +1677,16 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 			await Chart1.newPlot(dataTraces, layout, commonConfig);
 		}
 
-		public async void LineGeoChart()
-		{
-			//https://plotly.com/javascript/lines-on-maps/
 
+
+        /// <summary>
+        /// LineGeo chart sample from plotly website in C#.
+		///
+		/// https://plotly.com/javascript/lines-on-maps/
+        /// </summary>
+        public async void LineGeoChart()
+		{
+			
 			if (Webfile != null)
 			{
 				string? fileText = await Webfile.DownloadText("https://raw.githubusercontent.com/plotly/datasets/c34aaa0b1b3cddad335173cb7bc0181897201ee6/2011_february_aa_flight_paths.csv");
@@ -1609,10 +1763,17 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 				}
 			}
 		}
-		public async void ScatterGeoChart()
-		{
-			//https://plotly.com/javascript/filled-area-on-mapbox/
 
+
+
+        /// <summary>
+        /// ScatterGeo chart sample from plotly website in C#.
+		///
+		/// https://plotly.com/javascript/filled-area-on-mapbox/
+        /// </summary>
+        public async void ScatterGeoChart()
+		{
+			
 			ScatterGeoTrace geo = new ScatterGeoTrace()
 			{
 				Locations = new string[] { "FRA", "DEU", "RUS", "ESP" },
@@ -1642,13 +1803,16 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 			await Chart1.newPlot(dataTraces, layout, commonConfig);
 		}
 
-		
 
-	
-		public async void ScatterMapboxChart()
+
+        /// <summary>
+        /// ScatterMapbox chart sample from plotly website in C#.
+		///
+		/// https://plotly.com/javascript/scattermapbox/
+        /// </summary>
+        public async void ScatterMapboxChart()
 		{
-		   // https://plotly.com/javascript/scattermapbox/
-
+		   
 			ScatterMapboxTrace trace = new ScatterMapboxTrace()
 			{
 				Fill = FillMapboxOptions.ToSelf,
@@ -1670,10 +1834,15 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 			await Chart1.newPlot(dataTraces, layout);
 		}
 
-		public async void ContourChart()
-		{
-			//https://plotly.com/javascript/contour-plots/
 
+
+        /// <summary>
+        /// Contour chart sample from plotly website in C#.
+		///
+		/// https://plotly.com/javascript/contour-plots/
+        /// </summary>
+        public async void ContourChart()
+		{
 			var data = new object[] {
 				new double[] { 10, 10.625, 12.5, 15.625, 20 },
 				new double[] { 5.625, 6.25, 8.125, 11.25, 15.625 },
@@ -1699,10 +1868,16 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 			await Chart1.newPlot(dataTraces, layout, commonConfig);
 		}
 
-		public async void ContourCarpetChart()
-		{
-			// https://plotly.com/javascript/carpet-contour/
 
+
+        /// <summary>
+        /// ContourCarpet chart sample from plotly website in C#.
+		///
+		/// https://plotly.com/javascript/carpet-contour/
+        /// </summary>
+        public async void ContourCarpetChart()
+		{
+			
 			ContourCarpetTrace trace1 = new ContourCarpetTrace()
 			{
 				A = new double[] { 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3 },
@@ -1745,10 +1920,16 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 			await Chart1.newPlot(dataTraces, layout, commonConfig);
 
 		}
-		public async void HeatmapChart()
-		{
-			//https://plotly.com/javascript/heatmaps/
 
+
+        /// <summary>
+        /// Heatmap chart sample from plotly website in C#.
+		///
+		/// https://plotly.com/javascript/heatmaps/
+        /// </summary>
+        public async void HeatmapChart()
+		{
+			
 			TraceList dataTraces = new TraceList(new HeatmapTrace()
 			{
 				X = new string[] { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday" },
@@ -1763,12 +1944,15 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 		}
 
 
-		public async void ParallelCoordinateChart()
+
+
+        /// <summary>
+        /// ParallelCoordinate chart sample from plotly website in C#.
+		///
+		/// https://plotly.com/javascript/parallel-coordinates-plot/
+        /// </summary>
+        public async void ParallelCoordinateChart()
 		{
-
-
-
-			//https://plotly.com/javascript/parallel-coordinates-plot/
 
 			if (Webfile != null)
 			{
@@ -1907,10 +2091,16 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 			}
 		}
 
-		public async void PolarChart()
-		{
-			//https://plotly.com/javascript/polar-chart/
 
+
+        /// <summary>
+        /// Polar chart sample from plotly website in C#.
+		///
+		/// https://plotly.com/javascript/polar-chart/
+        /// </summary>
+        public async void PolarChart()
+		{
+			
 			ScatterPolarTrace polar1 = new ScatterPolarTrace()
 			{
 				Mode = new ModeScatterOptions[] { ModeScatterOptions.Lines },
@@ -1960,8 +2150,6 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 
 			TraceList dataTraces = new TraceList(new Trace[] { polar1, polar2, polar3, polar4, polar5 });
 
-
-
 			Layout layout = new Layout()
 			{
 				Title = new TitleLayoutInfo() { Text = "Polar Chart" },
@@ -1975,11 +2163,14 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 		}
 
 
-
-		public async void ScatterCarpetChart()
+        /// <summary>
+        /// ScatterCarpet chart sample from plotly website in C#.
+		///
+		/// https://plotly.com/javascript/carpet-scatter/
+        /// </summary>
+        public async void ScatterCarpetChart()
 		{
-			//https://plotly.com/javascript/carpet-scatter/
-
+			
 			CarpetTrace trace1 = new CarpetTrace()
 			{
 				A = new double[] { 4e-6, 4e-6, 4e-6, 4.5e-6, 4.5e-6, 4.5e-6, 5e-6, 5e-6, 5e-6, 6e-6, 6e-6, 6e-6 },
@@ -2005,10 +2196,16 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 
 		}
 
-		public async void ScatterSmithChart()
-        {
-			//https://plotly.com/python/smith-charts/
 
+
+        /// <summary>
+        /// ScatterSmith chart sample from plotly website in C#.
+		///
+		/// https://plotly.com/python/smith-charts/
+        /// </summary>
+        public async void ScatterSmithChart()
+        {
+			
 			ScatterSmithTrace trace = new ScatterSmithTrace()
 			{
 				Real = new double[] { 0.5, 1, 2, 3 },
@@ -2020,10 +2217,17 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 			await Chart1.newPlot(dataTraces, commonLayout, commonConfig);
 		}
 
-		public async void TernaryChart()
-		{
-			//https://plotly.com/javascript/ternary-plots/
 
+
+
+        /// <summary>
+        /// Ternary chart sample from plotly website in C#.
+        ///
+        /// https://plotly.com/javascript/ternary-plots/
+        /// </summary>
+        public async void TernaryChart()
+		{
+			
 			ScatterTernaryTrace trace = new ScatterTernaryTrace()
 			{
 				A = new double[] { 75, 70, 75, 5, 10, 10, 20, 10, 15, 10, 20 },
@@ -2097,10 +2301,16 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 			await Chart1.newPlot(dataTraces, layout, commonConfig);
 		}
 
-		public async void BoxChart()
-		{
-			//https://plotly.com/javascript/box-plots/
 
+
+        /// <summary>
+        /// Box chart sample from plotly website in C#.
+		///
+		/// https://plotly.com/javascript/box-plots/
+        /// </summary>
+        public async void BoxChart()
+		{
+			
 			var xPlayers = new string[]
 			{
 				"Carmelo<br />Anthony",
@@ -2187,17 +2397,47 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 		}
 
 
-		static double NextDouble(double min, double max)
-		{
-			System.Random random = new System.Random();
+        private static System.Random random = new System.Random();
+
+        /// <summary>
+        /// Random double generator
+        /// </summary>
+        /// <param name="min"></param>
+        /// <param name="max"></param>
+        /// <returns></returns>
+        static double NextDouble(double min, double max)
+		{ 
 			double val = (random.NextDouble() * (max - min) + min);
 			return val;
 		}
 
-		public async void Histogram()
-		{
-		//https://plotly.com/javascript/histograms/
+		/// <summary>
+		/// Random double[] generator
+		/// </summary>
+		/// <param name="num"></param>
+		/// <param name="mul"></param>
+		/// <returns></returns>
+        public double[] BoxRandom(int num, double mul)
+        {
+            double[] result = new double[num];
+            for (int i = 0; i < num; i++)
+            {
+                result[i] = random.NextDouble() * mul;
 
+            }
+            return result;
+        }
+
+
+
+        /// <summary>
+        /// Histogram chart sample from plotly website in C#.
+		///
+		/// https://plotly.com/javascript/histograms/
+        /// </summary>
+        public async void Histogram()
+		{
+		
 			int size = 500;
 			var x1 = new double[size];
 			var y1 = new double[size];
@@ -2222,8 +2462,6 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 				Opacity = 0.5,
 				XBins = new BinsInfo() { End = 2.8, Size = 0.06, Start = 0.5 }
 			};
-
-
 
 			HistogramTrace trace2 = new HistogramTrace()
 			{
@@ -2260,10 +2498,15 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 		}
 
 
-		public async void HistogramContour2D()
-		{
-			//https://plotly.com/javascript/2d-histogram-contour/
 
+        /// <summary>
+        /// HistogramContour chart sample from plotly website in C#.
+		///
+		/// https://plotly.com/javascript/2d-histogram-contour/
+        /// </summary>
+        public async void HistogramContour2D()
+		{
+			
 			int size = 500;
 			var x = new double[size];
 			var y = new double[size];
@@ -2292,28 +2535,18 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 
 			TraceList dataTraces = new TraceList(trace);
 
-
-
 			await Chart1.newPlot(dataTraces, commonLayout, commonConfig);
 		}
 
 
-		public double[] BoxRandom(int num, double mul)
+        /// <summary>
+        /// ParallelCategories chart sample from plotly website in C#.
+		///
+		/// https://plotly.com/javascript/parallel-categories-diagram/
+        /// </summary>
+        public async void ParallelCategoriesChart()
 		{
-			System.Random random = new System.Random();
-			double[] result = new double[num];
-			for (int i = 0; i < num; i++)
-			{
-				result[i] = random.NextDouble() * mul;
-
-			}
-			return result;
-		}
-
-	
-		public async void ParallelCategoriesChart()
-		{
-			//https://plotly.com/javascript/parallel-categories-diagram/
+			
 
 			if (Webfile != null)
 			{
@@ -2412,6 +2645,11 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 		}
 
 
+		/// <summary>
+		/// Lookup color value
+		/// </summary>
+		/// <param name="irisType"></param>
+		/// <returns></returns>
 		public double ColorLookup(string irisType)
 		{
 			double result = 0;
@@ -2431,10 +2669,15 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 			return result;
 		}
 
-		public async void SplomChart()
-		{
-			//https://plotly.com/javascript/splom/
 
+
+        /// <summary>
+        /// Splom chart sample from plotly website in C#.
+		///
+		/// https://plotly.com/javascript/splom/
+        /// </summary>
+        public async void SplomChart()
+		{
 			if (Webfile != null)
 			{
 				string? fileText = await Webfile.DownloadText("https://raw.githubusercontent.com/plotly/datasets/master/iris-data.csv");
@@ -2558,9 +2801,6 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 						HoverMode = HoverModeOptions.Closest,
 						DragMode = LayoutDragModeOptions.Select,
 						PlotBgColor = "rgba(240, 240, 240, 0.95)"
-
-
-
 					};
 					// badly flawed architecture by plotly
 					(layout.ValueItems as dynamic).xaxis = axisx.ValueItems;
@@ -2578,10 +2818,16 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 			}
 		}
 
-		public async void ViolinChart()
-		{
-			//https://plotly.com/javascript/violin/
 
+
+
+        /// <summary>
+        /// Violin chart sample from plotly website in C#.
+		///
+		/// https://plotly.com/javascript/violin/
+        /// </summary>
+        public async void ViolinChart()
+		{
 			if (Webfile != null)
 			{
 				string? fileText = await Webfile.DownloadText("https://raw.githubusercontent.com/plotly/datasets/master/violin_data.csv");
@@ -2659,9 +2905,15 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 			}
 		}
 
-		public async void ConeChart()
+
+
+        /// <summary>
+        /// Cone chart sample from plotly website in C#.
+		///
+		/// https://plotly.com/javascript/cone-plot/
+        /// </summary>
+        public async void ConeChart()
 		{
-			//https://plotly.com/javascript/cone-plot/
 
 			if (Webfile != null)
 			{
@@ -2738,10 +2990,16 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 			}
 		}
 
-		public async void IsoSurface3DChart()
-		{
 
-		 // https://plotly.com/javascript/3d-isosurface-plots/
+
+
+        /// <summary>
+        /// ISOSurfaceChart chart sample from plotly website in C#.
+		///
+		/// https://plotly.com/javascript/3d-isosurface-plots/
+        /// </summary>
+        public async void IsoSurface3DChart()
+		{
 			if (Webfile != null)
 			{
 				string? fileText = await Webfile.DownloadText("https://raw.githubusercontent.com/plotly/datasets/master/clebsch-cubic.csv");
@@ -2794,9 +3052,6 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 							Y = new CapRenderInfo { Show = false },
 							Z = new CapRenderInfo { Show = false }
 						}
-
-
-
 					};
 
 					TraceList dataTraces = new TraceList(new[] { trace1 });
@@ -2829,9 +3084,13 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 
 
 
-		public async void Line3DChart()
-		{
-			// https://plotly.com/javascript/3d-line-plots/
+        /// <summary>
+        /// Line3D chart sample from plotly website in C#.
+        ///
+        /// https://plotly.com/javascript/3d-line-plots/
+        /// </summary>
+        public async void Line3DChart()
+		{		
 			if (Webfile != null)
 			{
 				string? fileText = await Webfile.DownloadText("https://raw.githubusercontent.com/plotly/datasets/master/_3d-line-plot.csv");
@@ -2946,8 +3205,6 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 
 					};
 
-
-
 					TraceList dataTraces = new TraceList(new[] { trace1, trace2, trace3 });
 
 					Layout layout = new Layout()
@@ -2970,10 +3227,16 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 			}
 		}
 
-		public async void Scatter3DChart()
-		{
-			//https://plotly.com/javascript/3d-scatter-plots/
 
+
+        /// <summary>
+        /// Scatter 3D chart sample from plotly website in C#.
+		///
+		/// https://plotly.com/javascript/3d-scatter-plots/
+        /// </summary>
+        public async void Scatter3DChart()
+		{
+			
 			if (Webfile != null)
 			{
 				string? fileText = await Webfile.DownloadText("https://raw.githubusercontent.com/plotly/datasets/master/3d-scatter.csv");
@@ -3025,8 +3288,6 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 						}
 				,
 						Mode = new ModeScatterOptions[] { ModeScatterOptions.Markers }
-
-
 					};
 
 					var trace2lines = from item in lines where item.x2 != string.Empty select item;
@@ -3050,11 +3311,7 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 
 						},
 						Mode = new ModeScatterOptions[] { ModeScatterOptions.Markers }
-
 					};
-
-
-
 
 					TraceList dataTraces = new TraceList(new[] { trace1, trace2 });
 
@@ -3080,10 +3337,16 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 		}
 
 
-		public async void StreamTubeChart()
-		{
-			//https://plotly.com/javascript/streamtube-plot/
 
+
+        /// <summary>
+        /// SteamTube chart sample from plotly website in C#.
+		///
+		/// https://plotly.com/javascript/streamtube-plot/
+        /// </summary>
+        public async void StreamTubeChart()
+		{
+			
 			if (Webfile != null)
 			{
 				string? fileText = await Webfile.DownloadText("https://raw.githubusercontent.com/plotly/datasets/master/streamtube-wind.csv");
@@ -3167,18 +3430,21 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 
 					TraceList dataTraces = new TraceList(trace);
 
-
-
 					await Chart1.newPlot(dataTraces, layout, commonConfig);
 				}
 			}
 		}
 
 
-		public async void Surface3DChart()
-		{
-			// https://plotly.com/javascript/3d-surface-plots/
 
+        /// <summary>
+        /// 3DSurface chart sample from plotly website in C#.
+		///
+		/// https://plotly.com/javascript/3d-surface-plots/
+        /// </summary>
+        public async void Surface3DChart()
+		{
+			
 			if (Webfile != null)
 			{
 				string? fileText = await Webfile.DownloadText("https://raw.githubusercontent.com/plotly/datasets/master/api_docs/mt_bruno_elevation.csv");
@@ -3260,12 +3526,17 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 			}
 		}
 
-		public async void VolumeChart()
+
+
+        /// <summary>
+        /// Volume chart sample from plotly website in C#.
+		///
+		/// https://plotly.com/python/3d-volume-plots/
+		/// https://metacpan.org/pod/Chart::Plotly::Trace::Volume
+        /// </summary>
+        public async void VolumeChart()
         {
-			//https://metacpan.org/pod/Chart::Plotly::Trace::Volume
-
-			//https://plotly.com/python/3d-volume-plots/
-
+			
 			VolumeTrace trace = new Traces.VolumeTrace()
 			{
 				AutoColorScale = false,

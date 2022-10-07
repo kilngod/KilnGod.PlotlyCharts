@@ -1,0 +1,36 @@
+﻿@page "/PlotlyMaps"
+
+<h2>Plotly Map Chart Examples.</h2>
+<table>
+    
+    <!-- this is an extremely simple layout, I'll leave advanced layouts to the experts -->
+    
+    <tr><td width="800px" valign="top"><br />
+    
+        <!-- Plotly chart component-->
+        <PlotlyChart @ref="Chart1"></PlotlyChart>
+        
+    </td><td>&nbsp;</td><td>
+
+
+   
+     <br /><strong>Maps</strong><br />
+     <button class="btn btn-primary m-1" disabled="@DisabledButtons" @onclick="ChoroplethChart">Choropleth</button>
+
+     <button class="btn btn-primary m-1" disabled="@DisabledButtons" @onclick="ChoroplethMapboxChart">Choropleth Mapbox</button>
+
+      <button class="btn btn-primary m-1" disabled="@DisabledButtons" @onclick="DensityMapboxChart">Density Mapbox</button>
+
+     <button class="btn btn-primary m-1" disabled="@DisabledButtons" @onclick="LineGeoChart">Line Geo</button>
+
+     <button class="btn btn-primary m-1" disabled="@DisabledButtons" @onclick="ScatterGeoChart">Geo</button>
+
+    
+
+     <button class="btn btn-primary m-1" disabled="@DisabledButtons" @onclick="ScatterMapboxChart">Scatter Mapbox</button>
+
+
+
+
+ 
+    </td></tr></table>

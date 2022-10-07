@@ -1,0 +1,37 @@
+﻿@page "/PlotlyStatistical"
+
+<h2>Plotly Statistical Charts.</h2>
+<table>
+    
+    <!-- this is an extremely simple layout, I'll leave advanced layouts to the experts -->
+    
+    <tr><td width="800px" valign="top"><br />
+    
+        <!-- Plotly chart component-->
+        <PlotlyChart @ref="Chart1"></PlotlyChart>
+        
+    </td><td>&nbsp;</td><td>
+
+
+
+    <h3>Statistical</h3>
+     <button class="btn btn-primary m-1" disabled="@DisabledButtons" @onclick="BoxChart">Box</button>
+
+     <button class="btn btn-primary m-1" disabled="@DisabledButtons" @onclick="Histogram">Histogram</button>
+
+    <button class="btn btn-primary m-1" disabled="@DisabledButtons" @onclick="HistogramContour2D">2D Histogram Contour</button>
+
+    
+    <button class="btn btn-primary m-1" disabled="@DisabledButtons" @onclick="ParallelCategoriesChart">Parallel Categories</button>
+    
+
+    <button class="btn btn-primary m-1" disabled="@DisabledButtons" @onclick="SplomChart">Splom</button>
+
+    
+    <button class="btn btn-primary m-1" disabled="@DisabledButtons" @onclick="ViolinChart">Violin</button>
+
+
+
+
+ 
+    </td></tr></table>

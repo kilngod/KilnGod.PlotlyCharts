@@ -1,0 +1,41 @@
+﻿@page "/PlotlySpecialty"
+
+<h2>Plotly Specialty Chart Examples.</h2>
+<table>
+    
+    <!-- this is an extremely simple layout, I'll leave advanced layouts to the experts -->
+    
+    <tr><td width="800px" valign="top"><br />
+    
+        <!-- Plotly chart component-->
+        <PlotlyChart @ref="Chart1"></PlotlyChart>
+        
+    </td><td>&nbsp;</td><td>
+
+
+
+            <br /><strong>Specialty</strong><br />
+     <button class="btn btn-primary m-1" disabled="@DisabledButtons" @onclick="IcicleChart">Icicle</button>
+
+      <button class="btn btn-primary m-1" disabled="@DisabledButtons" @onclick="PointCloudChart">Point Cloud</button>
+
+    <button class="btn btn-primary m-1" disabled="@DisabledButtons" @onclick="SankeyChart">Sankey</button>
+    
+     <button class="btn btn-primary m-1" disabled="@DisabledButtons" @onclick="ScatterPolarChart">Scatter Polar</button>
+
+     <button class="btn btn-primary m-1" disabled="@DisabledButtons" @onclick="BarPolarChart">Bar Polar</button>
+
+      <button class="btn btn-primary m-1" disabled="@DisabledButtons" @onclick="ScatterTernaryChart">Scatter Ternary</button>
+
+    <button class="btn btn-primary m-1" disabled="@DisabledButtons" @onclick="SunburstChart">Sunburst</button>
+    
+
+      <button class="btn btn-primary m-1" disabled="@DisabledButtons" @onclick="TableChart">Table</button>
+
+    <button class="btn btn-primary m-1" disabled="@DisabledButtons" @onclick="TreeMapChart">Tree Map</button>
+
+
+
+
+ 
+    </td></tr></table>

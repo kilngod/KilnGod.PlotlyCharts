@@ -11,7 +11,7 @@
 //***********************************************************************************
 
 
---><Router AppAssembly="@typeof(App).Assembly" AdditionalAssemblies="new[] {typeof(KilnGod.PlotlyCharts.DemoTest.Pages.PlotlyTest).Assembly, typeof(KilnGod.PlotlyCharts.PlotlyChart).Assembly}">
+--><Router AppAssembly="@typeof(App).Assembly" AdditionalAssemblies="new[] {typeof(KilnGod.PlotlyCharts.DemoTest.Pages.PlotlySimple).Assembly, typeof(KilnGod.PlotlyCharts.PlotlyChart).Assembly}">
     <Found Context="routeData">
         <RouteView RouteData="@routeData" DefaultLayout="@typeof(KilnGod.PlotlyCharts.DemoTest.Shared.MainLayout)" />
         <FocusOnNavigate RouteData="@routeData" Selector="h1" />

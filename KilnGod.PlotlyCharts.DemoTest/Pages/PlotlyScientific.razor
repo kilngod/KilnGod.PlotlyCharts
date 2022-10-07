@@ -1,0 +1,40 @@
+﻿@page "/PlotlyScientific"
+
+<h2>Plotly Scientific Chart Examples.</h2>
+<table>
+    
+    <!-- this is an extremely simple layout, I'll leave advanced layouts to the experts -->
+    
+    <tr><td width="800px" valign="top"><br />
+    
+        <!-- Plotly chart component-->
+        <PlotlyChart @ref="Chart1"></PlotlyChart>
+        
+    </td><td>&nbsp;</td><td>
+
+
+
+
+
+  
+    <br /><strong>Scientific</strong><br />
+    <button class="btn btn-primary m-1" disabled="@DisabledButtons" @onclick="ContourChart">Contour</button>
+
+        <button class="btn btn-primary m-1" disabled="@DisabledButtons" @onclick="ContourCarpetChart">Contour Carpet</button>
+
+    <button class="btn btn-primary m-1" disabled="@DisabledButtons" @onclick="HeatmapChart">Heatmap</button>
+    
+    
+    <button class="btn btn-primary m-1" disabled="@DisabledButtons" @onclick="ParallelCoordinateChart">Parallel Coordinate</button>
+
+    <button class="btn btn-primary m-1" disabled="@DisabledButtons" @onclick="PolarChart">Polar</button>
+
+      <button class="btn btn-primary m-1" disabled="@DisabledButtons" @onclick="ScatterCarpetChart">Scatter Carpet</button>
+
+       <button class="btn btn-primary m-1" disabled="@DisabledButtons" @onclick="ScatterSmithChart">Scatter Smith</button>
+       
+     <button class="btn btn-primary m-1" disabled="@DisabledButtons" @onclick="TernaryChart">Ternary</button>
+
+
+ 
+    </td></tr></table>

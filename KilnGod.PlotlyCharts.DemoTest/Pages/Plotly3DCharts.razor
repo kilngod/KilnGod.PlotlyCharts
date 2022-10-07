@@ -1,0 +1,34 @@
+﻿@page "/Plotly3DCharts"
+
+<h2>Plotly 3D Chart Examples.</h2>
+<table>
+    
+    <!-- this is an extremely simple layout, I'll leave advanced layouts to the experts -->
+    
+    <tr><td width="800px" valign="top"><br />
+    
+        <!-- Plotly chart component-->
+        <PlotlyChart @ref="Chart1"></PlotlyChart>
+        
+    </td><td>&nbsp;</td><td>
+        <br />
+
+    <h3>Basic</h3>
+
+            <button class="btn btn-primary m-1" disabled="@DisabledButtons" @onclick="Line3DChart">Line 3D - Random Walk</button>
+
+            <button class="btn btn-primary m-1" disabled="@DisabledButtons" @onclick="Scatter3DChart">Scatter 3D</button>
+
+    <h3>Surface</h3>
+            <button class="btn btn-primary m-1" disabled="@DisabledButtons" @onclick="Surface3DChart">Surface</button>
+
+            <button class="btn btn-primary m-1" disabled="@DisabledButtons" @onclick="IsoSurface3DChart">ISO Surface 3D</button>
+  
+    <h3>Specialty</h3>
+            <button class="btn btn-primary m-1" disabled="@DisabledButtons" @onclick="StreamTubeChart">Stream Tube</button>
+
+            <button class="btn btn-primary m-1" disabled="@DisabledButtons" @onclick="ConeChart">Cone</button>
+
+            <button class="btn btn-primary m-1" disabled="@DisabledButtons" @onclick="VolumeChart">Volume</button>
+ 
+    </td></tr></table>

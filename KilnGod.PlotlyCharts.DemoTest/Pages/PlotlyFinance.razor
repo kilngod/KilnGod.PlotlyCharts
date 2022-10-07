@@ -1,0 +1,39 @@
+﻿@page "/PlotlyFinance"
+
+<h2>Plotly Finance Chart Examples.</h2>
+<table>
+    
+    <!-- this is an extremely simple layout, I'll leave advanced layouts to the experts -->
+    
+    <tr><td width="800px" valign="top"><br />
+    
+        <!-- Plotly chart component-->
+        <PlotlyChart @ref="Chart1"></PlotlyChart>
+        
+    </td><td>&nbsp;</td><td>
+
+
+    <br /><strong>Finance</strong><br />
+    <button class="btn btn-primary m-1" disabled="@DisabledButtons" @onclick="CandlestickChart">Candlestick</button>
+ 
+    <button class="btn btn-primary m-1" disabled="@DisabledButtons" @onclick="OHLCChart">OHLC</button>
+
+    <button class="btn btn-primary m-1" disabled="@DisabledButtons" @onclick="WaterfallChart">Waterfall</button>
+
+     <button class="btn btn-primary m-1" disabled="@DisabledButtons" @onclick="FunnelChart">Funnel</button>
+
+      <button class="btn btn-primary m-1" disabled="@DisabledButtons" @onclick="StackedFunnelChart">Stacked Funnel</button>
+
+      <button class="btn btn-primary m-1" disabled="@DisabledButtons" @onclick="FunnelAreaChart">Funnel Area</button>
+
+      <button class="btn btn-primary m-1" disabled="@DisabledButtons" @onclick="GuageChart">Guage</button>
+
+        <button class="btn btn-primary m-1" disabled="@DisabledButtons" @onclick="BulletChart">Bullet</button>
+
+   
+
+
+
+
+ 
+    </td></tr></table>

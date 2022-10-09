@@ -14,18 +14,15 @@
 
 
 
-            <br /><strong>Specialty</strong><br />
-     <button class="btn btn-primary m-1" disabled="@DisabledButtons" @onclick="IcicleChart">Icicle</button>
+            <h3>Specialty</h3>
+    
 
-      <button class="btn btn-primary m-1" disabled="@DisabledButtons" @onclick="PointCloudChart">Point Cloud</button>
+      <button @ref="firstButton" id="FirstButton" class="btn btn-primary m-1" disabled="@DisabledButtons" @onclick="PointCloudChart">Point Cloud</button>
 
     <button class="btn btn-primary m-1" disabled="@DisabledButtons" @onclick="SankeyChart">Sankey</button>
-    
-     <button class="btn btn-primary m-1" disabled="@DisabledButtons" @onclick="ScatterPolarChart">Scatter Polar</button>
 
-     <button class="btn btn-primary m-1" disabled="@DisabledButtons" @onclick="BarPolarChart">Bar Polar</button>
-
-      <button class="btn btn-primary m-1" disabled="@DisabledButtons" @onclick="ScatterTernaryChart">Scatter Ternary</button>
+    <h3>Textual</h3>
+            <button class="btn btn-primary m-1" disabled="@DisabledButtons" @onclick="IcicleChart">Icicle</button>
 
     <button class="btn btn-primary m-1" disabled="@DisabledButtons" @onclick="SunburstChart">Sunburst</button>
     

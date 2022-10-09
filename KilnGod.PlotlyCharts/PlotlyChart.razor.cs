@@ -102,6 +102,17 @@ namespace KilnGod.PlotlyCharts
 
         }
 
+        public async ValueTask CallFormMethod(ElementReference refID, string methodName, params object?[]? args)
+        {
+            if (module != null)
+            {
+                module.InvokeVoid("callFormMethod", refID, methodName, args);
+            }
+            else
+            {
+                await asyncModule.InvokeVoidAsync("callFormMethod", refID, methodName, args);
+            }
+        }
 
         public async ValueTask SetValuePlotlyChart(string ValueName, params object?[]? args)
         {

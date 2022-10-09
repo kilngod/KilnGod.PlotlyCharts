@@ -27,6 +27,15 @@ export function initializePlotlyChart(plotlyId, isWebassemblyClient) {
 }
 
 
+export function callFormMethod(elementId, methodName, values)
+{
+    const htmlObject = window.document.getElementById(elementId);
+
+    htmlObject[methodName]();
+
+    return;
+}
+
 export function InjectScript(scriptText) {
     // strict mode on by default in modules
     eval(scriptText);

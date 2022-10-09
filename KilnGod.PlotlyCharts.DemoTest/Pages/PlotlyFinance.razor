@@ -12,20 +12,24 @@
         
     </td><td>&nbsp;</td><td>
 
-
-    <br /><strong>Finance</strong><br />
-    <button class="btn btn-primary m-1" disabled="@DisabledButtons" @onclick="CandlestickChart">Candlestick</button>
+        <h3>Stock</h3> 
+        <button class="btn btn-primary m-1" disabled="@DisabledButtons" @onclick="CandlestickChart">Candlestick</button>
  
     <button class="btn btn-primary m-1" disabled="@DisabledButtons" @onclick="OHLCChart">OHLC</button>
 
+
+            <h3>Revenue</h3>
+            <button class="btn btn-primary m-1" disabled="@DisabledButtons" @onclick="FunnelChart">Funnel</button>
+
+            <button class="btn btn-primary m-1" disabled="@DisabledButtons" @onclick="StackedFunnelChart">Stacked Funnel</button>
+
+            <button class="btn btn-primary m-1" disabled="@DisabledButtons" @onclick="FunnelAreaChart">Funnel Area</button>
+
+
     <button class="btn btn-primary m-1" disabled="@DisabledButtons" @onclick="WaterfallChart">Waterfall</button>
 
-     <button class="btn btn-primary m-1" disabled="@DisabledButtons" @onclick="FunnelChart">Funnel</button>
-
-      <button class="btn btn-primary m-1" disabled="@DisabledButtons" @onclick="StackedFunnelChart">Stacked Funnel</button>
-
-      <button class="btn btn-primary m-1" disabled="@DisabledButtons" @onclick="FunnelAreaChart">Funnel Area</button>
-
+            <h3>Dashboard</h3>
+    
       <button class="btn btn-primary m-1" disabled="@DisabledButtons" @onclick="GuageChart">Guage</button>
 
         <button class="btn btn-primary m-1" disabled="@DisabledButtons" @onclick="BulletChart">Bullet</button>

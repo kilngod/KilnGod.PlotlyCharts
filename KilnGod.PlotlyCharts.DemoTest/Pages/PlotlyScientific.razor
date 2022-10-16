@@ -1,4 +1,5 @@
 ﻿@page "/PlotlyScientific"
+@inherits DemoBaseComponent
 
 <h2>Plotly Scientific Chart Examples.</h2>
 <table>
@@ -12,25 +13,21 @@
         
     </td><td>&nbsp;</td><td>
 
-          
-    <h3>Contour</h3>    <button class="btn btn-primary m-1" disabled="@DisabledButtons" @onclick="ContourChart">Contour</button>
 
-        <button class="btn btn-primary m-1" disabled="@DisabledButtons" @onclick="ContourCarpetChart">Contour Carpet</button>
+        <h3>Contour</h3>    
+            <button class="btn btn-primary m-1" @ref="firstButton" id="FirstButton" disabled="@DisabledButtons" @onclick="ContourChart">Contour</button>
 
+            <button class="btn btn-primary m-1" disabled="@DisabledButtons" @onclick="ContourCarpetChart">Contour Carpet</button>
 
             <button class="btn btn-primary m-1" disabled="@DisabledButtons" @onclick="ScatterCarpetChart">Scatter Carpet</button>
 
+            <button class="btn btn-primary m-1" disabled="@DisabledButtons" @onclick="HeatmapChart">Heatmap</button>
+        
+            <button class="btn btn-primary m-1" disabled="@DisabledButtons" @onclick="ParallelCoordinateChart">Parallel Coordinate</button>
 
+        <h3>Polar</h3>
 
-    <button class="btn btn-primary m-1" disabled="@DisabledButtons" @onclick="HeatmapChart">Heatmap</button>
-    
-    
-    <button class="btn btn-primary m-1" disabled="@DisabledButtons" @onclick="ParallelCoordinateChart">Parallel Coordinate</button>
-
-    <h3>Polar</h3>
-
-    <button class="btn btn-primary m-1" disabled="@DisabledButtons" @onclick="PolarChart">Polar</button>
-
+            <button class="btn btn-primary m-1" disabled="@DisabledButtons" @onclick="PolarChart">Polar</button>
 
             <button class="btn btn-primary m-1" disabled="@DisabledButtons" @onclick="ScatterPolarChart">Scatter Polar</button>
 
@@ -38,12 +35,12 @@
 
             <button class="btn btn-primary m-1" disabled="@DisabledButtons" @onclick="ScatterSmithChart">Scatter Smith</button>
 
-            <h3>Ternary</h3>
+        <h3>Ternary</h3>
 
             <button class="btn btn-primary m-1" disabled="@DisabledButtons" @onclick="ScatterTernaryChart">Scatter Ternary</button> 
 
        
-     <button class="btn btn-primary m-1" disabled="@DisabledButtons" @onclick="TernaryChart">Ternary</button>
+            <button class="btn btn-primary m-1" disabled="@DisabledButtons" @onclick="TernaryChart">Ternary</button>
 
 
  

@@ -25,7 +25,7 @@ using KilnGod.PlotlyCharts.Transforms;
 
 namespace KilnGod.PlotlyCharts.DemoTest.Pages
 {
-    public partial class PlotlySpecialty
+    public partial class PlotlySpecialty : DemoBaseComponent
     {
 
 #nullable disable
@@ -81,12 +81,14 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 		/// Chart control notifies page render is complete.
 		/// </summary>
 		/// <param name="obj"></param>
-		private void Chart1_InitComplete(PlotlyChart obj)
+		private async void Chart1_InitComplete(PlotlyChart obj)
 		{
-			DisabledButtons = false;
-			StateHasChanged();
-		//	await Chart1.CallFormMethod(firstButton, "Click");
-		}
+			
+            DisabledButtons = false;
+            StateHasChanged();
+            await CallElementMethod("click", firstButton);
+
+        }
 
 
 

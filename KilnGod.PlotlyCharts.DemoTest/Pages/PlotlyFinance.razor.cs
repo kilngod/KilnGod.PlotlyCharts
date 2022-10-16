@@ -25,8 +25,8 @@ using KilnGod.PlotlyCharts.Transforms;
 
 namespace KilnGod.PlotlyCharts.DemoTest.Pages
 {
-    public partial class PlotlyFinance
-	{
+    public partial class PlotlyFinance : DemoBaseComponent
+    {
 
 #nullable disable
 		public PlotlyChart Chart1 { get; set; }
@@ -41,9 +41,11 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 		static int plotWidth = 800;
 		static int plotHeight = 800;
 
+        public ElementReference firstButton { get; set; }
 
-		// common plotly layout used in many examples
-		Layout commonLayout = new Layout() {
+
+        // common plotly layout used in many examples
+        Layout commonLayout = new Layout() {
 			Margin = new MarginInfo()
 			{
 				L = 0,
@@ -80,11 +82,12 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 		/// Chart control notifies page render is complete.
 		/// </summary>
 		/// <param name="obj"></param>
-		private void Chart1_InitComplete(PlotlyChart obj)
+		private async void Chart1_InitComplete(PlotlyChart obj)
 		{
 			DisabledButtons = false;
 			StateHasChanged();
-		}
+            await CallElementMethod("click", firstButton);
+        }
 
 
 

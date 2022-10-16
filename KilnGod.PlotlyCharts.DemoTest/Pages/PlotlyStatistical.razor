@@ -1,4 +1,5 @@
 ﻿@page "/PlotlyStatistical"
+@inherits DemoBaseComponent
 
 <h2>Plotly Statistical Charts.</h2>
 <table>
@@ -14,24 +15,23 @@
 
 
 
-    <h3>Statistical</h3>
-     <button class="btn btn-primary m-1" disabled="@DisabledButtons" @onclick="BoxChart">Box</button>
+        <h3>Box and Histogram</h3>
+            <button class="btn btn-primary m-1" @ref="firstButton" id="FirstButton" disabled="@DisabledButtons" @onclick="BoxChart">Box</button>
 
-     <button class="btn btn-primary m-1" disabled="@DisabledButtons" @onclick="Histogram">Histogram</button>
+            <button class="btn btn-primary m-1" disabled="@DisabledButtons" @onclick="Histogram">Histogram</button>
 
-    <button class="btn btn-primary m-1" disabled="@DisabledButtons" @onclick="HistogramContour2D">2D Histogram Contour</button>
+            <button class="btn btn-primary m-1" disabled="@DisabledButtons" @onclick="HistogramContour2D">2D Histogram Contour</button>
 
-    
-    <button class="btn btn-primary m-1" disabled="@DisabledButtons" @onclick="ParallelCategoriesChart">Parallel Categories</button>
-    
+        <h3>Alternative</h3>
 
-    <button class="btn btn-primary m-1" disabled="@DisabledButtons" @onclick="SplomChart">Splom</button>
+            <button class="btn btn-primary m-1" disabled="@DisabledButtons" @onclick="ViolinChart">Violin</button>
+            
+            <button class="btn btn-primary m-1" disabled="@DisabledButtons" @onclick="SplomChart">Splom</button>
 
-    
-    <button class="btn btn-primary m-1" disabled="@DisabledButtons" @onclick="ViolinChart">Violin</button>
-
+            <button class="btn btn-primary m-1" disabled="@DisabledButtons" @onclick="ParallelCategoriesChart">Parallel Categories</button>
 
 
 
- 
-    </td></tr></table>
+
+
+        </td></tr></table>

@@ -1,4 +1,5 @@
 ﻿@page "/PlotlyMaps"
+@inherits DemoBaseComponent
 
 <h2>Plotly Map Chart Examples.</h2>
 <table>
@@ -15,24 +16,24 @@
 
    
      <h3>Maps</h3>
-     
-     <button class="btn btn-primary m-1" disabled="@DisabledButtons" @onclick="ChoroplethChart">Choropleth</button>
+
+        <button class="btn btn-primary m-1" @ref="firstButton" id="FirstButton" disabled="@DisabledButtons" @onclick="ChoroplethChart">Choropleth</button>
 
   
 
-    <h3>Geo</h3>
+     <h3>Geo</h3>
 
-     <button class="btn btn-primary m-1" disabled="@DisabledButtons" @onclick="LineGeoChart">Line Geo</button>
+        <button class="btn btn-primary m-1" disabled="@DisabledButtons" @onclick="LineGeoChart">Line Geo</button>
 
-     <button class="btn btn-primary m-1" disabled="@DisabledButtons" @onclick="ScatterGeoChart">Geo</button>
+        <button class="btn btn-primary m-1" disabled="@DisabledButtons" @onclick="ScatterGeoChart">Geo</button>
 
      <h3>Mapbox</h3>
 
-            <button class="btn btn-primary m-1" disabled="@DisabledButtons" @onclick="ChoroplethMapboxChart">Choropleth Mapbox</button>
+        <button class="btn btn-primary m-1" disabled="@DisabledButtons" @onclick="ChoroplethMapboxChart">Choropleth Mapbox</button>
 
-     <button class="btn btn-primary m-1" disabled="@DisabledButtons" @onclick="DensityMapboxChart">Density Mapbox</button>
+        <button class="btn btn-primary m-1" disabled="@DisabledButtons" @onclick="DensityMapboxChart">Density Mapbox</button>
 
-     <button class="btn btn-primary m-1" disabled="@DisabledButtons" @onclick="ScatterMapboxChart">Scatter Mapbox</button>
+        <button class="btn btn-primary m-1" disabled="@DisabledButtons" @onclick="ScatterMapboxChart">Scatter Mapbox</button>
 
 
      <br />

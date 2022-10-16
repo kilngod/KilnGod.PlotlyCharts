@@ -20,7 +20,7 @@ using KilnGod.PlotlyCharts.Wrappers;
 
 namespace KilnGod.PlotlyCharts.DemoTest.Pages
 {
-    public partial class PlotlySourceGen
+    public partial class PlotlySourceGen 
     {
 
         protected ElementReference _textArea1;

@@ -13,6 +13,7 @@
 
 function callElementMethod(functionName, elementRef, values) {
     if (Array.isArray(values)) {
+       
         switch (values.length) {
             case 0: //no parameters empty array
                 elementRef[functionName]();

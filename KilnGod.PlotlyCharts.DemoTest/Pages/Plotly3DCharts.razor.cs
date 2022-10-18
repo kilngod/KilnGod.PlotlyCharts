@@ -85,9 +85,11 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 		private async void Chart1_InitComplete(PlotlyChart obj)
 		{
 			DisabledButtons = false;
-			StateHasChanged();
-
+            StateHasChanged();
+            await CallElementMethod("focus", firstButton);
             await CallElementMethod("click", firstButton);
+
+        
         }
 
 

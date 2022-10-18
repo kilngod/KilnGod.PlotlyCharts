@@ -86,6 +86,7 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 			
             DisabledButtons = false;
             StateHasChanged();
+            await CallElementMethod("focus", firstButton);
             await CallElementMethod("click", firstButton);
 
         }

@@ -8,9 +8,13 @@
 
   <ItemGroup>
     <Compile Remove="JsonSchema\**" />
+    <Compile Remove="Tests\**" />
     <Content Remove="JsonSchema\**" />
+    <Content Remove="Tests\**" />
     <EmbeddedResource Remove="JsonSchema\**" />
+    <EmbeddedResource Remove="Tests\**" />
     <None Remove="JsonSchema\**" />
+    <None Remove="Tests\**" />
   </ItemGroup>
 
 
@@ -24,10 +28,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\KilnGod.PlotlyCharts\KilnGod.PlotlyCharts.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Tests\" />
   </ItemGroup>
 
 </Project>

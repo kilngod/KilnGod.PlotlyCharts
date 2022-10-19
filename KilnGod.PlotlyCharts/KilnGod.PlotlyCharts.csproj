@@ -12,15 +12,18 @@
     <RepositoryUrl>https://github.com/kilngod/KilnGod.PlotlyCharts</RepositoryUrl>
     <PackageTags>Blazor;Charts;Charting;PlotlyCharts</PackageTags>
     <RepositoryType>git</RepositoryType>
-    <PackageReleaseNotes>0.2 pre-release of a plotly.js as a Blazor code first component.</PackageReleaseNotes>
-    <AssemblyVersion>0.2.0.0</AssemblyVersion>
-    <FileVersion>0.2.0.0</FileVersion>
+    <PackageReleaseNotes>0.5 pre-release of Blazor wrapper for plotly.js as code first component.</PackageReleaseNotes>
+    <AssemblyVersion>0.5.0.0</AssemblyVersion>
+    <FileVersion>0.5.0.0</FileVersion>
     <PackageIcon>ChartIcon.png</PackageIcon>
     <Description>Blazor component wrapper of Plotly.js library. MIT license works with both WebAssembly and WebServer applications. JavaScript ES6 compliant module.</Description>
     <Copyright>Copyright 2022 James Carpenter "KilnGod"</Copyright>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Title>Plotly Charts for Blazor Server/WebAssembly </Title>
+    <IncludeSymbols>False</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
 
   <ItemGroup>

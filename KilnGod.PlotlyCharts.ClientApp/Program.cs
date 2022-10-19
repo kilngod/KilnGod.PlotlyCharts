@@ -22,6 +22,4 @@ builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.
 
 builder.Services.AddScoped<IWebfileRepository, WebfileRepository>();
 
-
-await builder.Build().RunAsync();
 await builder.Build().RunAsync();

@@ -64,7 +64,13 @@ namespace KilnGod.PlotlyCharts
 
 
 
-
+        /// <summary>
+        /// OnAfterRenderAsync
+        /// 
+        /// Once the component is loaded in the web browser we want to initialize the isolated JavaScript module to call Plotly.js module functions.
+        /// </summary>
+        /// <param name="firstRender"></param>
+        /// <returns></returns>
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
@@ -129,7 +135,14 @@ namespace KilnGod.PlotlyCharts
         }
 
 
-
+        /// <summary>
+        /// SetFunctionPlotlyChart
+        /// 
+        /// This is a one direction call directly to Plotly.js module passing multiple parameters, this avoids mapping individual functions.
+        /// </summary>
+        /// <param name="FunctionName"></param>
+        /// <param name="args"></param>
+        /// <returns></returns>
         public async ValueTask SetFunctionPlotlyChart(string FunctionName, params object?[]? args)
         {
             if (module != null)
@@ -156,6 +169,18 @@ namespace KilnGod.PlotlyCharts
         }
 
 
+
+        /// <summary>
+        /// SetFunctionPlotlyBasis
+        /// 
+        /// In order to "use" Plotly.js we maintain our own custom "PlotlyBasis" object in the browser with references to browser stored objects.
+        /// For performace reasons we must pass browser object references to "Plotly.js" and minimize sending information accross the wire between 
+        /// the server and the browser. Therefor if we load an image we load it to the browser then display the image from local storage.
+        /// </summary>
+        /// <param name="FunctionName"></param>
+        /// <param name="args"></param>
+        /// <returns></returns>
+
         public async ValueTask SetFunctionPlotlyBasis(string FunctionName, params object?[]? args)
         {
             if (module != null)
@@ -168,6 +193,17 @@ namespace KilnGod.PlotlyCharts
             }
         }
 
+
+
+        /// <summary>
+        /// GetFunctionPlotlyBasis
+        /// 
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="FunctionName"></param>
+        /// <param name="args"></param>
+        /// <returns></returns>
         public async ValueTask<T> GetFunctionPlotlyBasis<T>(string FunctionName, params object?[]? args)
         {
             if (module != null)

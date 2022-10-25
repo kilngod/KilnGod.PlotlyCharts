@@ -12,7 +12,7 @@
 
 import * as Plotly from 'https://cdn.plot.ly/plotly-2.11.1.min.js'
 
-
+///
 export function initializePlotlyChart(plotlyId, isWebassemblyClient) {
     // strict mode on by default in modules
 
@@ -104,7 +104,12 @@ export function setFunctionPlotlyChart(plotlyChart, functionName, values) {
 }
 
 
-
+/// <summary>
+/// PlotlyBasis
+///
+/// This is a browser object which hosts local storage to interaction with plotly.js we do not want to round trip to the server for every plotly call
+/// therefor we want to move data to and from the browser and call plotly.js with references to browser stored objects.
+/// </summary>
 export class PlotlyBasis {
     // strict mode on by default in modules
     constructor(plotlyCanvas, isWebAssemblyClient) {

@@ -16,7 +16,6 @@ using KilnGod.PlotlyCharts.Configuration;
 using KilnGod.PlotlyCharts.Services;
 using KilnGod.PlotlyCharts.Traces;
 using KilnGod.PlotlyCharts.Enumerations;
-
 using KilnGod.PlotlyCharts.Wrappers;
 using KilnGod.PlotlyCharts.DemoTest.Models;
 using KilnGod.PlotlyCharts.Layouts;

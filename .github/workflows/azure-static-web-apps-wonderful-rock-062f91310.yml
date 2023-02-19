@@ -10,31 +10,7 @@ on:
       - master
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v1
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: '6.0.x'
-      - name: Build with dotnet
-        run: dotnet build --configuration Release
-      - name: Test with dotnet
-        run: dotnet test
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v1
-      - name: Pack nuget package
-        run: dotnet pack ./KilnGod.PlotlyCharts/KilnGod.PlotlyCharts.csproj --configuration Release
-        env:
-          MSBUILDSINGLELOADCONTEXT: 1
-      - name: Push package to nuget
-        run: dotnet nuget push **/*.nupkg --api-key ${{secrets.KILNGODPLOTLYCHARTSNUGETAPIKEY}} --source https://api.nuget.org/v3/index.json --skip-duplicate -n
-        
+  
   build_and_deploy_job:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
     runs-on: ubuntu-latest

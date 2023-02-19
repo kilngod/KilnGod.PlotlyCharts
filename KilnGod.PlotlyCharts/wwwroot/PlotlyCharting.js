@@ -10,7 +10,7 @@
 //***********************************************************************************
 
 
-import * as Plotly from 'https://cdn.plot.ly/plotly-2.11.1.min.js'
+import * as Plotly from "./plotly-2.11.1.min.js"
 
 ///
 export function initializePlotlyChart(plotlyId, isWebassemblyClient) {

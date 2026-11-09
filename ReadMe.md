@@ -1,13 +1,14 @@
 # KilnGod.PlotlyCharts
 
 KilnGod.PlotlyCharts is a Blazor component library that exposes Plotly.js chart
-authoring through C# models and a thin JavaScript adapter. It supports Blazor Server
-and Blazor WebAssembly applications.
+authoring through C# models via a thin JavaScript adapter. It supports Blazor Server
+and Blazor WebAssembly applications. 
 
 ![Alt text](./PlotlyGraph.png?raw=true "3D Chart goes here")
 
-## Current release contract
+## Current release contract November 9, 2026.
 
+- Performance optimizations to significantly improve rendering performance. 
 - Target framework: .NET 10 (`net10.0`).
 - Language version: C# 14 (`LangVersion` 14.0).
 - Plotly.js: vendored and pinned to v4.2.0.
@@ -48,9 +49,6 @@ the component has initialized. The public C# model mirrors Plotly data/layout ob
 while the JavaScript boundary remains generic.
 
 ## Architecture
-One of my main complaints is I could not directly inherit from an ExpandoObject, this would have simplified this code base.
-It might be I'll create my own ExpandoObject but for now I've not yet decided to put in that many hours. As goal one is a proof of
-concept that we can create prettly graphs with this Blazor "plotly.js" wrapper.
 
 Plotly internally uses json "sudo" code for ploting, I tried to keep the strongly typed c# plotting code with similar simplicity. 
 ```
@@ -80,7 +78,7 @@ Plotly internally uses json "sudo" code for ploting, I tried to keep the strongl
 
 ```
 
-
+Please review the samples charts and enjoy!
 
 
 

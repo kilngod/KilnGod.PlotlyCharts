@@ -6,7 +6,7 @@
 // File: PlotlySimple.razor.cs
 //
 // This file is part of KilnGod.PlotlyCharts and is distributed under the MIT Open
-// Source License. See LICENSE.txt for details.
+// Source License. See License.txt for details.
 //***********************************************************************************
 
 using Microsoft.AspNetCore.Components;
@@ -91,6 +91,7 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
             await CallElementMethod("click", firstButton);
         }
 
+        #if false // Disabled performance/interop diagnostics; retain for future benchmarking.
         private async Task GenericRestyle(int count)
         {
             var x = new double[count];
@@ -149,6 +150,7 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
                 UpdateStatus = "Burst coalesced superseded updates";
             }
         }
+        #endif
 
 
 

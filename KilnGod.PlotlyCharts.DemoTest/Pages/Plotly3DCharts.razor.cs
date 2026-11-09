@@ -6,7 +6,7 @@
 // File: Plotly3DCharts.razor.cs
 //
 // This file is part of KilnGod.PlotlyCharts and is distributed under the MIT Open
-// Source License. See LICENSE.txt for details.
+// Source License. See License.txt for details.
 //***********************************************************************************
 
 using Microsoft.AspNetCore.Components;

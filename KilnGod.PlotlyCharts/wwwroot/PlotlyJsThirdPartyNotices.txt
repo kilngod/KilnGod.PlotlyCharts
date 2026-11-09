@@ -45,6 +45,5 @@ The exact lockfile SHA-256 is
 ed88e7bde13af856befac1efb2f9013f3f3a12de76e884bb394432b1131c57e3.
 The lockfile metadata records permissive licenses including MIT, ISC, BSD-2-Clause,
 BSD-3-Clause, Apache-2.0, 0BSD, MIT-0, CC0-1.0, Public Domain, Unlicense, and Zlib.
-The complete dependency/license metadata is documented in
-codex/PlotlyJsProvenance.md and must be regenerated whenever the vendored Plotly
+The dependency/license metadata must be regenerated whenever the vendored Plotly
 asset changes.

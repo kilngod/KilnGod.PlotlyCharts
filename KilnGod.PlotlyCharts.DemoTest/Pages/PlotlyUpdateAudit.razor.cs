@@ -1,4 +1,5 @@
-﻿//***********************************************************************************
+﻿#if false // Disabled developer-only interop audit; keep out of the sample app.
+//***********************************************************************************
 // KilnGod.PlotlyCharts
 //
 // File: PlotlyUpdateAudit.razor.cs
@@ -631,3 +632,4 @@ public partial class PlotlyUpdateAudit : DemoBaseComponent
         .Select(index => Math.Sin(index / 35d) + offset)
         .ToArray();
 }
+#endif

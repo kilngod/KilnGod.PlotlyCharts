@@ -23,6 +23,7 @@
 
         <button class="btn btn-primary m-1" disabled="@DisabledButtons" @onclick="TimeSeriesChart">Time Series</button>
 
+        @* Disabled performance/interop diagnostics; retain the implementation for future benchmarking.
         <button class="btn btn-secondary m-1" disabled="@DisabledButtons" @onclick="() => GenericRestyle(1000)">Generic Restyle 1K</button>
 
         <button class="btn btn-secondary m-1" disabled="@DisabledButtons" @onclick="() => GenericRestyle(10000)">Generic Restyle 10K</button>
@@ -37,7 +38,7 @@
 
         <button class="btn btn-warning m-1" disabled="@DisabledButtons" @onclick="BurstRestyle">Burst Restyle</button>
 
-        <span class="m-1">@UpdateStatus</span>
+        <span class="m-1">@UpdateStatus</span> *@
 
     <h3>Region</h3>
 

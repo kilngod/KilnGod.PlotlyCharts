@@ -1,4 +1,5 @@
-﻿//***********************************************************************************
+﻿#if false // Disabled developer-only schema-generation tooling.
+//***********************************************************************************
 // KilnGod.PlotlyCharts
 //
 // Copyright (c) 2022 James Carpenter (KilnGod)
@@ -6,7 +7,7 @@
 // File: PlotlySourceGen.cs
 //
 // This file is part of KilnGod.PlotlyCharts and is distributed under the MIT Open
-// Source License. See LICENSE.txt for details.
+// Source License. See License.txt for details.
 //***********************************************************************************
 
 using System.Text.Json;
@@ -4153,3 +4154,4 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 
     }
 }
+#endif

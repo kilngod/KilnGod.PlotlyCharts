@@ -47,18 +47,6 @@ Place a `PlotlyChart` component in a Razor component and call chart operations a
 the component has initialized. The public C# model mirrors Plotly data/layout objects
 while the JavaScript boundary remains generic.
 
-## Validation evidence
-
-The modernization and distribution audits are recorded in the `codex` folder:
-
-- `EndToEndValidation.md`
-- `PackageDistributionIntegrity.md`
-- `PlotlyJsProvenance.md`
-- `PlotlyModelValidation.md`
-
-Build and package commands are documented there with the exact .NET SDK and asset
-hashes used for the release audit.
-
 ## Architecture
 One of my main complaints is I could not directly inherit from an ExpandoObject, this would have simplified this code base.
 It might be I'll create my own ExpandoObject but for now I've not yet decided to put in that many hours. As goal one is a proof of

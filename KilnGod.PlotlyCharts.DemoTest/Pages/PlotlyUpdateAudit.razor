@@ -1,4 +1,6 @@
-﻿@page "/PlotlyUpdateAudit"
+﻿@* The interop/update audit page is retained as disabled developer tooling.
+   It is intentionally not part of the sample application's user-facing surface.
+@page "/PlotlyUpdateAudit"
 @inherits DemoBaseComponent
 
 <h2>Plotly Update Shape Audit</h2>
@@ -46,3 +48,4 @@
 <button class="btn btn-secondary m-1" disabled="@(!Ready)" @onclick="RunQuiverNumericFields">Quiver x/y/u/v fields</button>
 
 <p class="mt-2">@NumericStatus</p>
+*@

@@ -18,7 +18,7 @@ namespace KilnGod.PlotlyCharts.DemoTest.SchemaReview
 // File: @filename@
 //
 // This file is part of KilnGod.PlotlyCharts and is distributed under the MIT Open
-// Source License. See LICENSE.txt for details.
+// Source License. See License.txt for details.
 //***********************************************************************************
 
 using KilnGod.PlotlyCharts.Common;
@@ -39,7 +39,7 @@ namespace KilnGod.PlotlyCharts.Layouts
 // File: @filename@
 //
 // This file is part of KilnGod.PlotlyCharts and is distributed under the MIT Open
-// Source License. See LICENSE.txt for details.
+// Source License. See License.txt for details.
 //***********************************************************************************
 
 using KilnGod.PlotlyCharts.Common;
@@ -60,7 +60,7 @@ namespace KilnGod.PlotlyCharts.Frames
 // File: @filename@
 //
 // This file is part of KilnGod.PlotlyCharts and is distributed under the MIT Open
-// Source License. See LICENSE.txt for details.
+// Source License. See License.txt for details.
 //***********************************************************************************
 
 using KilnGod.PlotlyCharts.Common;
@@ -81,7 +81,7 @@ namespace KilnGod.PlotlyCharts.Configuration
 // File: @filename@
 //
 // This file is part of KilnGod.PlotlyCharts and is distributed under the MIT Open
-// Source License. See LICENSE.txt for details.
+// Source License. See License.txt for details.
 //***********************************************************************************
 
 using KilnGod.PlotlyCharts.Common;
@@ -103,7 +103,7 @@ namespace KilnGod.PlotlyCharts.Animations
 // File: @filename@
 //
 // This file is part of KilnGod.PlotlyCharts and is distributed under the MIT Open
-// Source License. See LICENSE.txt for details.
+// Source License. See License.txt for details.
 //***********************************************************************************
 
 using KilnGod.PlotlyCharts.Common;
@@ -126,7 +126,7 @@ namespace KilnGod.PlotlyCharts.Transforms
 // File: @filename@
 //
 // This file is part of KilnGod.PlotlyCharts and is distributed under the MIT Open
-// Source License. See LICENSE.txt for details.
+// Source License. See License.txt for details.
 //***********************************************************************************
 
 using KilnGod.PlotlyCharts.Enumerations;
@@ -148,7 +148,7 @@ namespace KilnGod.PlotlyCharts.Common
 // File: @filename@
 //
 // This file is part of KilnGod.PlotlyCharts and is distributed under the MIT Open
-// Source License. See LICENSE.txt for details.
+// Source License. See License.txt for details.
 //***********************************************************************************
 
 using KilnGod.PlotlyCharts.Common;
@@ -169,7 +169,7 @@ namespace KilnGod.PlotlyCharts.Traces
 // File: @filename@
 //
 // This file is part of KilnGod.PlotlyCharts and is distributed under the MIT Open
-// Source License. See LICENSE.txt for details.
+// Source License. See License.txt for details.
 //***********************************************************************************
 
 using System.ComponentModel;

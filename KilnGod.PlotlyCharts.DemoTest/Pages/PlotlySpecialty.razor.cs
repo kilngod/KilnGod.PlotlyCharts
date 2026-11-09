@@ -229,102 +229,6 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 
 
         /// <summary>
-        /// PointCloud chart sample from plotly website in C#.
-		///
-		/// https://plotly.com/javascript/pointcloud/
-        /// </summary>
-        public async void PointCloudChart()
-		{
-			
-			TraceList dataTraces = new TraceList(
-				new Trace[] {
-					new PointCloudTrace()
-					{
-
-						X = new double[]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9},
-						Y = new double[]{9, 8, 7, 6, 5, 4, 3, 2, 1, 0 },
-						
-				//		Mode = new ModeOptions[] { ModeOptions.Markers },
-						Marker = new MarkerPointCloudInfo()
-						{
-							Border = new BorderInfo(){AreaRatio=0 },
-							SizeMin=0.5,
-							SizeMax=100,
-							Color = "rgba(255, 0, 0, 0.6)"
-							//,	Size = 1
-
-						},
-						Opacity = 0.7
-					},
-					new PointCloudTrace()
-					{
-						
-						X = new double[]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9},
-						Y = new double[]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-						//Mode = ModeOptions.Markers,
-						Marker = new MarkerPointCloudInfo()
-						{
-					//		AreaRatio=0,
-							Blend = true,
-							SizeMin=0.5,
-							SizeMax=100,
-							Color = "rgba(0, 0, 255, 0.9)",
-							Opacity = 0.8
-							//,	Size = 1
-						},
-						Opacity = 0.7
-					},
-					new PointCloudTrace()
-					{
-						X = new double[]{3, 4.5, 6},
-						Y = new double[]{9, 9, 9},
-					//	Mode = ModeOptions.Markers,
-						Marker = new MarkerPointCloudInfo()
-						{							
-							Blend = true,
-							Border = new BorderInfo()
-                            {
-								Color = "rgb(0, 0, 0)",
-								AreaRatio = 0.7071
-							},
-							Color = "green",
-							Opacity = 0.8,
-							SizeMin=0.5,
-							SizeMax=100//,
-							//Size = 1
-							
-						},
-						Opacity = 0.7
-					}
-				}
-				);
-
-			Layout layout = new Layout()
-			{
-				AutoSize = true,
-				ShowLegend = false,
-				Title = new TitleLayoutInfo() { Text = "Basic Point Cloud" },
-				Height = plotHeight,
-				Width = plotWidth,
-				XAxis = new LayoutAxisInfo()
-				{
-					Type = AxisTypeOptions.Linear,
-					Range = new object[] { -1,10 },
-					AutoRange = AutoRangeOptions.True
-				},
-				YAxis = new LayoutYAxisInfo()
-				{
-					Type = AxisTypeOptions.Linear,
-					Range = new object[] { -1,10 },
-					AutoRange = AutoRangeOptions.True
-				}
-			};
-			await Chart1.newPlot(dataTraces, layout, commonConfig);
-		}
-
-
-
-        /// <summary>
         /// Sankey chart sample from plotly website in C#.
 		///
 		/// https://plotly.com/javascript/sankey-diagram/
@@ -362,6 +266,34 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 			await Chart1.newPlot(dataTraces, layout, commonConfig);
 
 		}
+
+
+        /// <summary>Quiver/vector-field sample using Plotly.js' native quiver trace.</summary>
+        public async void QuiverChart()
+        {
+            TraceList dataTraces = new TraceList(
+                new Trace[] { new QuiverTrace
+                {
+                    X = new double[] { 0, 1, 2, 0, 1, 2, 0, 1, 2 },
+                    Y = new double[] { 0, 0, 0, 1, 1, 1, 2, 2, 2 },
+                    U = new double[] { 1, 1, 0, 1, 0, -1, 0, -1, -1 },
+                    V = new double[] { 0, 1, 1, 0, 1, 0, -1, 0, -1 },
+                    LengthFactor = 0.7,
+                    Name = "Vector field",
+                    HoverInfo = "x+y+u+v+name"
+                }});
+
+            Layout layout = new Layout()
+            {
+                Title = new TitleLayoutInfo() { Text = "Quiver vector field" },
+                Height = plotHeight,
+                Width = plotWidth,
+                XAxis = new LayoutAxisInfo() { Range = new double[] { -1, 3 } },
+                YAxis = new LayoutYAxisInfo() { Range = new double[] { -1, 3 } }
+            };
+
+            await Chart1.newPlot(dataTraces, layout, commonConfig);
+        }
 
 
 

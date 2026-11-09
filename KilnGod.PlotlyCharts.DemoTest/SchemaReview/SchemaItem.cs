@@ -49,7 +49,7 @@ namespace KilnGod.PlotlyCharts.DemoTest.SchemaReview
 
         public string RootItemType { get; set; }
         
-        public MapNameType map { get; set; }
+        public MapNameType map { get; set; } = new MapNameType();
 
         public string ContentSchemaName 
         {

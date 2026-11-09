@@ -28,16 +28,16 @@ namespace KilnGod.PlotlyCharts.Wrappers
         Carpet,
         [Description("choropleth")]
         Choropleth,
-        [Description("choroplethmapbox")]
-        ChoroplethMapbox,
+        [Description("choroplethmap")]
+        ChoroplethMap,
         [Description("cone")]
         Cone,
         [Description("contour")]
         Contour,
         [Description("contourcarpet")]
         ContourCarpet,
-        [Description("densitymapbox")]
-        DensityMapbox,
+        [Description("densitymap")]
+        DensityMap,
         [Description("funnel")]
         Funnel,
         [Description("funnelarea")]
@@ -47,6 +47,7 @@ namespace KilnGod.PlotlyCharts.Wrappers
 
         [Description("heatmapgl")]
         HeatmapGL,
+
         [Description("histogram")]
         Histogram,
         [Description("histogram2d")]
@@ -70,8 +71,6 @@ namespace KilnGod.PlotlyCharts.Wrappers
         ParallelCoordinates,
         [Description("pie")]
         Pie,
-        [Description("pointcloud")]
-        PointCloud,
         [Description("sankey")]
         Sankey,
         [Description("scatter")]
@@ -82,10 +81,10 @@ namespace KilnGod.PlotlyCharts.Wrappers
         ScatterCarpet,
         [Description("scattergeo")]
         ScatterGeo,
+        [Description("scattermap")]
+        ScatterMap,
         [Description("scattergl")]
         ScatterGL,
-        [Description("scattermapbox")]
-        ScatterMapbox,
         [Description("scatterpolar")]
         ScatterPolar,
         [Description("scatterpolargl")]
@@ -120,6 +119,8 @@ namespace KilnGod.PlotlyCharts.Wrappers
         Violin,
         [Description("volume")]
         Volume,
+        [Description("quiver")]
+        Quiver,
         [Description("waterfall")]
         Waterfall,
         [Description("ohlc")]

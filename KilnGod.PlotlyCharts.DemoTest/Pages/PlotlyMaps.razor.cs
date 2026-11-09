@@ -251,7 +251,6 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 						},
 						Width = plotWidth,
 						Height = plotHeight,
-						Mapbox = new MapboxInfo() { Style = StyleOptions.StamenTerrain }
 					};
 
 					await Chart1.newPlot(dataTraces, layout, commonConfig);
@@ -261,105 +260,75 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 
 
 
-        /// <summary>
-        /// CloroplethMap chart sample from plotly website in C#.
-		///
-		/// https://plotly.com/python/mapbox-county-choropleth/
-        /// </summary>
-        public async void ChoroplethMapboxChart()
-		{
-			
-			if (Webfile != null)
-			{
-		
+        /// <summary>MapLibre choropleth sample replacing the former Mapbox trace.</summary>
+        public async void ChoroplethMapChart()
+        {
+            ChoroplethMapTrace trace = new ChoroplethMapTrace()
+            {
+                GeoJson = "https://raw.githubusercontent.com/plotly/datasets/master/geojson-counties-fips.json",
+                FeatureIdKey = "id",
+                Locations = new string[] { "06037", "36061", "17031", "48201", "04013" },
+                Z = new double[] { 92, 85, 78, 70, 64 },
+                ColorScale = "Viridis",
+                ShowScale = true,
+                Name = "Sample value",
+                HoverTemplate = "FIPS %{location}<br>Value %{z}<extra></extra>"
+            };
 
-				string? unemploymentdata = await Webfile.DownloadText("https://raw.githubusercontent.com/plotly/datasets/master/fips-unemp-16.csv");
+            await Chart1.newPlot(new TraceList(trace), new Layout()
+            {
+                Title = new TitleLayoutInfo() { Text = "Choropleth Map" },
+                Map = new MapInfo() { Style = "white-bg", Center = new GeoCenterInfo() { Lat = 38, Lon = -96 }, Zoom = 3 },
+                Height = plotHeight,
+                Width = plotWidth
+            }, commonConfig);
+        }
 
-				if (unemploymentdata != null)
-				{
-				
+        /// <summary>MapLibre density sample replacing the former Mapbox trace.</summary>
+        public async void DensityMapChart()
+        {
+            DensityMapTrace trace = new DensityMapTrace()
+            {
+                Lon = new double[] { -122.42, -118.24, -112.07, -104.99, -96.80, -87.63, -74.00, -71.06 },
+                Lat = new double[] { 37.77, 34.05, 33.45, 39.74, 32.78, 41.88, 40.71, 42.36 },
+                Z = new double[] { 18, 28, 12, 20, 16, 24, 36, 30 },
+                Radius = 30,
+                ColorScale = "YlOrRd",
+                ShowScale = true,
+                Name = "City intensity"
+            };
 
-					List<UnemploymentData> unemploymentFipsArea = new List<UnemploymentData>();
+            await Chart1.newPlot(new TraceList(trace), new Layout()
+            {
+                Title = new TitleLayoutInfo() { Text = "Density Map" },
+                Map = new MapInfo() { Style = "white-bg", Center = new GeoCenterInfo() { Lat = 39, Lon = -98 }, Zoom = 3 },
+                Height = plotHeight,
+                Width = plotWidth
+            }, commonConfig);
+        }
 
-					string[] rows = unemploymentdata.Split("\n".ToCharArray());
-					
-					for (int i = 0; i < rows.Length; i++)
-					{
-						if (rows[i] == String.Empty || i == 0)
-						{
-							continue;
-						}
-						string[] values = rows[i].Split(",");
+        /// <summary>MapLibre scatter sample replacing the former Mapbox trace.</summary>
+        public async void ScatterMapChart()
+        {
+            ScatterMapTrace trace = new ScatterMapTrace()
+            {
+                Lon = new double[] { -122.42, -118.24, -112.07, -104.99, -96.80, -87.63, -74.00, -71.06 },
+                Lat = new double[] { 37.77, 34.05, 33.45, 39.74, 32.78, 41.88, 40.71, 42.36 },
+                Mode = "markers+text",
+                Text = new string[] { "San Francisco", "Los Angeles", "Phoenix", "Denver", "Houston", "Chicago", "New York", "Boston" },
+                Marker = new { size = 14, color = "#1f77b4" },
+                Name = "Cities",
+                HoverTemplate = "%{text}<extra></extra>"
+            };
 
-						UnemploymentData fipsArea = new UnemploymentData()
-						{
-							Fips = values[0],
-							Unemp = Convert.ToDouble(values[1])				
-
-						};
-
-						unemploymentFipsArea.Add(fipsArea);
-
-					}
-
-
-					ChoroplethMapboxTrace trace = new ChoroplethMapboxTrace()
-					{
-						Z = unemploymentFipsArea.Select(item => item.Unemp).ToArray(),
-						ZMax=12,
-						ZMin=0,
-						Locations  = unemploymentFipsArea.Select(item => item.Fips).ToArray(),
-						GeoJson = "https://raw.githubusercontent.com/plotly/datasets/master/geojson-counties-fips.json",
-						
-					};
-
-					Layout layout = new Layout()
-					{
-						
-						Width = plotWidth,
-						Height = plotHeight,
-						Title = new TitleLayoutInfo() { Text = "2016 US Unemployment by County" },
-						Mapbox = new MapboxInfo() { Style = StyleOptions.CartoPositron, Zoom = 3.2, Center = new GeoCenterInfo() { Lat = 37.0902, Lon = -95.7129 } },
-						ColorAxis = new ColorAxisInfo() { ShowScale=false, ColorScale = ColorScaleOptions.Viridis.GetDescription()},
-						
-					};
-
-					TraceList dataTraces = new TraceList(trace);
-					await Chart1.newPlot(dataTraces, layout, commonConfig);
-
-				}
-
-			}
-		}
-
-
-        /// <summary>
-        /// DensityMapbox chart sample from plotly website in C#.
-        ///
-		/// https://plotly.com/javascript/mapbox-density-heatmaps/
-        /// </summary>
-        public async void DensityMapboxChart()
-		{
-			
-			DensityMapboxTrace trace = new DensityMapboxTrace()
-			{
-				Lon = new double[] { 10, 20, 30 },
-				Lat = new double[] { 15, 25, 35 },
-				Z = new double[] { 1, 3, 2 },
-			};
-			TraceList dataTraces = new TraceList(trace);
-
-			Layout layout = new Layout()
-			{
-				Width = plotWidth,
-				Height = plotHeight,
-				Mapbox = new MapboxInfo() { Style = StyleOptions.StamenTerrain }
-			};
-
-			await Chart1.newPlot(dataTraces, layout, commonConfig);
-		}
-
-
+            await Chart1.newPlot(new TraceList(trace), new Layout()
+            {
+                Title = new TitleLayoutInfo() { Text = "Scatter Map" },
+                Map = new MapInfo() { Style = "white-bg", Center = new GeoCenterInfo() { Lat = 39, Lon = -98 }, Zoom = 3 },
+                Height = plotHeight,
+                Width = plotWidth
+            }, commonConfig);
+        }
 
         /// <summary>
         /// LineGeo chart sample from plotly website in C#.
@@ -487,34 +456,6 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 
 
 
-        /// <summary>
-        /// ScatterMapbox chart sample from plotly website in C#.
-		///
-		/// https://plotly.com/javascript/scattermapbox/
-        /// </summary>
-        public async void ScatterMapboxChart()
-		{
-		   
-			ScatterMapboxTrace trace = new ScatterMapboxTrace()
-			{
-				Fill = FillMapboxOptions.ToSelf,
-				Lon = new double[] { -74, -70, -70, -74 },
-				Lat = new double[] { 47, 47, 45, 45 },
-				Marker = new MarkerMapboxInfo() { Size = 10, Color = "orange" }
-			};
-			TraceList dataTraces = new TraceList(trace);
-
-			Layout layout = new Layout()
-			{
-				Width = plotWidth,
-				Height = plotHeight,
-				ShowLegend = false,
-				Mapbox = new MapboxInfo() { Style = StyleOptions.StamenTerrain, Center = new GeoCenterInfo() { Lat = 46, Lon = -73 }, Zoom = 5 }
-
-			};
-
-			await Chart1.newPlot(dataTraces, layout);
-		}
 
 
 

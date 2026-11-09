@@ -153,6 +153,17 @@ namespace KilnGod.PlotlyCharts.Layouts
 			}
 		}
 
+		MapInfo? _Map = null;
+		public MapInfo? Map
+		{
+			get { return _Map; }
+			set
+			{
+				_Map = value;
+				(ValueItems as dynamic).map = _Map?.ValueItems;
+			}
+		}
+
 		GridInfo? _Grid = null;
 		public GridInfo? Grid
 		{
@@ -221,17 +232,6 @@ namespace KilnGod.PlotlyCharts.Layouts
 			{
 				_Legend = value;
 				(ValueItems as dynamic).legend = _Legend?.ValueItems;
-			}
-		}
-
-		MapboxInfo? _Mapbox = null;
-		public MapboxInfo? Mapbox
-		{
-			get { return _Mapbox; }
-			set
-			{
-				_Mapbox = value;
-				(ValueItems as dynamic).mapbox = _Mapbox?.ValueItems;
 			}
 		}
 

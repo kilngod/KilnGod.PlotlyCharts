@@ -182,8 +182,8 @@ namespace KilnGod.PlotlyCharts.Traces
 			set { (ValueItems as dynamic).reversescale = value; }
 		}
 
-		SelectionMapboxInfo? _Selected = null;
-		public SelectionMapboxInfo? Selected
+		SelectionInfo? _Selected = null;
+		public SelectionInfo? Selected
 		{
 			get { return _Selected; }
 			set
@@ -254,8 +254,8 @@ namespace KilnGod.PlotlyCharts.Traces
 			set { (ValueItems as dynamic).uirevision = value; }
 		}
 
-		SelectionMapboxInfo? _Unselected = null;
-		public SelectionMapboxInfo? Unselected
+		SelectionInfo? _Unselected = null;
+		public SelectionInfo? Unselected
 		{
 			get { return _Unselected; }
 			set

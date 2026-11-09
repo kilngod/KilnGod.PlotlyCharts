@@ -111,12 +111,6 @@ namespace KilnGod.PlotlyCharts.Configuration
 			set { (ValueItems as dynamic).logging = value; }
 		}
 
-		public string? MapboxAccessToken
-		{
-			get { return (ValueItems as dynamic).mapboxaccesstoken; }
-			set { (ValueItems as dynamic).mapboxaccesstoken = value; }
-		}
-
 		public object? ModeBarButtons
 		{
 			get { return (ValueItems as dynamic).modebarbuttons; }

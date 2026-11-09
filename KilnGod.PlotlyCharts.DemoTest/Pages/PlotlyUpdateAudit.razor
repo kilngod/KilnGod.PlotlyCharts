@@ -1,0 +1,48 @@
+﻿@page "/PlotlyUpdateAudit"
+@inherits DemoBaseComponent
+
+<h2>Plotly Update Shape Audit</h2>
+<p>Measures the C# interop call separately from the browser-side Plotly update.</p>
+
+<PlotlyChart @ref="Chart" InteropDiagnostics="@Diagnostics"></PlotlyChart>
+
+<div class="mt-2">
+    <button class="btn btn-secondary m-1" disabled="@(!Ready)" @onclick="RunNewPlot">newPlot</button>
+    <button class="btn btn-secondary m-1" disabled="@(!Ready)" @onclick="RunReact">react</button>
+    <button class="btn btn-secondary m-1" disabled="@(!Ready)" @onclick="RunDataUpdate">update: data-only</button>
+    <button class="btn btn-secondary m-1" disabled="@(!Ready)" @onclick="RunRestyle">restyle: trace-style</button>
+    <button class="btn btn-secondary m-1" disabled="@(!Ready)" @onclick="RunRelayout">relayout: layout-only</button>
+    <button class="btn btn-secondary m-1" disabled="@(!Ready)" @onclick="RunMixedUpdate">update: mixed</button>
+    <button class="btn btn-secondary m-1" disabled="@(!Ready)" @onclick="RunResize">resize</button>
+    <button class="btn btn-secondary m-1" disabled="@(!Ready)" @onclick="RunResizeBurst">25 resize burst</button>
+    <button class="btn btn-secondary m-1" disabled="@(!Ready)" @onclick="RunLosslessTraceBurst">lossless trace burst</button>
+    <button class="btn btn-info m-1" disabled="@(!Ready)" @onclick="RunResourceAudit">resource audit</button>
+    <button class="btn btn-warning m-1" disabled="@(!Ready)" @onclick="RunLifecycleCycles">5 purge/remove cycles</button>
+</div>
+
+<p class="mt-2">@Status</p>
+
+<h3 class="mt-4">3D/WebGL camera and animation audit</h3>
+<PlotlyChart @ref="ThreeDChart" InteropDiagnostics="@ThreeDDiagnostics"></PlotlyChart>
+
+<div class="mt-2">
+    <button class="btn btn-secondary m-1" disabled="@(!ThreeDReady)" @onclick="Run3DNewPlot">3D newPlot</button>
+    <button class="btn btn-secondary m-1" disabled="@(!ThreeDReady)" @onclick="Seed3DCamera">3D set camera</button>
+    <button class="btn btn-secondary m-1" disabled="@(!ThreeDReady)" @onclick="Run3DRestyle">3D restyle</button>
+    <button class="btn btn-secondary m-1" disabled="@(!ThreeDReady)" @onclick="Run3DRelayout">3D relayout</button>
+    <button class="btn btn-secondary m-1" disabled="@(!ThreeDReady)" @onclick="Run3DAnimate">3D animate</button>
+</div>
+
+<p class="mt-2">@ThreeDStatus</p>
+
+<h3 class="mt-4">Batched byte-array field audit</h3>
+<button class="btn btn-secondary m-1" disabled="@(!ThreeDReady)" @onclick="Run3DNumericFields">3D x/y/z 10K byte fields</button>
+<button class="btn btn-secondary m-1" disabled="@(!ThreeDReady)" @onclick="Run3DXOnlyNumericArray">3D x-only optional payload</button>
+<button class="btn btn-secondary m-1" disabled="@(!ThreeDReady)" @onclick="Run3DHostTunedFields">3D host-tuned transport</button>
+<button class="btn btn-secondary m-1" disabled="@(!ThreeDReady)" @onclick="Run3DGenericFields">3D x/y/z 10K generic</button>
+<button class="btn btn-secondary m-1" disabled="@(!ThreeDReady)" @onclick="Run3DStreamFields">3D x/y/z 10K stream</button>
+<button class="btn btn-secondary m-1" disabled="@(!Ready)" @onclick="RunHeatmapMatrix">heatmap z matrix</button>
+<button class="btn btn-secondary m-1" disabled="@(!Ready)" @onclick="RunFinancialNumericFields">financial OHLC fields</button>
+<button class="btn btn-secondary m-1" disabled="@(!Ready)" @onclick="RunQuiverNumericFields">Quiver x/y/u/v fields</button>
+
+<p class="mt-2">@NumericStatus</p>

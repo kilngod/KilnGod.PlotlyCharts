@@ -40,7 +40,7 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
 
         public bool DisabledButtons { get; set; } = true;
 
-        public string OutputFolder { get; set; } = "!PlotlyCode";  // <- only blazor server compliant.
+        public string OutputFolder { get; set; } = "!PlotlyCode";
 
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -49,7 +49,7 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
             {
                 if (Webfile != null)
                 {
-                    string? jsonschema = await Webfile.DownloadText("https://localhost:7132/_content/KilnGod.PlotlyCharts.DemoTest/plot-schema.json");
+                    string? jsonschema = await Webfile.DownloadText("_content/KilnGod.PlotlyCharts.DemoTest/plot-schema.json");
                     AreaText = jsonschema != null ? jsonschema : string.Empty;
                 }
 
@@ -1998,11 +1998,6 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
                     node.FileName = "FillSubsetOptions.cs";
                     break;
 
-                case "scattermapbox.attributes.fill":
-                    node.ClassTypeName = "FillMapboxOptions";
-                    node.FileName = "FillMapboxOptions.cs";
-                    break;
-
 
                 case "scatter.attributes.fill":
                 case "scattergl.attributes.fill":
@@ -2139,7 +2134,6 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
                 case "scattersmith.attributes.textposition":
                 case "scatterpolargl.attributes.textposition":
                 case "scatterpolar.attributes.textposition":
-                case "scattermapbox.attributes.textposition":
                 case "scattergl.attributes.textposition":
                 case "scattergeo.attributes.textposition":
                 case "scattercarpet.attributes.textposition":
@@ -2186,7 +2180,6 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
                 case "scattercarpet.attributes.mode":
                 case "scattergeo.attributes.mode":
                 case "scattergl.attributes.mode":
-                case "scattermapbox.attributes.mode":
                 case "scatterpolar.attributes.mode":
                 case "scatterpolargl.attributes.mode":
                 case "scattersmith.attributes.mode":
@@ -2322,11 +2315,6 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
                     node.FileName = "LinkHoverOptions.cs";
                     break;
 
-                case "densitymapbox.attributes.hoverinfo":
-
-                    node.ClassTypeName = "DensityMapboxHoverOptions";
-                    node.FileName = "DensityMapboxHoverOptions.cs";
-                    break;
                 case "funnel.attributes.hoverinfo":
                     node.ClassTypeName = "FunnelHoverOptions";
                     node.FileName = "FunnelHoverOptions.cs";
@@ -2336,17 +2324,12 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
                     node.ClassTypeName = "AreaHoverOptions";
                     node.FileName = "AreaHoverOptions.cs";
                     break;
-                case "scattermapbox.attributes.hoverinfo":
-                    node.ClassTypeName = "MapboxHoverOptions";
-                    node.FileName = "MapboxHoverOptions.cs";
-                    break;
                 case "scattergeo.attributes.hoverinfo":
 
                     node.ClassTypeName = "GeoHoverOptions";
                     node.FileName = "GeoHoverOptions.cs";
                     break;
                 case "choropleth.attributes.hoverinfo":
-                case "choroplethmapbox.attributes.hoverinfo":
                     node.ClassTypeName = "ChoroplethHoverOptions";
                     node.FileName = "ChoroplethHoverOptions.cs";
                     break;
@@ -2389,7 +2372,6 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
                 case "contour.attributes.hoverinfo":
                 case "splom.attributes.hoverinfo":
                 case "table.attributes.hoverinfo":
-                case "pointcloud.attributes.hoverinfo":
                 case "surface.attributes.hoverinfo":
                 case "volume.attributes.hoverinfo":
                 case "heatmapgl.attributes.hoverinfo":
@@ -2596,10 +2578,8 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
                 case "traces.carpet":
                 case "traces.cone":
                 case "traces.choropleth":
-                case "traces.choroplethmapbox":
                 case "traces.contour":
                 case "traces.contourcarpet":
-                case "traces.densitymapbox":
                 case "traces.funnel":
                 case "traces.funnelarea":
                 case "traces.image":
@@ -2616,13 +2596,11 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
                 case "traces.parcats":
                 case "traces.parcoords":
                 case "traces.pie":
-                case "traces.pointcloud":
                 case "traces.sankey":
                 case "traces.scatter":
                 case "traces.scattercarpet":
                 case "traces.scattergeo":
                 case "traces.scattergl":
-                case "traces.scattermapbox":
                 case "traces.scatterpolar":
                 case "traces.scatterpolargl":
                 case "traces.scattersmith":
@@ -2694,12 +2672,6 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
                     node.FileName = "ChoroplethTrace.cs";
                     break;
 
-                
-                case "traces.choroplethmapbox.attributes":
-                    node.ClassTypeName = "ChoroplethMapboxTrace : Trace";
-                    node.FileName = "ChoroplethMapboxTrace.cs";
-                    break;
-               
                 case "traces.contour.attributes":
                     node.ClassTypeName = "ContourTrace : Trace";
                     node.FileName = "ContourTrace.cs";
@@ -2709,12 +2681,6 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
                     node.ClassTypeName = "ContourCarpetTrace : Trace";
                     node.FileName = "ContourCarpetTrace.cs";
                     break;
-                
-                case "traces.densitymapbox.attributes":
-                    node.ClassTypeName = "DensityMapboxTrace : Trace";
-                    node.FileName = "DensityMapboxTrace.cs";
-                    break;
-
                 
                 case "traces.funnel.attributes":
                     node.ClassTypeName = "FunnelTrace : Trace";
@@ -2812,11 +2778,6 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
                     node.FileName = "PieTrace.cs";
                     break;
 
-              
-                case "traces.pointcloud.attributes":
-                    node.ClassTypeName = "PointCloudTrace : Trace";
-                    node.FileName = "PointCloudTrace.cs";
-                    break;
 
                 case "traces.polar.attributes":
                     node.ClassTypeName = "PolarTrace : Trace";
@@ -2851,11 +2812,6 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
                 case "traces.scattergl.attributes":
                     node.ClassTypeName = "ScatterGLTrace : Trace";
                     node.FileName = "ScatterGLTrace.cs";
-                    break;
-
-                case "traces.scattermapbox.attributes":
-                    node.ClassTypeName = "ScatterMapboxTrace : Trace";
-                    node.FileName = "ScatterMapboxTrace.cs";
                     break;
 
               
@@ -3081,10 +3037,6 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
                     node.FileName = "MarkerPolarGLInfo.cs";
                     break;
 
-                case "scattermapbox.attributes.marker":
-                    node.ClassTypeName = "MarkerMapboxInfo";
-                    node.FileName = "MarkerMapboxInfo.cs";
-                    break;
                 case "scatter3d.attributes.marker":
                     node.ClassTypeName = "MarkerScatter3DInfo";
                     node.FileName = "MarkerScatter3DInfo.cs";
@@ -3122,7 +3074,6 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
                     node.FileName = "MarkerBoxInfo.cs";
                     break;
 
-                case "choroplethmapbox.attributes.marker":
                 case "choropleth.attributes.marker":
                     node.ClassTypeName = "MarkerChoroplethInfo";
                     node.FileName = "MarkerChoroplethInfo.cs";
@@ -3140,10 +3091,6 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
                 case "pie.attributes.marker":
                     node.ClassTypeName = "MarkerPieInfo";
                     node.FileName = "MarkerPieInfo.cs";
-                    break;
-                case "pointcloud.attributes.marker":
-                    node.ClassTypeName = "MarkerPointCloudInfo";
-                    node.FileName = "MarkerPointCloudInfo.cs";
                     break;
                 case "attributes.total.marker":
                     node.ClassTypeName = "MarkerTotalInfo";
@@ -3174,7 +3121,6 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
                     switch(node.item.Parent.Parent.Parent.Name)
                     {
                         case "choropleth":
-                        case "choroplethmapbox":
                             node.ClassTypeName = "MarkerSelectionOpacityInfo";
                             node.FileName = "MarkerSelectionOpacityInfo.cs";
                             break;
@@ -3245,7 +3191,6 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
                     {
                         case "pie":
                         case "choropleth":
-                        case "choroplethmapbox":
                         case "funnelarea":
                         case "treemap":
                             node.ClassTypeName = "LineColorWidthsInfo";
@@ -3264,13 +3209,9 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
                     break;
                 case "choropleth.attributes.unselected":
                 case "choropleth.attributes.selected":
-                case "choroplethmapbox.attributes.unselected":                
-                case "choroplethmapbox.attributes.selected":
-                case "scattermapbox.attributes.unselected":
-                case "scattermapbox.attributes.selected":
                 
-                    node.ClassTypeName = "SelectionMapboxInfo";
-                    node.FileName = "SelectionMapboxInfo.cs";
+                    node.ClassTypeName = "SelectionInfo";
+                    node.FileName = "SelectionInfo.cs";
                     break;
 
                 case "box.attributes.unselected":
@@ -3384,7 +3325,6 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
                 case "box.attributes.line":
                 case "attributes.decreasing.line":
                 case "attributes.increasing.line":
-                case "scattermapbox.attributes.line":
                     node.ClassTypeName = "LineColorWidthInfo";
                     node.FileName = "LineColorWidthInfo.cs";
                     break;
@@ -3588,10 +3528,6 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
                 case "icicle.attributes.textfont":
                     node.ClassTypeName = "TextFontSizesInfo";
                     node.FileName = "TextFontSizesInfo.cs";
-                    break;
-                case "scattermapbox.attributes.textfont":
-                    node.ClassTypeName = "TextFontMapboxInfo";
-                    node.FileName = "TextFontMapboxInfo.cs";
                     break;
                 case "waterfall.attributes.decreasing":
                 case "waterfall.attributes.increasing":

@@ -22,6 +22,7 @@ using KilnGod.PlotlyCharts.DemoTest.Models;
 using KilnGod.PlotlyCharts.Layouts;
 using KilnGod.PlotlyCharts.Common;
 using KilnGod.PlotlyCharts.Transforms;
+using KilnGod.PlotlyCharts.Interop;
 
 namespace KilnGod.PlotlyCharts.DemoTest.Pages
 {
@@ -88,6 +89,65 @@ namespace KilnGod.PlotlyCharts.DemoTest.Pages
             StateHasChanged();
             await CallElementMethod("focus", firstButton);
             await CallElementMethod("click", firstButton);
+        }
+
+        private async Task GenericRestyle(int count)
+        {
+            var x = new double[count];
+            var y = new double[count];
+            for (var index = 0; index < count; index++)
+            {
+                x[index] = index;
+                y[index] = Math.Sin(index / 10d);
+            }
+
+            dynamic update = new ExpandoObject();
+            update.x = x;
+            update.y = y;
+            await PlotlyChartExtensions.restyle(Chart1, update, 0);
+        }
+
+        private async Task ByteRestyle(int count)
+        {
+            var x = new double[count];
+            var y = new double[count];
+            for (var index = 0; index < count; index++)
+            {
+                x[index] = index;
+                y[index] = Math.Sin(index / 10d);
+            }
+
+            await Chart1.restyle(
+                0,
+                PlotlyNumericArray.FromDouble(x),
+                PlotlyNumericArray.FromDouble(y));
+        }
+
+        private string UpdateStatus { get; set; } = string.Empty;
+
+        private async Task BurstRestyle()
+        {
+            var requests = new List<Task>();
+
+            for (var revision = 0; revision < 20; revision++)
+            {
+                var x = new[] { 0d, 1d, 2d };
+                var y = new[] { revision, revision + 1d, revision + 2d };
+                dynamic update = new ExpandoObject();
+                update.x = x;
+                update.y = y;
+                requests.Add(PlotlyChartExtensions.restyle(Chart1, update, 0).AsTask());
+            }
+
+            try
+            {
+                await Task.WhenAll(requests);
+                UpdateStatus = "Burst completed";
+            }
+            catch (TaskCanceledException)
+            {
+                UpdateStatus = "Burst coalesced superseded updates";
+            }
         }
 
 

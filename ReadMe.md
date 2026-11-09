@@ -1,29 +1,63 @@
-# KilnGod.Plotly Blazor Library  
+# KilnGod.PlotlyCharts
 
-### by KilnGod (James Carpenter, yes I love ceramics)
+KilnGod.PlotlyCharts is a Blazor component library that exposes Plotly.js chart
+authoring through C# models and a thin JavaScript adapter. It supports Blazor Server
+and Blazor WebAssembly applications.
 
 ![Alt text](./PlotlyGraph.png?raw=true "3D Chart goes here")
 
-## Purpose
-I needed a good 2D graphics library, seemed easy enough to make a Blazor wrapper around "plotly.js" library. 
+## Current release contract
 
-## Sample App
-[KilnGod_Plotly_Charts](https://wonderful-rock-062f91310.1.azurestaticapps.net)
+- Target framework: .NET 10 (`net10.0`).
+- Language version: C# 14 (`LangVersion` 14.0).
+- Plotly.js: vendored and pinned to v4.2.0.
+- License: MIT for this project and Plotly.js; see `License.txt` and the bundled
+  `PlotlyJsThirdPartyNotices.txt` asset for dependency notices.
 
-## Status (alpha 0.1)
-I'm only 20 hours in and have most charts plotting, still needs a lot of work. As I've worked through the "plotly.js" 
-architecture creating c# wrapper objects, currently still a fiddly process. I will need to rerun though the automation 
-process to reduce the manaual amount of work. "plotly.js" uses a lot of similarily "named" objects with slightly different
-values, as well many diplicate objects with differnt names in their schema. Which make "plotly.js" schema an interesting 
-test to wrap for Blazor interop.
+The Plotly.js runtime is shipped as a local static web asset. The adapter resolves it
+relative to its own module URL, so consuming applications do not need a CDN, local
+machine path, Plotly Cloud account, telemetry service, or proprietary map provider.
 
-## Supports both Blazor Server and WebAssembly clients.
-After a lot of experimenting I determined a simple way to properly wrap any JavaScript ES6 module in a single "module" Blazor component 
-that works in both Blazor Server and WebAssembly. One code base is always better.
+## Sample application
 
-## MIT open style license
-I can see a lot of ways to improve this library. Currently I invest time on the ILGPU open source project on GitHub and I have 
-not decided how much time I want to invest in "plotly" support.
+The demo host contains representative simple, specialty, financial, map, statistical,
+scientific, and 3D/WebGL charts.
+
+## Compatibility notes
+
+Plotly.js v4.2.0 uses the MapLibre trace family (`choroplethmap`, `densitymap`, and
+`scattermap`) instead of the removed Mapbox trace names. The package includes samples
+for the replacement traces and for Quiver vector fields. Legacy Point Cloud and old
+Mapbox trace wrappers are not included.
+
+## Basic usage
+
+```csharp
+var data = new TraceList(new HeatmapTrace
+{
+    X = new[] { "Monday", "Tuesday", "Wednesday" },
+    Y = new[] { "Morning", "Afternoon" },
+    Z = new object[] { new[] { 1, 2, 3 }, new[] { 4, 5, 6 } }
+});
+
+await Chart1.newPlot(data);
+```
+
+Place a `PlotlyChart` component in a Razor component and call chart operations after
+the component has initialized. The public C# model mirrors Plotly data/layout objects
+while the JavaScript boundary remains generic.
+
+## Validation evidence
+
+The modernization and distribution audits are recorded in the `codex` folder:
+
+- `EndToEndValidation.md`
+- `PackageDistributionIntegrity.md`
+- `PlotlyJsProvenance.md`
+- `PlotlyModelValidation.md`
+
+Build and package commands are documented there with the exact .NET SDK and asset
+hashes used for the release audit.
 
 ## Architecture
 One of my main complaints is I could not directly inherit from an ExpandoObject, this would have simplified this code base.

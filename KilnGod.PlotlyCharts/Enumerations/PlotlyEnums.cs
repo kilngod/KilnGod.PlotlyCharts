@@ -997,28 +997,6 @@ namespace KilnGod.PlotlyCharts.Enumerations
 		}
 
 		/******************************
-		*** Enum Name: DensityMapboxHoverOptions
-		***
-		*** Description: Determines which trace information appear on hover. If `none` or `skip` are set, no information is displayed upon hovering. But, if `none` is set, click and hover events are still fired.
-		***
-		*** Source: hoverinfo
-		******************************/
-
-		public enum DensityMapboxHoverOptions
-		{
-			[Description("lon")]
-			Lon,
-			[Description("lat")]
-			Lat,
-			[Description("z")]
-			Z,
-			[Description("text")]
-			Text,
-			[Description("name")]
-			Name
-		}
-
-		/******************************
 		*** Enum Name: DepthFadeOptions
 		***
 		*** Description: Determines if the sector colors are faded towards the background from the leaves up to the headers. This option is unavailable when a `colorscale` is present, defaults to false when `marker.colors` is set, but otherwise defaults to true. When set to *reversed*, the fading direction is inverted, that is the top elements within hierarchy are drawn with fully saturated colors while the leaves are faded towards the background color.
@@ -1316,22 +1294,6 @@ namespace KilnGod.PlotlyCharts.Enumerations
 			SI,
 			[Description("B")]
 			B
-		}
-
-		/******************************
-		*** Enum Name: FillMapboxOptions
-		***
-		*** Description: Sets the area to fill with a solid color. Use with `fillcolor` if not *none*. *toself* connects the endpoints of the trace (or each segment of the trace if it has gaps) into a closed shape.
-		***
-		*** Source: fill
-		******************************/
-
-		public enum FillMapboxOptions
-		{
-			[Description("none")]
-			None,
-			[Description("toself")]
-			ToSelf
 		}
 
 		/******************************
@@ -2482,26 +2444,6 @@ namespace KilnGod.PlotlyCharts.Enumerations
 			CountryNames,
 			[Description("geojson-id")]
 			GeoJSONId
-		}
-
-		/******************************
-		*** Enum Name: MapboxHoverOptions
-		***
-		*** Description: Determines which trace information appear on hover. If `none` or `skip` are set, no information is displayed upon hovering. But, if `none` is set, click and hover events are still fired.
-		***
-		*** Source: hoverinfo
-		******************************/
-
-		public enum MapboxHoverOptions
-		{
-			[Description("lon")]
-			Lon,
-			[Description("lat")]
-			Lat,
-			[Description("text")]
-			Text,
-			[Description("name")]
-			Name
 		}
 
 		/******************************

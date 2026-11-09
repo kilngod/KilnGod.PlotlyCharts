@@ -14,6 +14,7 @@ using KilnGod.PlotlyCharts.Enumerations;
 using KilnGod.PlotlyCharts.Configuration;
 using KilnGod.PlotlyCharts.Wrappers;
 using KilnGod.PlotlyCharts.Layouts;
+using KilnGod.PlotlyCharts.Interop;
 
 namespace KilnGod.PlotlyCharts
 {
@@ -52,6 +53,26 @@ namespace KilnGod.PlotlyCharts
         public async static ValueTask restyle(this PlotlyChart chart, object trace_update) => await chart.SetFunctionPlotlyChart("restyle", trace_update);
         public async static ValueTask restyle(this PlotlyChart chart, object trace_update, int trace) => await chart.SetFunctionPlotlyChart("restyle", trace_update, trace);
         public async static ValueTask restyle(this PlotlyChart chart, object trace_update, int[] traces) => await chart.SetFunctionPlotlyChart("restyle", trace_update, traces);
+
+        public static ValueTask restyle(
+            this PlotlyChart chart,
+            int traceIndex,
+            PlotlyNumericArray? x = null,
+            PlotlyNumericArray? y = null) => chart.RestyleNumericArrays(traceIndex, x, y);
+
+        public static ValueTask restyle(
+            this PlotlyChart chart,
+            int traceIndex,
+            IReadOnlyDictionary<string, PlotlyNumericArray> fields) =>
+            chart.RestyleNumericFields(traceIndex, fields);
+
+        public static ValueTask restyleMatrix(
+            this PlotlyChart chart,
+            int traceIndex,
+            string fieldName,
+            PlotlyNumericArray values,
+            int rows,
+            int columns) => chart.RestyleNumericMatrix(traceIndex, fieldName, values, rows, columns);
 
         public async static ValueTask animate(this PlotlyChart chart, object target_update, object animation_update) => await chart.SetFunctionPlotlyChart("animate", target_update, animation_update);
 

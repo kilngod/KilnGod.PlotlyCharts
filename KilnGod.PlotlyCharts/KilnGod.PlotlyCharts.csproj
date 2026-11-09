@@ -1,7 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
+    <LangVersion>14.0</LangVersion>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <Authors>James Carpenter</Authors>
@@ -12,7 +13,8 @@
     <RepositoryUrl>https://github.com/kilngod/KilnGod.PlotlyCharts</RepositoryUrl>
     <PackageTags>Blazor;Charts;Charting;PlotlyCharts</PackageTags>
     <RepositoryType>git</RepositoryType>
-    <PackageReleaseNotes>0.5 pre-release of Blazor wrapper for plotly.js as code first component.</PackageReleaseNotes>
+    <Version>1.0.0</Version>
+    <PackageReleaseNotes>.NET 10 Blazor Server/WebAssembly package with vendored Plotly.js 4.2.0 and audited open-source notices.</PackageReleaseNotes>
     <AssemblyVersion>0.5.0.0</AssemblyVersion>
     <FileVersion>0.5.0.0</FileVersion>
     <PackageIcon>ChartIcon.png</PackageIcon>
@@ -50,7 +52,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.8" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="10.0.7" />
   </ItemGroup>
 
 </Project>
